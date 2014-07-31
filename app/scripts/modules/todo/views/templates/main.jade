@@ -1,0 +1,11 @@
+.panel.panel-default
+  .panel-heading
+    | Todo list
+    button.close &times;
+      = action
+
+  .panel-body
+    #todo-list.list-group
+
+    form#new-todo
+      input.form-control(type="text", name="todo", placeholder="enter a new todo and press ENTER", autofocus)
