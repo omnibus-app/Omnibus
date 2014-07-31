@@ -4,6 +4,45 @@ Omnibus is an interactive data visualization app that will make understanding la
 
 It's increasingly common for legislation to be bundled into large omnibus bills which makes untangling the content of these bills more difficult. Visualization is a powerful tool for distilling this data into a more digestible format.
 
+## Team
+
+  - __Product Owner__: Nick Bottomley
+  - __Scrum Master__: Will Johnson
+  - __Development Team Members__: Will Labranche, Mike Schippert
+
+## Table of Contents
+
+1. [Usage](#Usage)
+1. [Requirements](#requirements)
+1. [Development](#development)
+    1. [Installing Dependencies](#installing-dependencies)
+    1. [Tasks](#tasks)
+1. [Team](#team)
+1. [Contributing](#contributing)
+
+## Usage
+
+> Some usage instructions
+
+## Requirements
+
+- Node 0.10.x
+- Redis 2.6.x
+- Postgresql 9.1.x
+- etc
+- etc
+
+## Development
+
+### Installing Dependencies
+
+From within the root directory:
+
+```sh
+sudo npm install -g bower
+npm install
+bower install
+```
 
 ## Tech Stack Features
 
@@ -39,6 +78,17 @@ gulp production
 ```
 
 Works with the Chrome livereload extension (https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
+
+### Tasks
+
+See the projects backlog in asana [here](https://LINKTOYOURASANA.com)
+
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+
 
 ## LICENSE
 
