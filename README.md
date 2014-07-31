@@ -32,18 +32,6 @@ It's increasingly common for legislation to be bundled into large omnibus bills 
 - etc
 - etc
 
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-sudo npm install -g bower
-npm install
-bower install
-```
-
 ## Tech Stack Features
 
 - Custom Region with empty view
@@ -51,7 +39,32 @@ bower install
 - Routes enclosed within / handled from modules
 - Separate production / development builds
 
-## Usage
+## Development
+
+### Installing Dependencies
+
+From within the root directory:
+
+Install
+
+```
+npm install
+```
+
+Build
+
+```
+gulp
+```
+
+Watch
+
+```
+gulp watch
+```
+
+## Production
+
 
 Install
 
