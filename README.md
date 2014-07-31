@@ -1,12 +1,11 @@
-# backbone-marionette-gulp-seed
+# Omnibus
 
-This is a sample Todos seed application using Backbone.js, Marionette.js, Twitter Bootstrap 3, Stylus, Jade and Coffeescript all bundled with Gulp.js
+Omnibus is an interactive data visualization app that will make understanding large and complex bills easy.
 
-## Demo
+It's increasingly common for legislation to be bundled into large omnibus bills which makes untangling the content of these bills more difficult. Visualization is a powerful tool for distilling this data into a more digestible format.
 
-http://iampeter.github.io/backbone-marionette-gulp-seed-demo/
 
-## Features
+## Tech Stack Features
 
 - Custom Region with empty view
 - Startable / stoppable Modules, communicating with each other
