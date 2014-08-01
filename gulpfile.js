@@ -16,9 +16,10 @@ var paths = {
   src: './app/',
   dest: './public/',
   vendor: './vendor/',
-  assets: './assets/'
+  assets: './assets/',
+  bower: './bower_components/'
 };
-//set 
+//set
 gulp.task('set-production', function() {
   environment = 'production';
 });
