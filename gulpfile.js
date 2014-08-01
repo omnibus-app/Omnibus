@@ -45,6 +45,25 @@ gulp.task('vendor-styles', function() {
   stream.pipe(gulp.dest(paths.dest + 'css/'));
 });
 
+gulp.task('bower-scripts', function() {
+  stream = gulp.src([
+    paths.bower + 'd3/d3.js',
+    paths.bower + 'jquery/dist/jquery.js',
+    paths.bower + 'underscore/underscore.js',
+    paths.bower + 'backbone/backbone.js',
+    paths.bower + 'marionette/lib/backbone.marionette.js',
+    paths.bower + 'backbone.syphon/lib/backbone.syphon.js',
+  ])
+  .pipe(plumber())
+  .pipe(concat("bower_components.js"));
+
+  if (environment == 'production') {
+    stream.pipe(uglify());
+  }
+
+  stream.pipe(gulp.dest(paths.dest + 'js/'));
+})
+
 gulp.task('vendor-scripts', function() {
   stream = gulp.src([
       paths.vendor + 'scripts/jquery.js',
@@ -124,7 +143,7 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('vendor', ['vendor-styles', 'vendor-scripts']);
+gulp.task('vendor', ['vendor-styles', 'bower-scripts']);
 gulp.task('compile', ['html', 'styles', 'scripts']);
 
 gulp.task('default', ['assets', 'vendor', 'compile']);
