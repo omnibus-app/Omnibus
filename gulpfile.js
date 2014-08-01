@@ -1,10 +1,11 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
+// var gutil = require('gulp-util');
 
 var jade = require('gulp-jade');
 var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
 var stylus = require('gulp-stylus');
+var coffeelint = require('gulp-coffeelint');
 var browserify = require('gulp-browserify');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -17,7 +18,7 @@ var paths = {
   vendor: './vendor/',
   assets: './assets/'
 };
-
+//set 
 gulp.task('set-production', function() {
   environment = 'production';
 });
@@ -29,7 +30,7 @@ gulp.task('assets', function() {
 });
 
 gulp.task('vendor-styles', function() {
-  stream = gulp.src([
+    stream = gulp.src([
       paths.vendor + 'styles/bootstrap.css',
       paths.vendor + 'styles/bootstrap-theme.css'
     ])
@@ -62,7 +63,13 @@ gulp.task('vendor-scripts', function() {
   stream.pipe(gulp.dest(paths.dest + 'js/'));
 });
 
-gulp.task('scripts', function() {
+gulp.task('coffeelint', function () {
+    gulp.src(paths.src + 'scripts/*.coffee')
+        .pipe(coffeelint())
+        .pipe(coffeelint.reporter());
+  });
+
+gulp.task('scripts', ['coffeelint'], function() {
   stream = gulp.src(paths.src + 'scripts/index.coffee', { read: false })
     .pipe(plumber())
     .pipe(browserify({
