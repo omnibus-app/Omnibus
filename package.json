@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "author": "Will Johnson",
   "description": "A seed project using Backbone.js, Marionette.js, Twitter Bootstrap 3, Stylus, Jade and Coffeescript all bundled with Gulp.js",
-  "repository": "git@github.com:omnibus-app/Marionette-seed.git",
+  "repository": "git@github.com:wlabranche/Omnibus.git",
   "devDependencies": {
     "gulp": "~3.5.2",
     "gulp-jade": "~0.4.1",
@@ -17,6 +17,10 @@
     "gulp-minify-css": "~0.3.0",
     "jade": "~1.1.5",
     "browserify": "~3.28.2",
-    "jadeify": "~2.1.1"
+    "jadeify": "~2.1.1",
+    "coveralls": "~2.7.1",
+    "istanbul": "~0.2.4",
+    "mocha": "~1.17.1",
+    "mocha-lcov-reporter": "0.0.1"
   }
 }
