@@ -15,5 +15,13 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "backbone": "~1.1.2",
+    "underscore": "~1.6.0",
+    "marionette": "~2.1.0",
+    "d3": "~3.4.11",
+    "backbone.syphon": "~0.4.1"
+  }
 }
