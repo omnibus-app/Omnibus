@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var gutil = require('gulp-util');
+
 var jade = require('gulp-jade');
 var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
@@ -14,7 +16,7 @@ var paths = {
   dest: './public/',
   vendor: './vendor/',
   assets: './assets/'
-}
+};
 
 gulp.task('set-production', function() {
   environment = 'production';
@@ -32,13 +34,13 @@ gulp.task('vendor-styles', function() {
       paths.vendor + 'styles/bootstrap-theme.css'
     ])
     .pipe(plumber())
-    .pipe(concat("vendor.css"))
+    .pipe(concat("vendor.css"));
 
   if (environment == 'production') {
-    stream.pipe(minify())
+    stream.pipe(minify());
   }
 
-  stream.pipe(gulp.dest(paths.dest + 'css/'))
+  stream.pipe(gulp.dest(paths.dest + 'css/'));
 });
 
 gulp.task('vendor-scripts', function() {
@@ -51,13 +53,13 @@ gulp.task('vendor-scripts', function() {
       paths.vendor + 'scripts/backbone.marionette.js'
     ])
     .pipe(plumber())
-    .pipe(concat("vendor.js"))
+    .pipe(concat("vendor.js"));
 
   if (environment == 'production') {
-    stream.pipe(uglify())
+    stream.pipe(uglify());
   }
 
-  stream.pipe(gulp.dest(paths.dest + 'js/'))
+  stream.pipe(gulp.dest(paths.dest + 'js/'));
 });
 
 gulp.task('scripts', function() {
@@ -68,13 +70,13 @@ gulp.task('scripts', function() {
       transform: ['coffeeify', 'jadeify'],
       extensions: ['.coffee', '.jade']
     }))
-    .pipe(concat('index.js'))
+    .pipe(concat('index.js'));
 
   if (environment == 'production') {
-    stream.pipe(uglify())
+    stream.pipe(uglify());
   }
 
-  stream.pipe(gulp.dest(paths.dest + 'js/'))
+  stream.pipe(gulp.dest(paths.dest + 'js/'));
 });
 
 gulp.task('html', function() {
@@ -83,19 +85,19 @@ gulp.task('html', function() {
     .pipe(jade({
       pretty: environment == 'development'
     }))
-    .pipe(gulp.dest(paths.dest))
+    .pipe(gulp.dest(paths.dest));
 });
 
 gulp.task('styles', function () {
   stream = gulp.src(paths.src + 'styles/**/*.styl')
     .pipe(plumber())
-    .pipe(stylus({ use: ['nib']}))
+    .pipe(stylus({ use: ['nib']}));
 
   if (environment == 'production') {
-    stream.pipe(minify())
+    stream.pipe(minify());
   }
 
-  stream.pipe(gulp.dest(paths.dest + 'css/'))
+  stream.pipe(gulp.dest(paths.dest + 'css/'));
 });
 
 gulp.task('watch', function () {
@@ -119,3 +121,4 @@ gulp.task('compile', ['html', 'styles', 'scripts']);
 
 gulp.task('default', ['assets', 'vendor', 'compile']);
 gulp.task('production', ['set-production', 'default']);
+
