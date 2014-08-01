@@ -4,6 +4,10 @@
   "author": "Will Johnson",
   "description": "A seed project using Backbone.js, Marionette.js, Twitter Bootstrap 3, Stylus, Jade and Coffeescript all bundled with Gulp.js",
   "repository": "git@github.com:omnibus-app/Omnibus.git",
+  "scripts": {
+    "test": "mocha ./test/test.js",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  }
   "devDependencies": {
     "gulp": "~3.5.2",
     "gulp-jade": "~0.4.1",
