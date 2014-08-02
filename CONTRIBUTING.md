@@ -24,6 +24,7 @@
 1. Fix any issues raised by your code reviwer, and push your fixes as a single
    new commit.
 1. Once the pull request has been reviewed, it will be merged by another member of the team. Do not merge your own commits.
+1. AFTER SUBMITTING PULL REQUEST, HIT REFRESH TO SEE TRAVIS-CI STATUS, DO NOT MERGE UNTIL TRAVIS REPORTS THE TESTS HAVE BEEN SUCCESSFULL!
 
 ## Detailed Workflow
 
