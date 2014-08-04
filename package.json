@@ -5,7 +5,7 @@
   "description": "A seed project using Backbone.js, Marionette.js, Twitter Bootstrap 3, Stylus, Jade and Coffeescript all bundled with Gulp.js",
   "repository": "git@github.com:omnibus-app/Omnibus.git",
   "scripts": {
-    "test": "echo 'main test goes here'",
+    "test": "testling",
     "coveralls": "echo 'coveralls goes here'" 
   },
   "testling": {
@@ -14,7 +14,7 @@
       "chrome/latest"
     ],
     "files": [
-      "./public/**/*.js"
+      "./public/index.js"
     ],
     "scripts": [
       "./misc.js",
