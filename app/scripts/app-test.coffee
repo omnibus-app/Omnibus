@@ -1,0 +1,1 @@
+App = require './app'
