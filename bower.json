@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "homepage": "https://github.com/wlabranche/Omnibus",
   "authors": [
+    "Mike Schippert <michael.schippert@gmail.com>",
+    "Nick Bottomly <nhbottomley@gmail.com>",
+    "Will Johnson <williamcouperjohnson@gmail.com>",
     "Will LaBranche <wlabranche@gmail.com>"
   ],
   "description": "Legislation Visualization",
