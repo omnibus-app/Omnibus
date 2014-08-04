@@ -6,7 +6,7 @@
   "repository": "git@github.com:omnibus-app/Omnibus.git",
   "scripts": {
     "test": "testling | coverify",
-    "coveralls": "echo 'coveralls goes here'" 
+    "coveralls": "echo 'coveralls goes here'"
   },
   "testling": {
     "harness": "mocha-bdd",
@@ -36,8 +36,8 @@
   "devDependencies": {
     "browserify": "~3.28.2",
     "coffeeify": "~0.6.0",
-    "coverify": "^1.0.7",
     "coveralls": "~2.7.1",
+    "coverify": "^1.0.7",
     "gulp": "~3.5.2",
     "gulp-browserify": "~0.4.4",
     "gulp-coffeelint": "^0.3.3",
@@ -52,6 +52,7 @@
     "jade": "~1.1.5",
     "jadeify": "~2.1.1",
     "mocha": "~1.17.1",
-    "mocha-lcov-reporter": "0.0.1"
+    "mocha-lcov-reporter": "0.0.1",
+    "testling": "^1.7.0"
   }
 }
