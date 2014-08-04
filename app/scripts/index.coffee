@@ -1,4 +1,4 @@
 App = require('./app')
 
 module.exports = $ ->
-  App.start()
+  new App.start()
