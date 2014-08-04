@@ -4,9 +4,39 @@
   "author": "Will Johnson",
   "description": "A seed project using Backbone.js, Marionette.js, Twitter Bootstrap 3, Stylus, Jade and Coffeescript all bundled with Gulp.js",
   "repository": "git@github.com:omnibus-app/Omnibus.git",
+  "scripts": {
+    "test": "testling | coverify",
+    "coveralls": "echo 'coveralls goes here'" 
+  },
+  "testling": {
+    "harness": "mocha-bdd",
+    "browsers": [
+      "chrome/latest"
+    ],
+    "files": [
+      "./public/index.js"
+    ],
+    "scripts": [
+      "./misc.js",
+      "./bower_components/chai/chai.js",
+      "./bower_components/jquery/dist/jquery.js",
+      "./bower_components/underscore/underscore.js",
+      "./bower_components/backbone/backbone.js"
+    ]
+  },
+  "dependencies": {
+    "backbone": "^1.1.2",
+    "jquery": "^2.1.1"
+  },
+  "browserify": {
+    "transform": [
+      "coverify"
+    ]
+  },
   "devDependencies": {
     "browserify": "~3.28.2",
     "coffeeify": "~0.6.0",
+    "coverify": "^1.0.7",
     "coveralls": "~2.7.1",
     "gulp": "~3.5.2",
     "gulp-browserify": "~0.4.4",
@@ -23,6 +53,5 @@
     "jadeify": "~2.1.1",
     "mocha": "~1.17.1",
     "mocha-lcov-reporter": "0.0.1"
-  },
-  "dependencies": {}
+  }
 }
