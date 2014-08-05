@@ -150,7 +150,7 @@ gulp.task('vendor', ['vendor-styles', 'bower-scripts']);
 gulp.task('compilePre', ['html', 'styles']);
 
 gulp.task('compile', ['compilePre'], function(){
-  if (enviornment === 'production'){
+  if (environment === 'production'){
     gulp.start('coffeeProd');
   }else{
     gulp.start('coffeeTest');
