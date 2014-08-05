@@ -23,7 +23,7 @@
         "level": "error"
     },
     "empty_constructor_needs_parens": {
-        "level": "ignore"
+        "level": "error"
     },
     "indentation": {
         "value": 2,
@@ -35,8 +35,8 @@
     },
     "max_line_length": {
         "value": 80,
-        "level": "error",
-        "limitComments": true
+        "level": "warn",
+        "limitComments": false
     },
     "missing_fat_arrows": {
         "level": "ignore"
