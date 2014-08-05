@@ -16,3 +16,5 @@ MainController = new Marionette.controller.extend {
     # Show view in a region
     # Navigate to route
 }
+
+module.exports = MainController
