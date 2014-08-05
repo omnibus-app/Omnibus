@@ -124,6 +124,8 @@ gulp.task('bower-scripts', function() {
 //   stream.pipe(gulp.dest(paths.dest + 'js/'));
 // });
 
+
+
 gulp.task('html', function() {
   gulp.src(paths.src + 'index.jade')
     .pipe(plumber())

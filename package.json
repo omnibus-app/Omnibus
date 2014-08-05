@@ -14,14 +14,14 @@
       "chrome/latest"
     ],
     "files": [
-      "./public/index.js"
+      "./test.js"
     ],
     "scripts": [
-      "./misc.js",
       "./bower_components/chai/chai.js",
       "./bower_components/jquery/dist/jquery.js",
       "./bower_components/underscore/underscore.js",
-      "./bower_components/backbone/backbone.js"
+      "./bower_components/backbone/backbone.js",
+      "./bower_components/marionette/lib/backbone.marionette.js"
     ]
   },
   "dependencies": {
