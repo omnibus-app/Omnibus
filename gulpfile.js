@@ -14,13 +14,6 @@ var minify = require('gulp-minify-css');
 
 var environment = 'development';
 
-var testDirs = ['./basic', './dom', './backbone'];
-
-var notSpec = function ( dir ) {
-  return dir + '/**/!(*-spec.js)+(*.js)';
-};
-
-
 var paths = {
   src: './app/',
   dest: './public/',
@@ -32,7 +25,6 @@ var paths = {
 gulp.task('set-production', function() {
   environment = 'production';
 });
-
 
 var compile = function(source, coverify) {
   console.log(source, coverify);
@@ -71,7 +63,6 @@ gulp.task('coffeeCover', ['coffeelint'], function(){
   compile('./app/scripts/**/*.coffee', true);
 });
 
-
 gulp.task('assets', function() {
  gulp.src(paths.assets + "**")
     .pipe(plumber())
@@ -105,24 +96,6 @@ gulp.task('bower-scripts', function() {
   .pipe(plumber())
   .pipe(concat("bower_components.js"));
 
-  if (environment == 'production') {
-    stream.pipe(uglify());
-  }
-
-  stream.pipe(gulp.dest(paths.dest + 'js/'));
-})
-
-gulp.task('vendor-scripts', function() {
-  stream = gulp.src([
-      paths.vendor + 'scripts/jquery.js',
-      paths.vendor + 'scripts/bootstrap.js',
-      paths.vendor + 'scripts/underscore.js',
-      paths.vendor + 'scripts/backbone.js',
-      paths.vendor + 'scripts/backbone.syphon.js',
-      paths.vendor + 'scripts/backbone.marionette.js'
-    ])
-    .pipe(plumber())
-    .pipe(concat("vendor.js"));
   if (environment == 'production') {
     stream.pipe(uglify());
   }
