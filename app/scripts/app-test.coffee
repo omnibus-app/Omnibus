@@ -2,14 +2,13 @@ App = require './app'
 expect = chai.expect
 should = chai.should()
 
+App.start()
 
 module.exports =
   describe 'app:', ->
 
-    beforeEach ( done ) ->
-      app = new App.start()
-
     describe 'regions', ->
-      should.exist app.search
-      should.exist app.chart
-      should.exist app.sideData
+      it 'should exist', ->
+        should.exist App.search
+        should.exist App.chart
+        should.exist App.sideData
