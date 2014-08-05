@@ -63,6 +63,8 @@ gulp.task('coffeeCover', ['coffeelint'], function(){
   compile('./app/scripts/**/*.coffee', true);
 });
 
+
+
 gulp.task('assets', function() {
  gulp.src(paths.assets + "**")
     .pipe(plumber())
@@ -103,22 +105,24 @@ gulp.task('bower-scripts', function() {
   stream.pipe(gulp.dest(paths.dest + 'js/'));
 });
 
-gulp.task('scripts', ['coffeelint'], function() {
-  stream = gulp.src(paths.src + 'scripts/index.coffee', { read: false })
-    .pipe(plumber())
-    .pipe(browserify({
-      debug: environment == 'development',
-      transform: ['coffeeify', 'jadeify'],
-      extensions: ['.coffee', '.jade']
-    }))
-    .pipe(concat('index.js'));
 
-  if (environment == 'production') {
-    stream.pipe(uglify());
-  }
+//what hell does this do?
+// gulp.task('scripts', ['coffeelint'], function() {
+//   stream = gulp.src(paths.src + 'scripts/index.coffee', { read: false })
+//     .pipe(plumber())
+//     .pipe(browserify({
+//       debug: environment == 'development',
+//       transform: ['coffeeify', 'jadeify'],
+//       extensions: ['.coffee', '.jade']
+//     }))
+//     .pipe(concat('index.js'));
 
-  stream.pipe(gulp.dest(paths.dest + 'js/'));
-});
+//   if (environment == 'production') {
+//     stream.pipe(uglify());
+//   }
+
+//   stream.pipe(gulp.dest(paths.dest + 'js/'));
+// });
 
 gulp.task('html', function() {
   gulp.src(paths.src + 'index.jade')
@@ -141,13 +145,24 @@ gulp.task('styles', function () {
   stream.pipe(gulp.dest(paths.dest + 'css/'));
 });
 
+
+gulp.task('vendor', ['vendor-styles', 'bower-scripts']);
+gulp.task('compilePre', ['html', 'styles']);
+
+gulp.task('compile', ['compilePre'], function(){
+  if (enviornment === 'production'){
+    gulp.start('coffeeProd');
+  }else{
+    gulp.start('coffeeTest');
+  }
+});
+
 gulp.task('watch', function () {
   var server = livereload();
 
-  gulp.watch(paths.src + 'scripts/**', ['scripts']);
+  gulp.watch(paths.src + 'scripts/**', ['compile']);
   gulp.watch(paths.src + 'styles/**/*.styl', ['styles']);
   gulp.watch(paths.src + 'index.jade', ['html']);
-
   gulp.watch([
       paths.dest + 'js/*.js',
       paths.dest + 'css/*.css',
@@ -157,9 +172,9 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('vendor', ['vendor-styles', 'bower-scripts']);
-gulp.task('compile', ['html', 'styles', 'scripts']);
+gulp.task('test', ['assets', 'vendor', 'coffeeCover']);
 
 gulp.task('default', ['assets', 'vendor', 'compile']);
+
 gulp.task('production', ['set-production', 'default']);
 
