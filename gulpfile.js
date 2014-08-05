@@ -1,6 +1,7 @@
 var gulp = require('gulp');
-// var gutil = require('gulp-util');
+var gutil = require('gulp-util');
 
+var coffee = require('gulp-coffee');
 var jade = require('gulp-jade');
 var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
@@ -12,6 +13,14 @@ var uglify = require('gulp-uglify');
 var minify = require('gulp-minify-css');
 
 var environment = 'development';
+
+var testDirs = ['./basic', './dom', './backbone'];
+
+var notSpec = function ( dir ) {
+  return dir + '/**/!(*-spec.js)+(*.js)';
+};
+
+
 var paths = {
   src: './app/',
   dest: './public/',
@@ -23,6 +32,45 @@ var paths = {
 gulp.task('set-production', function() {
   environment = 'production';
 });
+
+
+var compile = function(source, coverify) {
+  console.log(source, coverify);
+  gulp.src(source)
+    .pipe(coffee({bare: true})).on('error', gutil.log)
+    .pipe(gulp.dest('./tmp/'))
+    .on('end', function(){
+      var temp = gulp.src('./tmp/**/*.js');
+      if (coverify){
+        temp.pipe(browserify({
+          transform: ['coverify']
+        }))
+          .pipe(concat('index.js'))
+          .pipe(gulp.dest(paths.dest + '/js'));
+      }else{
+        temp.pipe(browserify())
+          .pipe(concat('index.js'))
+          .pipe(gulp.dest(paths.dest + '/js'));
+      }
+    });
+};
+
+gulp.task('coffeelint', function () {
+    gulp.src(paths.src + 'scripts/*.coffee')
+        .pipe(coffeelint())
+        .pipe(coffeelint.reporter());
+  });
+
+gulp.task('coffeeProd',['coffeelint'], function(){
+  compile('./app/scripts/**/!(*-spec.coffee)+(*.coffee)');
+});
+gulp.task('coffeeTest',['coffeelint'], function(){
+  compile('./app/scripts/**/*.coffee');
+});
+gulp.task('coffeeCover', ['coffeelint'], function(){
+  compile('./app/scripts/**/*.coffee', true);
+});
+
 
 gulp.task('assets', function() {
  gulp.src(paths.assets + "**")
@@ -75,19 +123,12 @@ gulp.task('vendor-scripts', function() {
     ])
     .pipe(plumber())
     .pipe(concat("vendor.js"));
-
   if (environment == 'production') {
     stream.pipe(uglify());
   }
 
   stream.pipe(gulp.dest(paths.dest + 'js/'));
 });
-
-gulp.task('coffeelint', function () {
-    gulp.src(paths.src + 'scripts/*.coffee')
-        .pipe(coffeelint())
-        .pipe(coffeelint.reporter());
-  });
 
 gulp.task('scripts', ['coffeelint'], function() {
   stream = gulp.src(paths.src + 'scripts/index.coffee', { read: false })
