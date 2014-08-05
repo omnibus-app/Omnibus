@@ -99,12 +99,24 @@ gulp.task('scripts', ['coffeelint'], function() {
     }))
     .pipe(concat('index.js'));
 
+  testStream = gulp.src(paths.src + 'scripts/test.coffee', { read: false })
+    .pipe(plumber())
+    .pipe(browserify({
+      debug: environment == 'development',
+      transform: ['coffeeify', 'jadeify'],
+      extensions: ['.coffee', '.jade']
+    }))
+    .pipe(concat('test.js'));
+
   if (environment == 'production') {
     stream.pipe(uglify());
   }
 
   stream.pipe(gulp.dest(paths.dest + 'js/'));
+  testStream.pipe(gulp.dest('./'));
 });
+
+
 
 gulp.task('html', function() {
   gulp.src(paths.src + 'index.jade')
