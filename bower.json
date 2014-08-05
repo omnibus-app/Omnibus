@@ -26,5 +26,8 @@
     "marionette": "~2.1.0",
     "d3": "~3.4.11",
     "backbone.syphon": "~0.4.1"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1"
   }
 }
