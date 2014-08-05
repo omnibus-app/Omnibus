@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 
@@ -12,6 +14,8 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var minify = require('gulp-minify-css');
 
+var compile = require( './gulp/compile-coffee' );
+
 var environment = 'development';
 
 var paths = {
@@ -25,27 +29,6 @@ var paths = {
 gulp.task('set-production', function() {
   environment = 'production';
 });
-
-var compile = function(source, coverify) {
-  console.log(source, coverify);
-  gulp.src(source)
-    .pipe(coffee({bare: true})).on('error', gutil.log)
-    .pipe(gulp.dest('./tmp/'))
-    .on('end', function(){
-      var temp = gulp.src('./tmp/**/*.js');
-      if (coverify){
-        temp.pipe(browserify({
-          transform: ['coverify']
-        }))
-          .pipe(concat('index.js'))
-          .pipe(gulp.dest(paths.dest + '/js'));
-      }else{
-        temp.pipe(browserify())
-          .pipe(concat('index.js'))
-          .pipe(gulp.dest(paths.dest + '/js'));
-      }
-    });
-};
 
 gulp.task('coffeelint', function () {
     gulp.src(paths.src + 'scripts/*.coffee')
@@ -64,22 +47,22 @@ gulp.task('coffeeCover', ['coffeelint'], function(){
 });
 
 
-
 gulp.task('assets', function() {
- gulp.src(paths.assets + "**")
+  gulp
+    .src(paths.assets + '**')
     .pipe(plumber())
     .pipe(gulp.dest(paths.dest));
 });
 
 gulp.task('vendor-styles', function() {
-    stream = gulp.src([
-      paths.vendor + 'styles/bootstrap.css',
-      paths.vendor + 'styles/bootstrap-theme.css'
-    ])
-    .pipe(plumber())
-    .pipe(concat("vendor.css"));
+  var stream = gulp.src([
+    paths.vendor + 'styles/bootstrap.css',
+    paths.vendor + 'styles/bootstrap-theme.css'
+  ])
+  .pipe(plumber())
+  .pipe(concat('vendor.css'));
 
-  if (environment == 'production') {
+  if (environment === 'production') {
     stream.pipe(minify());
   }
 
@@ -87,7 +70,7 @@ gulp.task('vendor-styles', function() {
 });
 
 gulp.task('bower-scripts', function() {
-  stream = gulp.src([
+  var stream = gulp.src([
     paths.bower + 'd3/d3.js',
     paths.bower + 'jquery/dist/jquery.js',
     paths.bower + 'underscore/underscore.js',
@@ -96,9 +79,9 @@ gulp.task('bower-scripts', function() {
     paths.bower + 'backbone.syphon/lib/backbone.syphon.js',
   ])
   .pipe(plumber())
-  .pipe(concat("bower_components.js"));
+  .pipe(concat('bower_components.js'));
 
-  if (environment == 'production') {
+  if (environment === 'production') {
     stream.pipe(uglify());
   }
 
@@ -128,17 +111,17 @@ gulp.task('html', function() {
   gulp.src(paths.src + 'index.jade')
     .pipe(plumber())
     .pipe(jade({
-      pretty: environment == 'development'
+      pretty: environment === 'development'
     }))
     .pipe(gulp.dest(paths.dest));
 });
 
 gulp.task('styles', function () {
-  stream = gulp.src(paths.src + 'styles/**/*.styl')
+  var stream = gulp.src(paths.src + 'styles/**/*.styl')
     .pipe(plumber())
     .pipe(stylus({ use: ['nib']}));
 
-  if (environment == 'production') {
+  if (environment === 'production') {
     stream.pipe(minify());
   }
 
@@ -152,7 +135,7 @@ gulp.task('compilePre', ['html', 'styles']);
 gulp.task('compile', ['compilePre'], function(){
   if (environment === 'production'){
     gulp.start('coffeeProd');
-  }else{
+  } else {
     gulp.start('coffeeTest');
   }
 });
@@ -178,3 +161,7 @@ gulp.task('default', ['assets', 'vendor', 'compile']);
 
 gulp.task('production', ['set-production', 'default']);
 
+gulp.task( 'testlinger', function () {
+  var tl = require( './gulp/testlinger' );
+  console.log( tl.proc() );
+});
