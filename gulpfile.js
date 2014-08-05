@@ -99,7 +99,7 @@ gulp.task('scripts', ['coffeelint'], function() {
     }))
     .pipe(concat('index.js'));
 
-  testStream = gulp.src(paths.src + 'scripts/test.coffee', { read: false })
+  testStream = gulp.src(paths.src + 'scripts/app-test.coffee', { read: false })
     .pipe(plumber())
     .pipe(browserify({
       debug: environment == 'development',
