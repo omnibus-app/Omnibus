@@ -22,6 +22,7 @@ coverage
 build/
 dist/
 public/
+tmp/
 
 # Dependency directories
 # Deployed apps should consider commenting these lines out:
