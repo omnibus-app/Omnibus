@@ -11,16 +11,13 @@ App.addRegions
 
 
 App.addInitializer ( options ) =>
-  # Add router
-
-  # Add controller - This is mainly for doing the dirty work of the router
   @router = new MainRouter
     controller: new MainController
       regions:
-        info: this.info
-        search: this.search
-        chart: this.chart
-        meta: this.meta
+        info: @info
+        search: @search
+        chart: @chart
+        meta: @meta
     appRoutes: 
       'bill/:id': 'showBill'
   console.log @router
