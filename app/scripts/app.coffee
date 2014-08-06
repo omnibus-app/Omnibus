@@ -1,5 +1,5 @@
-MainRouter = require './router'
-MainController = require './controller'
+MainRouter = require './router.coffee'
+MainController = require './controller.coffee'
 
 App = new Backbone.Marionette.Application()
 
@@ -10,12 +10,13 @@ App.addRegions
   meta: '#meta'
 
 App.addInitializer ( data ) =>
+
   # Add router
-  router = new MainRouter()
+  @router = new MainRouter()
 
   # Add controller - This is mainly for doing the dirty work of the router
-  controller = new MainController
-    router: router
+  @controller = new MainController
+    router: @router
     regions:
       info: this.info
       search: this.search
@@ -25,7 +26,7 @@ App.addInitializer ( data ) =>
 
   # Add appRoutes using processAppRoutes which will delegate to the controller
   # for route functions
-  router.processAppRoutes controller,
+  @router.processAppRoutes @controller,
   # routes will go here
     'bill/:id': 'showBill'
 
@@ -37,3 +38,4 @@ App.on 'initialize:after', ( options ) ->
   if Backbone.history then Backbone.history.start pushState: true
 
 module.exports = App
+

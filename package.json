@@ -6,31 +6,23 @@
   "repository": "git@github.com:omnibus-app/Omnibus.git",
   "scripts": {
     "test": "testling",
-    "coverage": "testling | coverify",
     "coveralls": "echo 'coveralls goes here'"
   },
   "testling": {
     "harness": "mocha-bdd",
-    "browsers": [
-      "chrome/latest"
-    ],
-    "files": [
-      "./app/scripts/*.coffee"
-    ],
     "scripts": [
       "./bower_components/chai/chai.js",
       "./bower_components/jquery/dist/jquery.js",
       "./bower_components/underscore/underscore.js",
       "./bower_components/backbone/backbone.js",
-      "./bower_components/marionette/lib/backbone.marionette.js"
+      "./bower_components/marionette/lib/backbone.marionette.js",
+      "./test/test.js"
     ]
   },
   "dependencies": {
     "backbone": "^1.1.2",
+    "gulp-coffeeify": "^0.1.2",
     "jquery": "^2.1.1"
-  },
-  "browserify": {
-    "transform": ["coffeeify"]
   },
   "devDependencies": {
     "browserify": "~3.28.2",

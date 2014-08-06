@@ -1,14 +1,13 @@
-App = require './app'
 expect = chai.expect
-should = chai.should()
 
+App = require "./app.coffee"
+MainController = require "./controller.coffee"
 App.start()
 
-module.exports =
-  describe 'app:', ->
-
-    describe 'regions', ->
-      it 'should exist', ->
-        should.exist App.search
-        should.exist App.chart
-        should.exist App.sideData
+describe "app", ->
+  it "search region should  exist", ->
+    expect( App.search ).to.exist
+  it "chart region should exist", ->
+    expect( App.chart ).to.exist
+  it "sideData region should exist", ->
+    expect( App.meta ).to.exist
