@@ -1,3 +1,4 @@
+
 class MainRouter extends Marionette.AppRouter
   routes:
     '': 'home'
