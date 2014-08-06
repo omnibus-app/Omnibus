@@ -28,6 +28,7 @@ App.addInitializer ( options ) ->
     appRoutes: 
       'bill/:id': 'showBill'
 
+
 # Store initial billModel in local storage for quick retrieval
   # window.localStorage.setItem
   #   currentCongress + firstBill,
