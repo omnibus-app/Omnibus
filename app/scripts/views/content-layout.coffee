@@ -10,4 +10,3 @@ class ContentLayout extends Marionette.LayoutView
     meta: '#meta'
 
 module.exports = ContentLayout
-
