@@ -1,10 +1,13 @@
 MainRouter = require './router.coffee'
 MainController = require './controller.coffee'
 WelcomeView = require './views/welcome-view.coffee'
+<<<<<<< HEAD
 SearchView = require './views/search-view.coffee'
 ContentLayout = require './views/content-layout.coffee'
 MetaLayout = require './views/meta-layout.coffee'
 BillModel = require './models/bill-model.coffee'
+=======
+>>>>>>> Add welcome region and view on init
 
 App = new Backbone.Marionette.Application()
 
@@ -16,7 +19,6 @@ App.addRegions
   search: '#search'
   content: '#content'
 
-<<<<<<< HEAD
 
 App.addInitializer ( options ) ->
   console.log @
