@@ -16,6 +16,7 @@ App.addRegions
   search: '#search'
   content: '#content'
 
+<<<<<<< HEAD
 
 App.addInitializer ( options ) ->
   console.log @
@@ -25,6 +26,7 @@ App.addInitializer ( options ) ->
         welcome: @welcome
         search: @search
         content: @content
+
     appRoutes: 
       'bill/:id': 'showBill'
 
