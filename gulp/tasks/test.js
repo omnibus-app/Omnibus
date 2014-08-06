@@ -1,19 +1,14 @@
 'use strict';
 
 var gulp = require( 'gulp' );
-var gutil = require( 'gulp-util' );
 var browserify = require( 'browserify' );
-var watchify = require( 'watchify' );
 
 var source = require( 'vinyl-source-stream' );
 var paths = require( '../paths.js' );
 
-gulp.task('browserify', function(){
-  var transforms = ['coffeeify'];
-  var bundleMethod = global.isWatching ? watchify : browserify;
-
+gulp.task('test', function(){
   var bundler =
-    bundleMethod({
+    browserify({
       "entries": [paths.src + 'scripts/app.coffee'],
       "extensions": ['.coffee', '.jade'],
       "debug": true
@@ -23,14 +18,14 @@ gulp.task('browserify', function(){
     return bundler
             .transform('coffeeify')
             .transform('jadeify')
+            .transform('coverify')
             .bundle()
             .pipe(source('app.js'))
-            .pipe(gulp.dest(paths.dest + '/js'));
+            .pipe(gulp.dest(paths.dest + '/js'))
+            .on('end', function(){
+              console.log('ended');
+            });
   };
-
-  if (global.isWatching){
-    bundler.on('update', bundle);
-  }
 
   return bundle();
 });
