@@ -9,7 +9,7 @@ var paths = require( '../paths.js' );
 gulp.task('test', function(){
   var bundler =
     browserify({
-      "entries": [paths.src + 'scripts/app.coffee'],
+      "entries": [paths.src + 'scripts/test.coffee'],
       "extensions": ['.coffee', '.jade'],
       "debug": true
     });
@@ -18,10 +18,9 @@ gulp.task('test', function(){
     return bundler
             .transform('coffeeify')
             .transform('jadeify')
-            .transform('coverify')
             .bundle()
-            .pipe(source('app.js'))
-            .pipe(gulp.dest(paths.dest + '/js'))
+            .pipe(source('test.js'))
+            .pipe(gulp.dest(paths.test))
             .on('end', function(){
               console.log('ended');
             });

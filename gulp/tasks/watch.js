@@ -1,8 +1,8 @@
 var gulp = require('gulp');
-var livereload = require('livereload');
+var livereload = require('gulp-livereload');
 var paths = require('../paths');
 
-gulp.task('watch', ['setWatch'], function(){
+gulp.task('watch', ['setWatch','build', 'bower-scripts', 'assets', 'html'], function(){
   var server = livereload();
   gulp
     .watch('../app/**/*.jade', ['jade']);

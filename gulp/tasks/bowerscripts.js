@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var plumber = require('gulp-plumber');
 var uglify = require('gulp-uglify');
+var concat = require('gulp-concat');
+
 var paths = require('../paths');
 
 gulp.task('bower-scripts', function() {
@@ -14,10 +16,6 @@ gulp.task('bower-scripts', function() {
   ])
   .pipe(plumber())
   .pipe(concat('bower_components.js'));
-
-  if (environment === 'production') {
-    stream.pipe(uglify());
-  }
 
   stream.pipe(gulp.dest(paths.dest + 'js/'));
 });
