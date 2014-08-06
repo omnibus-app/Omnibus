@@ -7,6 +7,7 @@ App = new Backbone.Marionette.Application();
 
 
 BillModel = require('./models/bill-model.coffee');
+currentCongress = 113;
 
 firstBill = 'hr2397';
 
