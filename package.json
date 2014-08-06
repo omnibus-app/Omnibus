@@ -6,7 +6,6 @@
   "repository": "git@github.com:omnibus-app/Omnibus.git",
   "scripts": {
     "test": "testling",
-    "coveralls": "echo 'coveralls goes here'"
   },
   "testling": {
     "harness": "mocha-bdd",
