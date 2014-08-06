@@ -16,7 +16,6 @@ App.addRegions
   search: '#search'
   content: '#content'
 
-
 App.addInitializer ( options ) ->
   console.log @
   @router = new MainRouter
@@ -25,7 +24,6 @@ App.addInitializer ( options ) ->
         welcome: @welcome
         search: @search
         content: @content
-
     appRoutes: 
       'bill/:id': 'showBill'
 
