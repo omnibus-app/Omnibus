@@ -24,10 +24,12 @@ App.on 'before:start', ( options ) ->
       '': 'home'
       'bill/:id': 'showBill'
 
+
   # Start backbone history after init
 App.on 'start', ( options ) ->
   # pushState set to true to eliminate '#'
   if Backbone.history then Backbone.history.start pushState: true
+
 
 window.App = App
 
