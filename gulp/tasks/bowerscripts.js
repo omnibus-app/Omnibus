@@ -1,0 +1,23 @@
+var gulp = require('gulp');
+var plumber = require('gulp-plumber');
+var uglify = require('gulp-uglify');
+var paths = require('../paths');
+
+gulp.task('bower-scripts', function() {
+  var stream = gulp.src([
+    paths.bower + 'd3/d3.js',
+    paths.bower + 'jquery/dist/jquery.js',
+    paths.bower + 'underscore/underscore.js',
+    paths.bower + 'backbone/backbone.js',
+    paths.bower + 'marionette/lib/backbone.marionette.js',
+    paths.bower + 'backbone.syphon/lib/backbone.syphon.js',
+  ])
+  .pipe(plumber())
+  .pipe(concat('bower_components.js'));
+
+  if (environment === 'production') {
+    stream.pipe(uglify());
+  }
+
+  stream.pipe(gulp.dest(paths.dest + 'js/'));
+});

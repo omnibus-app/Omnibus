@@ -6,7 +6,7 @@ var browserify = require( 'browserify' );
 var watchify = require( 'watchify' );
 
 var source = require( 'vinyl-source-stream' );
-var paths = require( './gulp/paths' );
+var paths = require( '../paths.js' );
 
 gulp.task('browserify', function(){
   var transforms = ['coffeeify'];
