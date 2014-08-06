@@ -9,6 +9,7 @@ var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
 var stylus = require('gulp-stylus');
 var coffeelint = require('gulp-coffeelint');
+var coffeeify = require( 'gulp-coffeeify' );
 var browserify = require('gulp-browserify');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -107,10 +108,6 @@ gulp.task('bower-scripts', function() {
 //   stream.pipe(gulp.dest(paths.dest + 'js/'));
 // });
 
-
-
-
-
 gulp.task('html', function() {
   gulp.src(paths.src + 'index.jade')
     .pipe(plumber())
@@ -165,7 +162,20 @@ gulp.task('default', ['assets', 'vendor', 'compile']);
 
 gulp.task('production', ['set-production', 'default']);
 
-gulp.task( 'testlinger', function () {
-  var tl = require( './gulp/testlinger' );
-  console.log( tl.proc() );
+gulp.task( 'build', function () {
+  gulp
+    .src( './app/scripts/app.coffee' )
+    .pipe( plumber() )
+    .pipe( coffeeify() )
+    .pipe( concat( 'app.js' ) )
+    .pipe( gulp.dest( './public/js/' ) );
+});
+
+gulp.task( 'x-test', function () {
+  gulp
+    .src( './app/scripts/test.coffee' )
+    .pipe( plumber() )
+    .pipe( coffeeify() )
+    .pipe( concat( 'test.js' ) )
+    .pipe( gulp.dest( './test/' ) );
 });
