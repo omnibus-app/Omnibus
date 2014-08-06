@@ -1,32 +1,42 @@
-MainRouter = require './router'
-MainController = require './controller'
+MainRouter = require './router.coffee'
+MainController = require './controller.coffee'
+WelcomeView = require './views/welcome-view.coffee'
 
 App = new Backbone.Marionette.Application()
 
+currentCongress = 113
+firstBill = 'hr2390'
+
 App.addRegions
-  info: '#info'
+  welcome: '#welcome'
   search: '#search'
-  chart: '#chart'
-  meta: '#meta'
+  content: '#content'
 
 
-App.addInitializer ( options ) =>
+App.addInitializer ( options ) ->
+  console.log @
   @router = new MainRouter
     controller: new MainController
       regions:
-        info: @info
+        welcome: @welcome
         search: @search
-        chart: @chart
-        meta: @meta
+        content: @content
     appRoutes: 
       'bill/:id': 'showBill'
-  console.log @router
-  console.log App
+
+# Store initial billModel in local storage for quick retrieval
+  # window.localStorage.setItem
+  #   currentCongress + firstBill,
+  #   new BillModel id: currentCongress + firstBill
+  welcomeView = new WelcomeView
+  @welcome.show welcomeView 
 
   # Start backbone history after init
 App.on 'initialize:after', ( options ) ->
   # pushState set to true to eliminate '#'
   if Backbone.history then Backbone.history.start pushState: true
+
+window.App = App
 
 module.exports = App
 
