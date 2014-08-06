@@ -1,35 +1,45 @@
 'use strict';
 
 var gulp = require( 'gulp' );
-var gutil = require( 'gulp-util' );
 var browserify = require( 'browserify' );
 var watchify = require( 'watchify' );
 
 var source = require( 'vinyl-source-stream' );
+var bundleLogger = require('../util/bundleLogger');
+var handleErrors = require('../util/handleErrors');
 var paths = require( '../paths.js' );
 
 gulp.task('browserify', function(){
-  var transforms = ['coffeeify'];
-  var bundleMethod = global.isWatching ? watchify : browserify;
 
   var bundler =
-    bundleMethod({
-      "entries": [paths.src + 'scripts/app.coffee'],
-      "extensions": ['.coffee', '.jade'],
-      "debug": true
+    browserify({
+      entries: [paths.src + 'scripts/app.coffee'],
+      extensions: ['.coffee', '.jade'],
+      debug: true,
+      cache: {},
+      packageCache: {},
+      fullPaths: true
     });
 
+  var watchedBundle = global.isWatching ? watchify(bundler) : bundler;
+
+  watchedBundle
+    .transform('coffeeify')
+    .transform('jadeify');
+
   var bundle = function(){
+    bundleLogger.start();
+
     return bundler
-            .transform('coffeeify')
-            .transform('jadeify')
+            .on('error', handleErrors)
             .bundle()
             .pipe(source('app.js'))
-            .pipe(gulp.dest(paths.dest + '/js'));
+            .pipe(gulp.dest(paths.dest + '/js'))
+            .on('end', bundleLogger.end);
   };
 
   if (global.isWatching){
-    bundler.on('update', bundle);
+    watchedBundle.on('update', bundle);
   }
 
   return bundle();

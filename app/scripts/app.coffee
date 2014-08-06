@@ -23,8 +23,7 @@ App.addInitializer ( options ) =>
         meta: this.meta
     appRoutes: 
       'bill/:id': 'showBill'
-  console.log @router
-  console.log App
+
 
   # Start backbone history after init
 App.on 'initialize:after', ( options ) ->
