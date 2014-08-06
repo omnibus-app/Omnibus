@@ -15,8 +15,6 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var minify = require('gulp-minify-css');
 
-var compile = require( './gulp/compile-coffee' );
-
 var environment = 'development';
 
 var paths = {
@@ -90,24 +88,6 @@ gulp.task('bower-scripts', function() {
 });
 
 
-//what hell does this do?
-// gulp.task('scripts', ['coffeelint'], function() {
-//   stream = gulp.src(paths.src + 'scripts/index.coffee', { read: false })
-//     .pipe(plumber())
-//     .pipe(browserify({
-//       debug: environment == 'development',
-//       transform: ['coffeeify', 'jadeify'],
-//       extensions: ['.coffee', '.jade']
-//     }))
-//     .pipe(concat('index.js'));
-
-//   if (environment == 'production') {
-//     stream.pipe(uglify());
-//   }
-
-//   stream.pipe(gulp.dest(paths.dest + 'js/'));
-// });
-
 gulp.task('html', function() {
   gulp.src(paths.src + 'index.jade')
     .pipe(plumber())
@@ -158,7 +138,7 @@ gulp.task('watch', function () {
 
 gulp.task('test', ['assets', 'vendor', 'coffeeCover']);
 
-gulp.task('default', ['assets', 'vendor', 'compile']);
+gulp.task('default', ['assets', 'vendor', 'build']);
 
 gulp.task('production', ['set-production', 'default']);
 
