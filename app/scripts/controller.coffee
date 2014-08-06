@@ -1,5 +1,6 @@
 # Require Views and Models
 
+
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
     @router = options.router
@@ -13,5 +14,6 @@ class MainController extends Marionette.Controller
 
     # Show view in a region
     # Navigate to route
+
 
 module.exports = MainController

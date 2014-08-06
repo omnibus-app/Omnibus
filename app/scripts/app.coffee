@@ -1,5 +1,5 @@
-MainRouter = require './router.coffee'
-MainController = require './controller.coffee'
+MainRouter = require './router'
+MainController = require './controller'
 
 App = new Backbone.Marionette.Application()
 
@@ -9,32 +9,26 @@ App.addRegions
   chart: '#chart'
   meta: '#meta'
 
-App.addInitializer ( data ) =>
 
+App.addInitializer ( options ) =>
   # Add router
-  @router = new MainRouter()
 
   # Add controller - This is mainly for doing the dirty work of the router
-  @controller = new MainController
-    router: @router
-    regions:
-      info: this.info
-      search: this.search
-      chart: this.chart
-      meta: this.meta
-
-
-  # Add appRoutes using processAppRoutes which will delegate to the controller
-  # for route functions
-  @router.processAppRoutes @controller,
-  # routes will go here
-    'bill/:id': 'showBill'
-
+  @router = new MainRouter
+    controller: new MainController
+      regions:
+        info: this.info
+        search: this.search
+        chart: this.chart
+        meta: this.meta
+    appRoutes: 
+      'bill/:id': 'showBill'
+  console.log @router
+  console.log App
 
   # Start backbone history after init
 App.on 'initialize:after', ( options ) ->
   # pushState set to true to eliminate '#'
-
   if Backbone.history then Backbone.history.start pushState: true
 
 module.exports = App
