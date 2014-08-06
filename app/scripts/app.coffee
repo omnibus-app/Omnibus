@@ -1,6 +1,8 @@
 MainRouter = require './router.coffee'
 MainController = require './controller.coffee'
 WelcomeView = require './views/welcome-view.coffee'
+SearchView = require './views/search-view.coffee'
+ContentLayout = require './views/content-layout.coffee'
 
 App = new Backbone.Marionette.Application()
 
@@ -30,6 +32,12 @@ App.addInitializer ( options ) ->
   #   new BillModel id: currentCongress + firstBill
   welcomeView = new WelcomeView
   @welcome.show welcomeView 
+
+  searchView = new SearchView
+  @search.show searchView
+
+  contentLayout = new ContentLayout
+  @content.show contentLayout
 
   # Start backbone history after init
 App.on 'initialize:after', ( options ) ->
