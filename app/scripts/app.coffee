@@ -6,6 +6,7 @@ ContentLayout = require './views/content-layout.coffee'
 MetaLayout = require './views/meta-layout.coffee'
 BillModel = require './models/bill-model.coffee'
 
+
 App = new Backbone.Marionette.Application()
 
 currentCongress = 113
@@ -44,12 +45,6 @@ App.addInitializer ( options ) ->
 
   contentLayout.meta.show metaLayout
 
-
-  searchView = new SearchView
-  @search.show searchView
-
-  contentLayout = new ContentLayout
-  @content.show contentLayout
 
   # Start backbone history after init
 App.on 'initialize:after', ( options ) ->
