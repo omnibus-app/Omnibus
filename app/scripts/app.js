@@ -5,7 +5,8 @@ MainController = require('./controller.coffee');
 
 App = new Backbone.Marionette.Application();
 
-currentCongress = 113;
+
+BillModel = require('./models/bill-model.coffee');
 
 firstBill = 'hr2397';
 
