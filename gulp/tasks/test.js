@@ -6,7 +6,7 @@ var browserify = require( 'browserify' );
 var source = require( 'vinyl-source-stream' );
 var paths = require( '../paths.js' );
 
-gulp.task('buildTest', function(){
+gulp.task('buildTest',['html', 'styles', 'assets', 'vendor'], function(){
   var bundler =
     browserify({
       "entries": [paths.src + 'scripts/test.coffee'],
