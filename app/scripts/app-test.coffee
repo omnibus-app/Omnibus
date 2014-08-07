@@ -8,6 +8,6 @@ describe "app", ->
   it "search region should  exist", ->
     expect( App.search ).to.exist
   it "chart region should exist", ->
-    expect( App.chart ).to.exist
+    expect( App.welcome ).to.exist
   it "sideData region should exist", ->
-    expect( App.meta ).to.exist
+    expect( App.content ).to.exist
