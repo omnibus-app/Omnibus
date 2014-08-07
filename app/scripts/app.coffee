@@ -4,12 +4,11 @@ WelcomeView = require './views/welcome-view.coffee'
 SearchView = require './views/search-view.coffee'
 ContentLayout = require './views/content-layout.coffee'
 MetaLayout = require './views/meta-layout.coffee'
+ChartView = require './views/chart-view.coffee'
+MetaView = require './views/meta-view.coffee'
 BillModel = require './models/bill-model.coffee'
 
 App = new Backbone.Marionette.Application()
-
-currentCongress = 113
-firstBill = 'hr2390'
 
 App.addRegions
   welcome: '#welcome'
@@ -17,7 +16,6 @@ App.addRegions
   content: '#content'
 
 App.addInitializer ( options ) ->
-  # console.log @
   @router = new MainRouter
     controller: new MainController
       regions:
@@ -31,25 +29,34 @@ App.addInitializer ( options ) ->
   # window.localStorage.setItem
   #   currentCongress + firstBill,
   #   new BillModel id: currentCongress + firstBill
-  welcomeView = new WelcomeView
-  @welcome.show welcomeView 
 
-  searchView = new SearchView
-  @search.show searchView
+  # Set initial bill model
+  billModel = new BillModel id: '113-hr2397'
+  
+  # fetch the model and set views on completion
+  billModel.fetch().then =>
+    welcomeView = new WelcomeView model: billModel
+    @welcome.show welcomeView 
 
-  contentLayout = new ContentLayout
-  @content.show contentLayout
+    searchView = new SearchView
+    @search.show searchView
 
-  metaLayout = new MetaLayout
+    contentLayout = new ContentLayout
+    @content.show contentLayout
 
-  contentLayout.meta.show metaLayout
+    chartView = new ChartView model: billModel
+    contentLayout.chart.show chartView
 
+    metaLayout = new MetaLayout
+    contentLayout.meta.show metaLayout
+    
+    sponsor = new MetaView model: billModel
+    sponsorTwo = new MetaView model: billModel
+    sponsorThree = new MetaView model: billModel
+    metaLayout[ 'meta1' ].show sponsor
+    metaLayout[ 'meta2' ].show sponsorTwo
+    metaLayout[ 'meta3' ].show sponsorThree
 
-  searchView = new SearchView
-  @search.show searchView
-
-  contentLayout = new ContentLayout
-  @content.show contentLayout
 
   # Start backbone history after init
 App.on 'initialize:after', ( options ) ->
