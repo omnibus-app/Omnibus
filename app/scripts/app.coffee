@@ -3,6 +3,8 @@ MainController = require './controller.coffee'
 WelcomeView = require './views/welcome-view.coffee'
 SearchView = require './views/search-view.coffee'
 ContentLayout = require './views/content-layout.coffee'
+MetaLayout = require './views/meta-layout.coffee'
+BillModel = require './models/bill-model.coffee'
 
 App = new Backbone.Marionette.Application()
 
@@ -38,6 +40,11 @@ App.addInitializer ( options ) ->
 
   contentLayout = new ContentLayout
   @content.show contentLayout
+
+  metaLayout = new MetaLayout
+
+  contentLayout.meta.show metaLayout
+
 
   # Start backbone history after init
 App.on 'initialize:after', ( options ) ->
