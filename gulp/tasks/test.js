@@ -5,6 +5,8 @@ var browserify = require( 'browserify' );
 
 var source = require( 'vinyl-source-stream' );
 var paths = require( '../paths.js' );
+var shell = require('gulp-shell');
+var spawn = require('gulp-spawn');
 
 gulp.task('buildTest',['html', 'styles', 'assets', 'vendor'], function(){
   var bundler =
