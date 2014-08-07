@@ -14,9 +14,5 @@ gulp.task('vendor-styles', function() {
   .pipe(plumber())
   .pipe(concat('vendor.css'));
 
-  if (environment === 'production') {
-    stream.pipe(minify());
-  }
-
   stream.pipe(gulp.dest(paths.dest + 'css/'));
 });

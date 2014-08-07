@@ -2,10 +2,12 @@ var gulp = require('gulp');
 var livereload = require('gulp-livereload');
 var paths = require('../paths');
 
-gulp.task('watch', ['setWatch','build', 'bower-scripts', 'assets', 'html'], function(){
+gulp.task('watch', ['setWatch','browserSync'], function(){
   var server = livereload();
   gulp
-    .watch('../app/**/*.jade', ['jade']);
+    .watch(paths.src + '/**/*.jade', ['html']);
+  gulp
+    .watch(paths.src + '/styles/*.styl',['styles']);
   gulp
     .watch([
              paths.dest + 'js/*.js',

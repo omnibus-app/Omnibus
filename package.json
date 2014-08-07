@@ -5,7 +5,7 @@
   "description": "A seed project using Backbone.js, Marionette.js, Twitter Bootstrap 3, Stylus, Jade and Coffeescript all bundled with Gulp.js",
   "repository": "git@github.com:omnibus-app/Omnibus.git",
   "scripts": {
-    "test": "testling"
+    "test": "gulp buildTest && testling | coverify"
   },
   "testling": {
     "harness": "mocha-bdd",
@@ -23,6 +23,7 @@
     "jquery": "^2.1.1"
   },
   "devDependencies": {
+    "browser-sync": "^1.3.3",
     "browserify": "^5.9.1",
     "coffeeify": "~0.6.0",
     "coverify": "^1.0.7",
@@ -35,12 +36,13 @@
     "gulp-minify-css": "~0.3.0",
     "gulp-notify": "^1.4.2",
     "gulp-plumber": "~0.5.6",
-    "gulp-stylus": "0.0.12",
+    "gulp-stylus": "^1.3.0",
     "gulp-uglify": "~0.2.1",
     "gulp-util": "^3.0.0",
     "jade": "~1.1.5",
     "jadeify": "^2.5.0",
     "mocha": "~1.17.1",
+    "nib": "^1.0.3",
     "pretty-hrtime": "^0.2.1",
     "testling": "^1.7.0",
     "vinyl-source-stream": "^0.1.1",
