@@ -6,7 +6,7 @@ var browserify = require( 'browserify' );
 var source = require( 'vinyl-source-stream' );
 var paths = require( '../paths.js' );
 
-gulp.task('test', function(){
+gulp.task('buildTest',['html', 'styles', 'assets', 'vendor'], function(){
   var bundler =
     browserify({
       "entries": [paths.src + 'scripts/test.coffee'],
@@ -17,13 +17,14 @@ gulp.task('test', function(){
   var bundle = function(){
     return bundler
             .transform('coffeeify')
+            // .transform('coverify')
             .transform('jadeify')
             .bundle()
             .pipe(source('test.js'))
             .pipe(gulp.dest(paths.test))
             .on('end', function(){
               console.log('ended');
-            });
+            })
   };
 
   return bundle();

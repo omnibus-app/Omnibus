@@ -17,7 +17,7 @@ App.addRegions
   content: '#content'
 
 App.addInitializer ( options ) ->
-  console.log @
+  # console.log @
   @router = new MainRouter
     controller: new MainController
       regions:
