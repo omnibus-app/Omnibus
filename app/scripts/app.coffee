@@ -13,7 +13,6 @@ App.addRegions
 
 # App.addInitializer ( options ) ->
 App.on 'before:start', ( options ) ->
-  console.log @
   @controller = new MainController
     regions:
       welcome: @welcome
