@@ -1,6 +1,6 @@
-class Content extends Marionette.LayoutView
+class ContentLayout extends Marionette.LayoutView
   attributes:
-    id: 'content-layout',
+    id: 'contentLayout-layout',
   template: '<div>'+
     '<div id="chart">test chart</div>'+
     '<div id="meta">test meta</div>'+
@@ -9,4 +9,4 @@ class Content extends Marionette.LayoutView
     chart: '#chart',
     meta: '#meta'
 
-module.exports = Content
+module.exports = ContentLayout
