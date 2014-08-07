@@ -5,7 +5,7 @@ var paths = require('../paths');
 gulp.task('watch', ['setWatch','browserSync'], function(){
   var server = livereload();
   gulp
-    .watch(paths.src + '/**/*.jade', ['html']);
+    .watch(paths.src + '/index.jade', ['html']);
   gulp
     .watch(paths.src + '/styles/*.styl',['styles']);
   gulp

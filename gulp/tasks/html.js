@@ -6,7 +6,7 @@ var paths = require('../paths');
 
 gulp.task('html', function() {
   gulp
-    .src(paths.src + '**/*.jade')
+    .src(paths.src + '/index.jade')
     .pipe(plumber())
     .pipe(jade({
       pretty: true
