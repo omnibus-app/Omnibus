@@ -1,6 +1,7 @@
 
 class WelcomeView extends Marionette.ItemView
   template: require './welcome-view.jade',
+  
   events: {
     'click .hide-button': 'hide'
   },

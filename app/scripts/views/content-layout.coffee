@@ -2,8 +2,8 @@ class ContentLayout extends Marionette.LayoutView
   attributes:
     id: 'contentLayout-layout'
   template: '<div>'+
-    '<div id="chart">test chart</div>'+
-    '<div id="meta">test meta</div>'+
+    '<div id="chart" class="col-md-8">test chart</div>'+
+    '<div id="meta" class="col-md-4">test meta</div>'+
     '</div>'
   regions:
     chart: '#chart'
