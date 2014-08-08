@@ -1,10 +1,10 @@
 # Require Views and Models
 WelcomeView = require './views/welcome-view.coffee'
 SearchView = require './views/search-view.coffee'
-ContentLayout = require './views/content-layout.coffee'
-MetaLayout = require './views/meta-layout.coffee'
-ChartView = require './views/chart-view.coffee'
-MetaView = require './views/meta-view.coffee'
+ContentLayout = require './views/content-views/content-layout.coffee'
+ChartView = require './views/content-views/chart-view.coffee'
+MetaLayout = require './views/meta-views/meta-layout.coffee'
+MetaView = require './views/meta-views/meta-view.coffee'
 BillModel = require './models/bill-model.coffee'
 
 
@@ -39,26 +39,29 @@ class MainController extends Marionette.Controller
       @showAll billModel
     
   showAll: ( billModel ) ->
-      welcomeView = new WelcomeView model: billModel
-      @options.regions.welcome.show welcomeView 
+    welcomeView = new WelcomeView model: billModel
+    @options.regions.welcome.show welcomeView 
 
-      searchView = new SearchView
-      @options.regions.search.show searchView
+    searchView = new SearchView
+    @options.regions.search.show searchView
 
-      contentLayout = new ContentLayout
-      @options.regions.content.show contentLayout
+    contentLayout = new ContentLayout
+    @options.regions.content.show contentLayout
 
-      chartView = new ChartView model: billModel
-      contentLayout.chart.show chartView
+    chartView = new ChartView model: billModel
+    contentLayout.chart.show chartView
 
-      metaLayout = new MetaLayout
-      contentLayout.meta.show metaLayout
-      
-      sponsor = new MetaView model: billModel
-      sponsorTwo = new MetaView model: billModel
-      sponsorThree = new MetaView model: billModel
-      metaLayout[ 'meta1' ].show sponsor
-      metaLayout[ 'meta2' ].show sponsorTwo
-      metaLayout[ 'meta3' ].show sponsorThree
+    metaLayout = new MetaLayout
+    contentLayout.meta.show metaLayout
+    
+    sponsor = new MetaView model: billModel
+    sponsorTwo = new MetaView model: billModel
+    sponsorThree = new MetaView model: billModel
+    metaLayout[ 'meta1' ].show sponsor
+    metaLayout[ 'meta2' ].show sponsorTwo
+    metaLayout[ 'meta3' ].show sponsorThree
+    
+    @listenTo searchView, 'findBill:submit', ( billId ) ->
+      @showBill billId
 
 module.exports = MainController
