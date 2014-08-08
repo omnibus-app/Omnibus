@@ -12,31 +12,6 @@ BillModel = (function(_super) {
 
   BillModel.prototype.urlRoot = 'http://omnibus-backend.azurewebsites.net/api/bills/';
 
-  BillModel.prototype.initialize = function(id) {
-    return this.id = id;
-  };
-
-  BillModel.prototype.then = function(callback) {
-    this._when.then(callback);
-    return this;
-  };
-
-  BillModel.prototype.getAmendments = function() {
-    return $.ajax("/api/bills/" + this.id + "/amendments").then((function(_this) {
-      return function(data) {
-        return _this.amendments = new Amendments(data.results);
-      };
-    })(this));
-  };
-
-  BillModel.prototype.getVotes = function() {
-    return $.ajax("/api/bills/" + this.id + "/votes").then((function(_this) {
-      return function(data) {
-        return _this.votes = new Votes(data.results);
-      };
-    })(this));
-  };
-
   BillModel.prototype.parse = function(response) {
     var data;
     data = {};
