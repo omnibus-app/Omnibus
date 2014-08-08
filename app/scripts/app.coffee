@@ -30,4 +30,3 @@ App.on 'start', ( options ) ->
 window.App = App
 
 module.exports = App
-
