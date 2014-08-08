@@ -28,6 +28,7 @@
     "backbone.syphon": "~0.4.1"
   },
   "devDependencies": {
-    "chai": "~1.9.1"
+    "chai": "~1.9.1",
+    "sinon": "~1.10.3"
   }
 }
