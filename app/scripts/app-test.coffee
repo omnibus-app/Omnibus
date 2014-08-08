@@ -2,17 +2,20 @@ expect = chai.expect
 
 App = require "./app.coffee"
 MainController = require "./controller.coffee"
-App.start()
+
 
 describe "app", ->
-  it "Welcome region should  exist", ->
+  App.start()
+
+  it "Welcome should have three regions", ->
     expect( App.welcome ).to.exist
-  it "Search region should exist", ->
     expect( App.search ).to.exist
-  it "content region should exist", ->
     expect( App.content ).to.exist
-  it "Should have a controller", ->
+  it "Should have a controller and router", ->
     expect( App.controller ).to.exist
-  it "Should have a router", ->
     expect( App.router ).to.exist
-  
+  # it "Should navigate to home from root", ->
+  #   var App.controller.home = sinon.spy()
+  #   App.router.navigate( '', { trigger: true })
+
+  #   expect( App.controller.home )
