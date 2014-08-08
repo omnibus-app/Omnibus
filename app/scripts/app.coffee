@@ -2,10 +2,6 @@ MainController = require './controller.coffee'
 
 App = new Backbone.Marionette.Application()
 
-currentCongress = 113
-firstBill = 'hr2397'
-firstBillId = currentCongress + '-' + firstBill
-
 App.addRegions
   welcome: '#welcome'
   search: '#search'
