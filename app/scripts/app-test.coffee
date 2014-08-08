@@ -11,3 +11,8 @@ describe "app", ->
     expect( App.search ).to.exist
   it "content region should exist", ->
     expect( App.content ).to.exist
+  it "Should have a controller", ->
+    expect( App.controller ).to.exist
+  it "Should have a router", ->
+    expect( App.router ).to.exist
+  
