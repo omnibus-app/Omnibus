@@ -11,31 +11,34 @@ BillModel = require './models/bill-model.coffee'
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
 
-  getData: ->
-    currentCongress = 113
-    firstBill = 'hr2397'
-    firstBillId = currentCongress + '-' + firstBill
+  getData: ( billId )->
+    
+    deferred = new $.Deferred()
 
-    billModel = new BillModel id: firstBillId
-    billModel.fetch().then -> billModel
+    if not window.localStorage.getItem billId
+      billModel = new BillModel id: billId
+      billModel.fetch().then ( res ) ->
+        window.localStorage.setItem billId, res
+        deferred.resolve( billModel )
+    else
+      billModel = new BillModel JSON.parse window.localStorage.getItem billId
+      deferred.resolve( billModel )
 
-    # if not window.localStorage.getItem firstBillId
-    #   billModel = new BillModel id: firstBillId
-    #   billModel.fetch().then ->
-    #     window.localStorage.setItem firstBillId, JSON.stringify billModel
-    #     console.log 'original', billModel
-    #     billModel
-    # else
-    #   billModel = JSON.parse window.localStorage.getItem firstBillId 
-    #   console.log 'else', billModel
-    #   billModel
-
+    deferred.promise()
 
 
   showBill: ( id ) ->
+    @getData( id ).then ( billModel ) =>
+      @showAll billModel
 
   home: ->
-    @getData().then ( billModel ) =>
+    currentCongress = 113
+    firstBill = 'hr2397'
+    firstBillId = currentCongress + '-' + firstBill
+    @getData( firstBillId ).then ( billModel ) =>
+      @showAll billModel
+    
+  showAll: ( billModel ) ->
       welcomeView = new WelcomeView model: billModel
       @options.regions.welcome.show welcomeView 
 
@@ -57,7 +60,5 @@ class MainController extends Marionette.Controller
       metaLayout[ 'meta1' ].show sponsor
       metaLayout[ 'meta2' ].show sponsorTwo
       metaLayout[ 'meta3' ].show sponsorThree
-
-
 
 module.exports = MainController
