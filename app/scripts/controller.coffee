@@ -40,10 +40,13 @@ class MainController extends Marionette.Controller
 
   welcomeView: ( billModel ) ->
     welcomeView = new WelcomeView model: billModel
-    @options.regions.welcome.show welcomeView
+    $('#information').hide()
 
     @listenTo welcomeView, 'welcome:close', ->
       @options.regions.welcome.empty()
+      $('#information').show()
+
+    @options.regions.welcome.show welcomeView
 
   searchView: ( billModel ) ->
     searchView = new SearchView model: billModel
@@ -58,12 +61,11 @@ class MainController extends Marionette.Controller
 
 
   showAll: ( billModel ) ->
+    @searchView billModel
 
     if not window.localStorage.getItem 'omnibus-visited'
       @welcomeView billModel
       window.localStorage.setItem 'omnibus-visited', true
-
-    @searchView billModel
 
     contentLayout = new ContentLayout
     @options.regions.content.show contentLayout

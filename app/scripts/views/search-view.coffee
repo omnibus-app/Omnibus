@@ -1,5 +1,3 @@
-
-
 class Search extends Marionette.ItemView
   template: require './search-view.jade'
 
@@ -7,7 +5,7 @@ class Search extends Marionette.ItemView
 
   events: 
     'click .find-bill': 'findBill'
-    'click .information': 'welcomeShow'
+    'click #information': 'welcomeShow'
 
   findBill: (e) ->
     e.preventDefault()
