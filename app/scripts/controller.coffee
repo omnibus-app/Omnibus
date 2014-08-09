@@ -44,12 +44,9 @@ class MainController extends Marionette.Controller
 
     @listenTo welcomeView, 'welcome:close', ->
       @options.regions.welcome.empty()
-    console.log 'welcomeView Trigger'
 
   searchView: ( billModel ) ->
     searchView = new SearchView model: billModel
-    console.log searchView
-    console.log searchView.model
 
     @listenTo searchView, 'findBill:submit', ( billId ) ->
       @showBill billId
