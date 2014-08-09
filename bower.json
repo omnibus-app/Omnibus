@@ -25,7 +25,8 @@
     "underscore": "~1.6.0",
     "marionette": "~2.1.0",
     "d3": "~3.4.11",
-    "backbone.syphon": "~0.4.1"
+    "backbone.syphon": "~0.4.1",
+    "rickshaw": "~1.5.0"
   },
   "devDependencies": {
     "chai": "~1.9.1",
