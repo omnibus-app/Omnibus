@@ -41,6 +41,12 @@ ChartView = (function(_super) {
     this.graph = new Rickshaw.Graph({
       element: this.el,
       renderer: "line",
+      padding: {
+        top: 0.02,
+        left: 0.02,
+        right: 0.02,
+        bottom: 0.02
+      },
       series: [
         {
           color: "steelblue",
@@ -54,20 +60,12 @@ ChartView = (function(_super) {
     this.hoverDetail = new Rickshaw.Graph.HoverDetail({
       graph: this.graph,
       xFormatter: function(x) {
-        return x + "seconds";
+        return x + " X axes units";
       },
       yFormatter: function(y) {
-        return Math.floor(y) + " percent";
+        return Math.floor(y) + "% Y axes units";
       }
     });
-    this.x_axis = new Rickshaw.Graph.Axis.Time({
-      graph: this.graph
-    });
-    this.y_axis = new Rickshaw.Graph.Axis.Time({
-      graph: this.graph
-    });
-    this.x_axis.render();
-    this.y_axis.render();
     return this.graph.render();
   };
 

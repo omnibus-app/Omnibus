@@ -13,11 +13,19 @@ class ChartView extends Marionette.ItemView
     @graph = new Rickshaw.Graph(
       element: @el
       renderer: "line"
+      padding: {top: 0.02, left: 0.02, right: 0.02, bottom: 0.02}
       series: [
         color: "steelblue"
         data: data
       ]
     )
+
+    #Axes aren't rendering properly
+    # @x_axis = new Rickshaw.Graph.Axis.Time
+    #   graph: @graph
+
+    # @y_axis = new Rickshaw.Graph.Axis.Time
+    #   graph: @graph
 
     @highlighter = new Rickshaw.Graph.Behavior.Series.Highlight(
       graph: @graph
@@ -26,20 +34,15 @@ class ChartView extends Marionette.ItemView
     @hoverDetail = new Rickshaw.Graph.HoverDetail(
       graph: @graph
       xFormatter: (x) ->
-        x + "seconds"
+        x + " X axes units"
 
       yFormatter: (y) ->
-        Math.floor(y) + " percent"
+        Math.floor(y) + "% Y axes units"
     )
-    
-    @x_axis = new Rickshaw.Graph.Axis.Time
-      graph: @graph
 
-    @y_axis = new Rickshaw.Graph.Axis.Time
-      graph: @graph
 
-    @x_axis.render()
-    @y_axis.render()
+    # @x_axis.render()
+    # @y_axis.render()
     @graph.render()	
 
 
