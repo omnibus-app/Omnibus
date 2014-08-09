@@ -19,6 +19,7 @@ App.on 'before:start', ( options ) ->
     appRoutes: 
       '': 'home'
       'bill/:id': 'showBill'
+  @controller.router = @router
 
 
   # Start backbone history after init
