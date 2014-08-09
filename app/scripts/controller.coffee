@@ -7,6 +7,7 @@ SearchResults = require './views/content-views/search-results-view.coffee'
 MetaLayout = require './views/meta-views/meta-layout.coffee'
 MetaView = require './views/meta-views/meta-view.coffee'
 BillModel = require './models/bill-model.coffee'
+BillsCollection = require './collections/bills-collection.coffee'
 
 
 class MainController extends Marionette.Controller
@@ -59,14 +60,29 @@ class MainController extends Marionette.Controller
       @welcomeView searchView.model
 
     @listenTo searchView, 'search:bills:submit', ( query ) ->
-      # ping the API with the query .then
-      @searchResults() #model: query results
+      @searchResults( query )
 
     @options.regions.search.show searchView
 
   searchResults: ( query ) ->
-    searchResults = new SearchResults # collection of result objects
-    @options.regions.content.show searchResults
+    that = @
+    billsCollection = 'unknown'
+    searchResults = 'unknown'
+    $.ajax
+      url: 'http://omnibus-backend.azurewebsites.net/api/bills/search?q=' + query
+      data: JSON
+    .then ( data ) -> 
+      data = JSON.parse( data ).results
+      billsCollection = new BillsCollection data
+    .then ( data ) ->
+      # Make composite view with bills collection
+      searchResults = new SearchResults collection: billsCollection
+      # Listen for click on itemView bill result
+      that.listenTo searchResults, 'bill:submit', ( billId ) ->
+        # that.showBill( billId )
+        that.router.navigate 'bill/' + billId, { trigger: true }
+      # Show composite view
+      that.options.regions.content.show searchResults
 
 
   showAll: ( billModel ) ->
