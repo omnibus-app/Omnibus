@@ -1,7 +1,7 @@
 module.exports = {
   src: './app/',
   dest: './public/',
-  vendor: './vendor/',
+  styles: './assets/styles/',
   assets: './assets/',
   bower: './bower_components/',
   temp: './tmp/',
