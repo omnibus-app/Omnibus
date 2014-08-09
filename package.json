@@ -25,7 +25,9 @@
     "gulp-install": "^0.2.0",
     "gulp-shell": "^0.2.9",
     "gulp-spawn": "^0.3.0",
-    "jquery": "^2.1.1"
+    "jquery": "^2.1.1",
+    "rickshaw": "^1.4.6",
+    "d3": "^3.4.11"
   },
   "devDependencies": {
     "browser-sync": "^1.3.3",
