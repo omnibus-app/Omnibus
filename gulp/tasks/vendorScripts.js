@@ -9,6 +9,7 @@ var paths = require('../paths');
 gulp.task('vendor-styles', function() {
   var stream = gulp.src([
     paths.styles + '/bootstrap.css',
+    paths.styles + '/rickshaw.css'
   ])
   .pipe(plumber())
   .pipe(concat('vendor.css'));
