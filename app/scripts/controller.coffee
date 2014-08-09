@@ -52,7 +52,7 @@ class MainController extends Marionette.Controller
     searchView = new SearchView model: billModel
 
     @listenTo searchView, 'findBill:submit', ( billId ) ->
-      @showBill billId
+      @router.navigate 'bill/' + billId, {trigger: true}
 
     @listenTo searchView, 'welcome:show', ->
       @welcomeView searchView.model

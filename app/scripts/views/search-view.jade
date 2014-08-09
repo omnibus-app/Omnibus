@@ -1,3 +1,11 @@
-input.search-input
-button(class='find-bill')
+p Know the Bill you're looking for? Enter the congress and Bill numbers:
+p Congress: 
+.enter-bill
+  input(id='congress' type='number' max='113' value='113')
+  p Bill:
+  input(id='bill-number' placeholder='hr2397')
+  button(id='find-bill') Show Bill
+.enter-search-string
+  input(id='find-input' placeholder='Search String')
+  button(id='search-bills') Find Bills
 p#information "i" icon
