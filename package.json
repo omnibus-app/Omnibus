@@ -32,8 +32,13 @@
     "jquery": "^2.1.1"
 =======
     "rickshaw": "^1.4.6",
+<<<<<<< HEAD
     "d3": "^3.4.11"
 >>>>>>> adding chart to frontend
+=======
+    "d3": "^3.4.11",
+    "jquery": "^2.1.1"
+>>>>>>> Clean up vendor files; add gulp install
   },
   "devDependencies": {
     "browser-sync": "^1.3.3",
