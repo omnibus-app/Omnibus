@@ -1,42 +1,62 @@
 Rickshaw = require 'rickshaw'
-<<<<<<< HEAD
 d3 = require 'd3'
-=======
->>>>>>> adding chart to frontend
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
   model: "BillModel"
-  data = [{ x: 0, y: 40 },
-           { x: 1, y: 49 },
-           { x: 2, y: 38 },
-           { x: 3, y: 30 },
-           { x: 4, y: 32 }]
 
 
   initialize: ->
-<<<<<<< HEAD
 
   render: ->
     formatDate = d3.time.format.iso
     simpleBill = @model.attributes.results[0]
-    console.log simpleBill
+    console.log simpleBill.actions
+
+
+    seriesData = [[]]
+
+    random = new Rickshaw.Fixtures.RandomData(50)
+
+    i = 1
+    while i < simpleBill.actions.length
+      simpleBill["actions"][i] = {
+        x: formatDate.parse(simpleBill["actions"][i]["datetime"].getTime())
+        y: 1
+        description: simpleBill.actions[i]["description"]
+      }
+      seriesData.push simpleBill['actions'][i]
+      i++
+    console.log seriesData
+
+
     @graph = new Rickshaw.Graph(
       element: @el
-      renderer: "line"
+      renderer: "multi"
+      dotSize: 5
       padding: {top: 0.02, left: 0.02, right: 0.02, bottom: 0.02}
-      series: [
-        color: "steelblue"
-        data: [{x: formatDate.parse(simpleBill["introduced_date"]).getTime(), y: 0},
-        {x: formatDate.parse(simpleBill["house_passage_vote"]).getTime(), y: 1},
-        {x: formatDate.parse(simpleBill["latest_major_action_date"]).getTime(), y: 1}],
+      series: [{
+         name: "overview"
+         color: "steelblue"
+         renderer: "line"
+         data: [{x: formatDate.parse(simpleBill["introduced_date"]).getTime(), y: 0}
+          {x: formatDate.parse(simpleBill["house_passage_vote"]).getTime(), y: 1}
+          {x: formatDate.parse(simpleBill["latest_major_action_date"]).getTime(), y: 1}]
+      }
+      {
+         name: "actions"
+      	 color: "red"
+      	 data: seriesData[0]
+      	 renderer: "scatterplot"
+      }
       ]
     )
+
 
     #Axes aren't rendering properly
     @x_axis = new Rickshaw.Graph.Axis.X
       graph: @graph
       tickFormat: (x)->
-      	new Date(x * 1000).toLocaleTimeString()
+      	new Date(x).toLocaleDateString()
 
     @y_axis = new Rickshaw.Graph.Axis.Time
       graph: @graph
@@ -48,7 +68,7 @@ class ChartView extends Marionette.ItemView
     @hoverDetail = new Rickshaw.Graph.HoverDetail(
       graph: @graph
       xFormatter: (x) ->
-        x + " X axes units"
+        new Date(x).toLocaleDateString()
 
       yFormatter: (y) ->
         Math.floor(y) + "% Y axes units"
@@ -60,41 +80,3 @@ class ChartView extends Marionette.ItemView
 
 
 module.exports = ChartView
-=======
-  	@graph = new Rickshaw.Graph(
-  	  element: document.querySelector("#charts")
-  	  renderer: "area"
-  	  width: 580
-  	  height: 230
-  	  series: [
-        color: "steelblue"
-        data: [
-          {
-            x: 0
-            y: 40
-          }
-          {
-            x: 1
-            y: 49
-          }
-          {
-            x: 2
-            y: 38
-          }
-          {
-            x: 3
-            y: 30
-          }
-          {
-            x: 4
-            y: 32
-          }
-        ]
-      ]
-  	)
-  render: ->
-  	@graph.render()
-
-
-module.exports = ChartView
->>>>>>> adding chart to frontend
