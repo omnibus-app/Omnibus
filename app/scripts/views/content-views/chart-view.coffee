@@ -1,5 +1,8 @@
 Rickshaw = require 'rickshaw'
+<<<<<<< HEAD
 d3 = require 'd3'
+=======
+>>>>>>> adding chart to frontend
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
   model: "BillModel"
@@ -11,6 +14,7 @@ class ChartView extends Marionette.ItemView
 
 
   initialize: ->
+<<<<<<< HEAD
 
   render: ->
     formatDate = d3.time.format.iso
@@ -56,3 +60,41 @@ class ChartView extends Marionette.ItemView
 
 
 module.exports = ChartView
+=======
+  	@graph = new Rickshaw.Graph(
+  	  element: document.querySelector("#charts")
+  	  renderer: "area"
+  	  width: 580
+  	  height: 230
+  	  series: [
+        color: "steelblue"
+        data: [
+          {
+            x: 0
+            y: 40
+          }
+          {
+            x: 1
+            y: 49
+          }
+          {
+            x: 2
+            y: 38
+          }
+          {
+            x: 3
+            y: 30
+          }
+          {
+            x: 4
+            y: 32
+          }
+        ]
+      ]
+  	)
+  render: ->
+  	@graph.render()
+
+
+module.exports = ChartView
+>>>>>>> adding chart to frontend
