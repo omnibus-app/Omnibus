@@ -1,5 +1,5 @@
 class BillsCollection extends Backbone.Collection
-  model: BillModel
+  model: require '../models/result-model.coffee'
   
 
-module.exports = BillModel
+module.exports = BillsCollection
