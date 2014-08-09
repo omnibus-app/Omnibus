@@ -23,29 +23,28 @@ class ChartView extends Marionette.ItemView
       ]
     )
 
-    #Axes aren't rendering properly
     @x_axis = new Rickshaw.Graph.Axis.X
       graph: @graph
       tickFormat: (x)->
       	new Date(x).toLocaleDateString()
 
-    @y_axis = new Rickshaw.Graph.Axis.Time
+    @y_axis = new Rickshaw.Graph.Axis.Y
       graph: @graph
 
-    # @highlighter = new Rickshaw.Graph.Behavior.Series.Highlight(
-    #   graph: @graph
-    # )
+    @highlighter = new Rickshaw.Graph.Behavior.Series.Highlight(
+      graph: @graph
+    )
 
     @hoverDetail = new Rickshaw.Graph.HoverDetail(
       graph: @graph
       xFormatter: (x) ->
         new Date(x).toLocaleDateString()
 
-      # yFormatter: (y) ->
-      #   Math.floor(y) + "% Y axes units"
+      yFormatter: (y) ->
+        Math.floor(y) + "% Y axes units"
     )
 
-    # @x_axis.render()
+    @x_axis.render()
     @y_axis.render()
     @graph.render()
 

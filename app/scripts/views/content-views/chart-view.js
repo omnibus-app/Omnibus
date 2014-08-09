@@ -58,15 +58,22 @@ ChartView = (function(_super) {
         return new Date(x).toLocaleDateString();
       }
     });
-    this.y_axis = new Rickshaw.Graph.Axis.Time({
+    this.y_axis = new Rickshaw.Graph.Axis.Y({
+      graph: this.graph
+    });
+    this.highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
       graph: this.graph
     });
     this.hoverDetail = new Rickshaw.Graph.HoverDetail({
       graph: this.graph,
       xFormatter: function(x) {
         return new Date(x).toLocaleDateString();
+      },
+      yFormatter: function(y) {
+        return Math.floor(y) + "% Y axes units";
       }
     });
+    this.x_axis.render();
     this.y_axis.render();
     return this.graph.render();
   };
