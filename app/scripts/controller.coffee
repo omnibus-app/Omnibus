@@ -37,13 +37,35 @@ class MainController extends Marionette.Controller
     firstBillId = currentCongress + '-' + firstBill
     @getData( firstBillId ).then ( billModel ) =>
       @showAll billModel
-    
-  showAll: ( billModel ) ->
-    welcomeView = new WelcomeView model: billModel
-    @options.regions.welcome.show welcomeView 
 
-    searchView = new SearchView
+  welcomeView: ( billModel ) ->
+    welcomeView = new WelcomeView model: billModel
+    $('#information').hide()
+
+    @listenTo welcomeView, 'welcome:close', ->
+      @options.regions.welcome.empty()
+      $('#information').show()
+
+    @options.regions.welcome.show welcomeView
+
+  searchView: ( billModel ) ->
+    searchView = new SearchView model: billModel
+
+    @listenTo searchView, 'findBill:submit', ( billId ) ->
+      @showBill billId
+
+    @listenTo searchView, 'welcome:show', ->
+      @welcomeView searchView.model
+
     @options.regions.search.show searchView
+
+
+  showAll: ( billModel ) ->
+    @searchView billModel
+
+    if not window.localStorage.getItem 'omnibus-visited'
+      @welcomeView billModel
+      window.localStorage.setItem 'omnibus-visited', true
 
     contentLayout = new ContentLayout
     @options.regions.content.show contentLayout
@@ -61,7 +83,6 @@ class MainController extends Marionette.Controller
     metaLayout[ 'meta2' ].show sponsorTwo
     metaLayout[ 'meta3' ].show sponsorThree
     
-    @listenTo searchView, 'findBill:submit', ( billId ) ->
-      @showBill billId
+
 
 module.exports = MainController
