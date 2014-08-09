@@ -10,47 +10,18 @@ class ChartView extends Marionette.ItemView
   render: ->
     formatDate = d3.time.format.iso
     simpleBill = @model.attributes.results[0]
-    console.log simpleBill.actions
-
-
-    seriesData = [[]]
-
-    random = new Rickshaw.Fixtures.RandomData(50)
-
-    i = 1
-    while i < simpleBill.actions.length
-      simpleBill["actions"][i] = {
-        x: formatDate.parse(simpleBill["actions"][i]["datetime"].getTime())
-        y: 1
-        description: simpleBill.actions[i]["description"]
-      }
-      seriesData.push simpleBill['actions'][i]
-      i++
-    console.log seriesData
-
-
+    console.log simpleBill
     @graph = new Rickshaw.Graph(
       element: @el
-      renderer: "multi"
-      dotSize: 5
-      padding: {top: 0.02, left: 0.02, right: 0.02, bottom: 0.02}
-      series: [{
-         name: "overview"
-         color: "steelblue"
-         renderer: "line"
-         data: [{x: formatDate.parse(simpleBill["introduced_date"]).getTime(), y: 0}
-          {x: formatDate.parse(simpleBill["house_passage_vote"]).getTime(), y: 1}
-          {x: formatDate.parse(simpleBill["latest_major_action_date"]).getTime(), y: 1}]
-      }
-      {
-         name: "actions"
-      	 color: "red"
-      	 data: seriesData[0]
-      	 renderer: "scatterplot"
-      }
+      renderer: "line"
+      padding: {top: 0.02, left: 0.02, right: 0.08, bottom: 0.02}
+      series: [
+        color: "steelblue"
+        data: [{x: formatDate.parse(simpleBill["introduced_date"]).getTime(), y: 0},
+        {x: formatDate.parse(simpleBill["house_passage_vote"]).getTime(), y: 1},
+        {x: formatDate.parse(simpleBill["latest_major_action_date"]).getTime(), y: 0}]
       ]
     )
-
 
     #Axes aren't rendering properly
     @x_axis = new Rickshaw.Graph.Axis.X
@@ -61,20 +32,20 @@ class ChartView extends Marionette.ItemView
     @y_axis = new Rickshaw.Graph.Axis.Time
       graph: @graph
 
-    @highlighter = new Rickshaw.Graph.Behavior.Series.Highlight(
-      graph: @graph
-    )
+    # @highlighter = new Rickshaw.Graph.Behavior.Series.Highlight(
+    #   graph: @graph
+    # )
 
     @hoverDetail = new Rickshaw.Graph.HoverDetail(
       graph: @graph
       xFormatter: (x) ->
         new Date(x).toLocaleDateString()
 
-      yFormatter: (y) ->
-        Math.floor(y) + "% Y axes units"
+      # yFormatter: (y) ->
+      #   Math.floor(y) + "% Y axes units"
     )
 
-    @x_axis.render()
+    # @x_axis.render()
     @y_axis.render()
     @graph.render()
 

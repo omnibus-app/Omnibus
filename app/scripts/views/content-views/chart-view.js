@@ -21,38 +21,22 @@ ChartView = (function(_super) {
   ChartView.prototype.initialize = function() {};
 
   ChartView.prototype.render = function() {
-    var formatDate, i, random, seriesData, simpleBill;
+    var formatDate, simpleBill;
     formatDate = d3.time.format.iso;
     simpleBill = this.model.attributes.results[0];
-    console.log(simpleBill.actions);
-    seriesData = [[]];
-    random = new Rickshaw.Fixtures.RandomData(50);
-    i = 1;
-    while (i < simpleBill.actions.length) {
-      simpleBill["actions"][i] = {
-        x: formatDate.parse(simpleBill["actions"][i]["datetime"].getTime()),
-        y: 1,
-        description: simpleBill.actions[i]["description"]
-      };
-      seriesData.push(simpleBill['actions'][i]);
-      i++;
-    }
-    console.log(seriesData);
+    console.log(simpleBill);
     this.graph = new Rickshaw.Graph({
       element: this.el,
-      renderer: "multi",
-      dotSize: 5,
+      renderer: "line",
       padding: {
         top: 0.02,
         left: 0.02,
-        right: 0.02,
+        right: 0.08,
         bottom: 0.02
       },
       series: [
         {
-          name: "overview",
           color: "steelblue",
-          renderer: "line",
           data: [
             {
               x: formatDate.parse(simpleBill["introduced_date"]).getTime(),
@@ -62,14 +46,9 @@ ChartView = (function(_super) {
               y: 1
             }, {
               x: formatDate.parse(simpleBill["latest_major_action_date"]).getTime(),
-              y: 1
+              y: 0
             }
           ]
-        }, {
-          name: "actions",
-          color: "red",
-          data: seriesData[0],
-          renderer: "scatterplot"
         }
       ]
     });
@@ -82,19 +61,12 @@ ChartView = (function(_super) {
     this.y_axis = new Rickshaw.Graph.Axis.Time({
       graph: this.graph
     });
-    this.highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
-      graph: this.graph
-    });
     this.hoverDetail = new Rickshaw.Graph.HoverDetail({
       graph: this.graph,
       xFormatter: function(x) {
         return new Date(x).toLocaleDateString();
-      },
-      yFormatter: function(y) {
-        return Math.floor(y) + "% Y axes units";
       }
     });
-    this.x_axis.render();
     this.y_axis.render();
     return this.graph.render();
   };
