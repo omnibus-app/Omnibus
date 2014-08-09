@@ -8,8 +8,6 @@ Rickshaw = require('rickshaw');
 d3 = require('d3');
 
 ChartView = (function(_super) {
-  var data;
-
   __extends(ChartView, _super);
 
   function ChartView() {
@@ -19,25 +17,6 @@ ChartView = (function(_super) {
   ChartView.prototype.template = require('./chart-view.jade');
 
   ChartView.prototype.model = "BillModel";
-
-  data = [
-    {
-      x: 0,
-      y: 40
-    }, {
-      x: 1,
-      y: 49
-    }, {
-      x: 2,
-      y: 38
-    }, {
-      x: 3,
-      y: 30
-    }, {
-      x: 4,
-      y: 32
-    }
-  ];
 
   ChartView.prototype.initialize = function() {};
 
@@ -52,7 +31,7 @@ ChartView = (function(_super) {
       padding: {
         top: 0.02,
         left: 0.02,
-        right: 0.02,
+        right: 0.08,
         bottom: 0.02
       },
       series: [
@@ -67,7 +46,7 @@ ChartView = (function(_super) {
               y: 1
             }, {
               x: formatDate.parse(simpleBill["latest_major_action_date"]).getTime(),
-              y: 1
+              y: 0
             }
           ]
         }
@@ -76,10 +55,10 @@ ChartView = (function(_super) {
     this.x_axis = new Rickshaw.Graph.Axis.X({
       graph: this.graph,
       tickFormat: function(x) {
-        return new Date(x * 1000).toLocaleTimeString();
+        return new Date(x).toLocaleDateString();
       }
     });
-    this.y_axis = new Rickshaw.Graph.Axis.Time({
+    this.y_axis = new Rickshaw.Graph.Axis.Y({
       graph: this.graph
     });
     this.highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
@@ -88,7 +67,7 @@ ChartView = (function(_super) {
     this.hoverDetail = new Rickshaw.Graph.HoverDetail({
       graph: this.graph,
       xFormatter: function(x) {
-        return x + " X axes units";
+        return new Date(x).toLocaleDateString();
       },
       yFormatter: function(y) {
         return Math.floor(y) + "% Y axes units";
