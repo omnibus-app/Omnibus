@@ -3,6 +3,7 @@ WelcomeView = require './views/welcome-view.coffee'
 SearchView = require './views/search-view.coffee'
 ContentLayout = require './views/content-views/content-layout.coffee'
 ChartView = require './views/content-views/chart-view.coffee'
+SearchResults = require './views/content-views/search-results-view.coffee'
 MetaLayout = require './views/meta-views/meta-layout.coffee'
 MetaView = require './views/meta-views/meta-view.coffee'
 BillModel = require './models/bill-model.coffee'
@@ -57,7 +58,15 @@ class MainController extends Marionette.Controller
     @listenTo searchView, 'welcome:show', ->
       @welcomeView searchView.model
 
+    @listenTo searchView, 'search:bills:submit', ( query ) ->
+      # ping the API with the query .then
+      @searchResults() #model: query results
+
     @options.regions.search.show searchView
+
+  searchResults: ( query ) ->
+    searchResults = new SearchResults # collection of result objects
+    @options.regions.content.show searchResults
 
 
   showAll: ( billModel ) ->

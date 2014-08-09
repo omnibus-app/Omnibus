@@ -20,6 +20,7 @@ class Search extends Marionette.ItemView
 
   searchBills: (e) ->
     e.preventDefault()
-    
+    query = @$el.find('#find-input').val()
+    @trigger 'search:bills:submit', query
 
 module.exports = Search
