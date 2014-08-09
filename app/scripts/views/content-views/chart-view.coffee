@@ -19,6 +19,27 @@ class ChartView extends Marionette.ItemView
       ]
     )
 
+    @highlighter = new Rickshaw.Graph.Behavior.Series.Highlight(
+      graph: @graph
+    )
+
+    @hoverDetail = new Rickshaw.Graph.HoverDetail(
+      graph: @graph
+      xFormatter: (x) ->
+        x + "seconds"
+
+      yFormatter: (y) ->
+        Math.floor(y) + " percent"
+    )
+    
+    @x_axis = new Rickshaw.Graph.Axis.Time
+      graph: @graph
+
+    @y_axis = new Rickshaw.Graph.Axis.Time
+      graph: @graph
+
+    @x_axis.render()
+    @y_axis.render()
     @graph.render()	
 
 

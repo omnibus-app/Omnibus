@@ -48,6 +48,26 @@ ChartView = (function(_super) {
         }
       ]
     });
+    this.highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+      graph: this.graph
+    });
+    this.hoverDetail = new Rickshaw.Graph.HoverDetail({
+      graph: this.graph,
+      xFormatter: function(x) {
+        return x + "seconds";
+      },
+      yFormatter: function(y) {
+        return Math.floor(y) + " percent";
+      }
+    });
+    this.x_axis = new Rickshaw.Graph.Axis.Time({
+      graph: this.graph
+    });
+    this.y_axis = new Rickshaw.Graph.Axis.Time({
+      graph: this.graph
+    });
+    this.x_axis.render();
+    this.y_axis.render();
     return this.graph.render();
   };
 
