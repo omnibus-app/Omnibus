@@ -6,6 +6,8 @@ var ChartView, Rickshaw,
 Rickshaw = require('rickshaw');
 
 ChartView = (function(_super) {
+  var data;
+
   __extends(ChartView, _super);
 
   function ChartView() {
@@ -14,39 +16,38 @@ ChartView = (function(_super) {
 
   ChartView.prototype.template = require('./chart-view.jade');
 
-  ChartView.prototype.initialize = function() {
-    return this.graph = new Rickshaw.Graph({
-      element: document.querySelector("#charts"),
-      renderer: "area",
-      width: 580,
-      height: 230,
+  data = [
+    {
+      x: 0,
+      y: 40
+    }, {
+      x: 1,
+      y: 49
+    }, {
+      x: 2,
+      y: 38
+    }, {
+      x: 3,
+      y: 30
+    }, {
+      x: 4,
+      y: 32
+    }
+  ];
+
+  ChartView.prototype.initialize = function() {};
+
+  ChartView.prototype.render = function() {
+    this.graph = new Rickshaw.Graph({
+      element: this.el,
+      renderer: "line",
       series: [
         {
           color: "steelblue",
-          data: [
-            {
-              x: 0,
-              y: 40
-            }, {
-              x: 1,
-              y: 49
-            }, {
-              x: 2,
-              y: 38
-            }, {
-              x: 3,
-              y: 30
-            }, {
-              x: 4,
-              y: 32
-            }
-          ]
+          data: data
         }
       ]
     });
-  };
-
-  ChartView.prototype.render = function() {
     return this.graph.render();
   };
 
