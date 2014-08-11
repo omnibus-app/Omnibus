@@ -62,11 +62,7 @@ Build
 gulp
 ```
 
-Watch
-
-```
-gulp watch
-```
+This will open a live page that will updated as you edit files.
 
 ## Production
 
@@ -81,12 +77,6 @@ Build
 
 ```
 gulp
-```
-
-Watch
-
-```
-gulp watch
 ```
 
 Build for production
