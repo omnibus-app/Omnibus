@@ -84,7 +84,7 @@ class MainController extends Marionette.Controller
     # Listen to submit event on known bill number
     @listenTo searchView, 'findBill:submit', ( billId ) ->
       # Navigate to the address with the billId
-      @router.navigate 'bill/' + billId, {trigger: true}
+      @router.navigate 'bill/' + billId, trigger: true
 
     # Listen to show Welcome view event on info button click
     @listenTo searchView, 'welcome:show', ->
@@ -94,7 +94,8 @@ class MainController extends Marionette.Controller
     # Listen to search bills submit event
     @listenTo searchView, 'search:bills:submit', ( query ) ->
       # forward the query to searchResults
-      @searchResults( query )
+      @router.navigate 'bill/search/' + query, trigger: true
+      # @searchResults( query )
 
     # Show the search view in the search region
     @options.regions.search.show searchView
