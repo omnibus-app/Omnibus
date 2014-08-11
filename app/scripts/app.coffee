@@ -26,6 +26,7 @@ App.on 'before:start', ( options ) ->
     appRoutes: 
       '': 'home'
       'bill/:id': 'showBill'
+      'bill/search/:query': 'searchResults'
   @controller.router = @router
 
 
