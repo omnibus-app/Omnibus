@@ -1,4 +1,5 @@
 Rickshaw = require 'rickshaw'
+util = require '../../helpers/graph-util.coffee'
 d3 = require 'd3'
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
@@ -10,16 +11,20 @@ class ChartView extends Marionette.ItemView
   render: ->
     formatDate = d3.time.format.iso
     simpleBill = @model.attributes.results[0]
-    console.log simpleBill
     @graph = new Rickshaw.Graph(
       element: @el
-      renderer: "line"
-      padding: {top: 0.02, left: 0.02, right: 0.08, bottom: 0.02}
+      renderer: "area"
+      width: 750
+      height: 400
+      padding: ->
+        top: 0.02
+        left: 0.02
+        right: 0.08
+        bottom: 0.02
       series: [
         color: "steelblue"
-        data: [{x: formatDate.parse(simpleBill["introduced_date"]).getTime(), y: 0},
-        {x: formatDate.parse(simpleBill["house_passage_vote"]).getTime(), y: 1},
-        {x: formatDate.parse(simpleBill["latest_major_action_date"]).getTime(), y: 0}]
+        data: util.findData simpleBill
+        name: 'action number'
       ]
     )
 
@@ -41,7 +46,7 @@ class ChartView extends Marionette.ItemView
         new Date(x).toLocaleDateString()
 
       yFormatter: (y) ->
-        Math.floor(y) + "% Y axes units"
+        Math.floor(y)
     )
 
     @x_axis.render()
