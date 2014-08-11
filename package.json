@@ -10,12 +10,23 @@
     "test": "gulp buildTest && testling"
   },
   "testling": {
+    "browsers": [
+      "ie/6..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/6",
+      "ipad/6",
+      "android-browser/latest"
+    ],
     "harness": "mocha-bdd",
     "scripts": [
       "./bower_components/chai/chai.js",
       "./bower_components/jquery/dist/jquery.js",
       "./bower_components/underscore/underscore.js",
       "./bower_components/backbone/backbone.js",
+      "./bower_components/spin.js/spin.js",
       "./bower_components/marionette/lib/backbone.marionette.js",
       "./test/test.js"
     ]
