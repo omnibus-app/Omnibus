@@ -26,6 +26,7 @@
       "./bower_components/jquery/dist/jquery.js",
       "./bower_components/underscore/underscore.js",
       "./bower_components/backbone/backbone.js",
+      "./bower_components/spin.js/spin.js",
       "./bower_components/marionette/lib/backbone.marionette.js",
       "./test/test.js"
     ]
