@@ -12,6 +12,7 @@ gulp.task('bower-scripts', function() {
     paths.bower + 'backbone/backbone.js',
     paths.bower + 'marionette/lib/backbone.marionette.js',
     paths.bower + 'backbone.syphon/lib/backbone.syphon.js',
+    paths.bower + 'spin.js/spin.js'
   ])
   .pipe(plumber())
   .pipe(concat('bower_components.js'));
