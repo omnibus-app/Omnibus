@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var app = express();
 
-app.use('/', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 var pages = {
   'index': path.join(__dirname, 'public/index.html'),
@@ -13,7 +13,7 @@ var pages = {
 
 var router = express.Router();
 
-router.get('/bills/:id', function(req, res){
+router.get('/', function(req, res){
   res.sendFile(pages.index);
 });
 
@@ -24,7 +24,7 @@ app.use( '/bills/*', router );
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.sendfile( pages[404] );
+    res.sendFile( pages[404] );
   });
 }
 
