@@ -7,6 +7,13 @@ App.addRegions
   search: '#search'
   content: '#content'
 
+App.spinnerOptions =
+    radius: 30, lines: 22, length:16, speed: .75
+
+# App.spinner = new Spinner @spinnerOptions
+App.spinner = new Spinner @spinnerOptions
+ .spin()
+
 # App.addInitializer ( options ) ->
 App.on 'before:start', ( options ) ->
   @controller = new MainController
@@ -18,7 +25,8 @@ App.on 'before:start', ( options ) ->
     controller: @controller
     appRoutes: 
       '': 'home'
-      'bill/:id': 'showBill'
+      'bills/:id': 'showBill'
+      'bills/search/:query': 'searchResults'
   @controller.router = @router
 
 
