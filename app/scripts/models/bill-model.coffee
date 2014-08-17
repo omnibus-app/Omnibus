@@ -5,8 +5,10 @@ class BillModel extends Backbone.Model
 
   urlRoot: @url
 
+
   parse: ( response ) ->
     data = {}
     data.results = JSON.parse response
+    console.log data.results
 
 module.exports = BillModel
