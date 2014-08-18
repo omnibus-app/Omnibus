@@ -4,6 +4,7 @@ data = require './../../../../assets/data/votes_month.json'
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
   model: "BillModel"
+  tagName: "svg"
 
 
   initialize: ->
@@ -57,21 +58,25 @@ class ChartView extends Marionette.ItemView
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform","translate(" +
-          margin.left + "," + margin.top + ")")
+          margin.left + ")")
 
     
-    dataFix = data.reduce((acc, vote) ->
+    dataFix = data.reduce((acc, vote, i) ->
       acc.concat [
         {
           yes: vote.democratic.yes * -1
           vote: vote
+          i: i
         }
         {
           yes: vote.republican.yes * 1
           vote: vote
+          i: i
         }
       ]
     , [])
+
+    console.log dataFix
 
 
     x.domain d3.extent([-250,250])
@@ -108,10 +113,11 @@ class ChartView extends Marionette.ItemView
 
     svg.append("g")
         .attr("class", "y axis")
+        .attr("transform", "translate(0, 0)")
       .append("line")
         .attr("x1", x(0))
         .attr("x2", x(0))
-        .attr("y2", (height - 30))
+        .attr("y2", height )
 
 
 

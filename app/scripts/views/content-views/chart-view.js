@@ -20,6 +20,8 @@ ChartView = (function(_super) {
 
   ChartView.prototype.model = "BillModel";
 
+  ChartView.prototype.tagName = "svg";
+
   ChartView.prototype.initialize = function() {};
 
   ChartView.defaults = function() {
@@ -51,18 +53,21 @@ ChartView = (function(_super) {
     };
     xAxis = d3.svg.axis().scale(x).orient("top").tickValues([-250, -200, -150, -100, -50, 0, 50, 100, 150, 200, 250]).tickFormat(makePositive);
     staticAxis = d3.select("#axis").append("svg").attr("width", width + margin.left + margin.right).attr("height", "30px").append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    svg = d3.select(this.el).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    dataFix = data.reduce(function(acc, vote) {
+    svg = d3.select(this.el).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + ")");
+    dataFix = data.reduce(function(acc, vote, i) {
       return acc.concat([
         {
           yes: vote.democratic.yes * -1,
-          vote: vote
+          vote: vote,
+          i: i
         }, {
           yes: vote.republican.yes * 1,
-          vote: vote
+          vote: vote,
+          i: i
         }
       ]);
     }, []);
+    console.log(dataFix);
     x.domain(d3.extent([-250, 250]));
     y.domain(data.map(function(d) {
       return d.description;
@@ -81,7 +86,7 @@ ChartView = (function(_super) {
     }).attr("width", function(d) {
       return Math.abs(x(d.yes) - x(0));
     }).attr("height", y.rangeBand());
-    return svg.append("g").attr("class", "y axis").append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y2", height - 30);
+    return svg.append("g").attr("class", "y axis").attr("transform", "translate(0, 0)").append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y2", height);
   };
 
   return ChartView;
