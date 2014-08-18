@@ -8,7 +8,7 @@ class ChartView extends Marionette.ItemView
 
   initialize: ->
 
-  defaults: ->
+  @defaults: ->
     margin = 
       top: 30
       right: 10

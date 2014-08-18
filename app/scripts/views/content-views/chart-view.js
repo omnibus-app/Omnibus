@@ -22,7 +22,7 @@ ChartView = (function(_super) {
 
   ChartView.prototype.initialize = function() {};
 
-  ChartView.prototype.defaults = function() {
+  ChartView.defaults = function() {
     var margin;
     return margin = {
       top: 30,
