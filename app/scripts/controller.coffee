@@ -58,7 +58,7 @@ class MainController extends Marionette.Controller
     else
       # If the billId exists in local storage, create a new model with the
       # parse data and resolve the promise with it
-      billModel = new BillModel JSON.parse window.localStorage.getItem billId
+      billModel = new BillModel window.localStorage.getItem billId
       deferred.resolve billModel 
 
     deferred.promise()
