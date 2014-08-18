@@ -33,7 +33,7 @@ ChartView = (function(_super) {
   };
 
   ChartView.prototype.render = function() {
-    var dataFix, height, makePositive, margin, parseDate, svg, svg2, width, x, xAxis, y;
+    var dataFix, height, makePositive, margin, parseDate, staticAxis, svg, width, x, xAxis, y;
     data = data.results.votes;
     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
     margin = {
@@ -43,14 +43,14 @@ ChartView = (function(_super) {
       left: 10
     };
     width = $("#chart").width() - margin.right - margin.left;
-    height = data.length * 10;
+    height = data.length * 12;
     x = d3.scale.linear().range([0, width]);
     y = d3.scale.ordinal().rangeRoundBands([0, height], .2);
     makePositive = function(x) {
       return Math.abs(x);
     };
     xAxis = d3.svg.axis().scale(x).orient("top").tickValues([-250, -200, -150, -100, -50, 0, 50, 100, 150, 200, 250]).tickFormat(makePositive);
-    svg2 = d3.select(this.el).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    staticAxis = d3.select("#axis").append("svg").attr("width", width + margin.left + margin.right).attr("height", "30px").append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     svg = d3.select(this.el).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     dataFix = data.reduce(function(acc, vote) {
       return acc.concat([
@@ -63,26 +63,11 @@ ChartView = (function(_super) {
         }
       ]);
     }, []);
-    console.log(dataFix);
     x.domain(d3.extent([-250, 250]));
     y.domain(data.map(function(d) {
       return d.description;
     }));
-    svg2.selectAll(".bar").data(dataFix).enter().append("rect").attr("class", function(d) {
-      if (d.yes < 0) {
-        return "bar negative";
-      } else {
-        return "bar positive";
-      }
-    }).attr("x", function(d) {
-      return x(Math.min(0, d.yes));
-    }).attr("y", function(d) {
-      return y(d.vote.description);
-    }).attr("width", function(d) {
-      return Math.abs(x(d.yes) - x(0));
-    }).attr("height", y.rangeBand());
-    svg2.append("g").attr("class", "x axis").call(xAxis);
-    svg2.append("g").attr("class", "y axis").append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y2", height);
+    staticAxis.append("g").data(dataFix).attr("class", "x axis").call(xAxis);
     svg.selectAll(".bar").data(dataFix).enter().append("rect").attr("class", function(d) {
       if (d.yes < 0) {
         return "bar negative";
@@ -96,8 +81,7 @@ ChartView = (function(_super) {
     }).attr("width", function(d) {
       return Math.abs(x(d.yes) - x(0));
     }).attr("height", y.rangeBand());
-    svg.append("g").attr("class", "x axis").call(xAxis);
-    return svg.append("g").attr("class", "y axis").append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y2", height);
+    return svg.append("g").attr("class", "y axis").append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y2", height - 30);
   };
 
   return ChartView;

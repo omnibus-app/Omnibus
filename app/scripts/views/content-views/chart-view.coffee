@@ -28,7 +28,7 @@ class ChartView extends Marionette.ItemView
 
     width = $("#chart").width() - margin.right - margin.left
 
-    height = data.length * 10
+    height = data.length * 12
 
     #Set the scale
     x = d3.scale.linear()
@@ -40,15 +40,17 @@ class ChartView extends Marionette.ItemView
     makePositive = (x)->
       Math.abs x
 
+
     xAxis = d3.svg.axis().scale(x)
       .orient("top").tickValues([-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]).tickFormat(makePositive)
 
-    svg2 = d3.select(@el).append("svg")
+    staticAxis = d3.select("#axis").append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("height", "30px")
       .append("g")
         .attr("transform","translate(" +
           margin.left + "," + margin.top + ")")
+
 
     svg = d3.select(@el).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -71,7 +73,6 @@ class ChartView extends Marionette.ItemView
       ]
     , [])
 
-    console.log dataFix
 
     x.domain d3.extent([-250,250])
 
@@ -79,29 +80,11 @@ class ChartView extends Marionette.ItemView
     y.domain data.map (d) ->
       d.description
 
-    svg2.selectAll(".bar")
-        .data(dataFix)
-      .enter().append("rect")
-        .attr("class", (d) ->
-          if d.yes < 0 then "bar negative" else "bar positive")
-        .attr("x", (d) ->
-          x Math.min(0, d.yes))
-        .attr("y", (d) ->
-          y(d.vote.description))
-        .attr("width", (d) ->
-          Math.abs x(d.yes) - x(0))
-        .attr( "height", y.rangeBand())
 
-    svg2.append("g")
+    staticAxis.append("g")
+      .data(dataFix)
       .attr("class", "x axis")
       .call(xAxis)
-
-    svg2.append("g")
-        .attr("class", "y axis")
-      .append("line")
-        .attr("x1", x(0))
-        .attr("x2", x(0))
-        .attr("y2", height)
 
 
 
@@ -117,17 +100,18 @@ class ChartView extends Marionette.ItemView
         .attr("width", (d) ->
           Math.abs x(d.yes) - x(0))
         .attr( "height", y.rangeBand())
-
-    svg.append("g")
-      .attr("class", "x axis")
-      .call(xAxis)
+    
+    # Original X-axis
+    # svg.append("g")
+    #   .attr("class", "x axis")
+    #   .call(xAxis)
 
     svg.append("g")
         .attr("class", "y axis")
       .append("line")
         .attr("x1", x(0))
         .attr("x2", x(0))
-        .attr("y2", height)
+        .attr("y2", (height - 30))
 
 
 
