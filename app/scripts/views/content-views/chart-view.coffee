@@ -65,8 +65,7 @@ class ChartView extends Marionette.ItemView
 
     console.log dataFix
 
-    x.domain d3.extent(dataFix, (d) ->
-      d.yes)
+    x.domain d3.extent([-250,250])
 
     #what's this line doing?
     y.domain data.map (d) ->

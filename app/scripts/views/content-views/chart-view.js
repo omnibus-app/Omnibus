@@ -63,9 +63,7 @@ ChartView = (function(_super) {
       ]);
     }, []);
     console.log(dataFix);
-    x.domain(d3.extent(dataFix, function(d) {
-      return d.yes;
-    }));
+    x.domain(d3.extent([-250, 250]));
     y.domain(data.map(function(d) {
       return d.description;
     }));
