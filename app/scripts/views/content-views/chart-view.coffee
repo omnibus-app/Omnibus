@@ -17,9 +17,8 @@ class ChartView extends Marionette.ItemView
       left: 10
 
   render: ->
-
     console.log @model
-    
+
     data = data.results.votes
 
     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse
