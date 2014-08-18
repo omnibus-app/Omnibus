@@ -5,9 +5,12 @@ ContentLayout = require './views/content-views/content-layout.coffee'
 ChartView = require './views/content-views/chart-view.coffee'
 SearchResults = require './views/content-views/search-results-view.coffee'
 MetaLayout = require './views/meta-views/meta-layout.coffee'
-MetaView = require './views/meta-views/meta-view.coffee'
 BillModel = require './models/bill-model.coffee'
 BillsCollection = require './collections/bills-collection.coffee'
+SubjectsView = require './views/meta-views/meta-subjects-view.coffee'
+SubjectsModel = require './models/meta-subjects-model.coffee'
+InfoView = require './views/meta-views/meta-info-view.coffee'
+InfoModel = require './models/meta-info-model.coffee'
 
 
 class MainController extends Marionette.Controller
@@ -21,6 +24,25 @@ class MainController extends Marionette.Controller
     # Loading spinner is created on App
     region.$el.append App.spinner.el
 
+  # Used to kick off the initial visualization before user bill selection
+  home: ->
+    # Parameters for the initial view bill
+    currentCongress = 113
+    firstBill = 'hr2397'
+    firstBillId = currentCongress + '-' + firstBill
+
+    #Show the bill data
+    @showBill firstBillId 
+
+  # Used to show a bills data when the billId is known
+  showBill: ( billId ) ->
+    # Start the spinner in the content region
+    @showSpinner @options.regions.content
+    # Call for the bill model using the id
+    @getData( billId ).then ( billModel ) =>
+      # Call to show all with the bill model
+      @showAll billModel, billId
+
   # Grabs data from NYT wrapper for a given bill Id ( congress - bill: '113-hr2397' )
   getData: ( billId )->
     deferred = new $.Deferred()
@@ -32,33 +54,69 @@ class MainController extends Marionette.Controller
       billModel.fetch().then ( res ) ->
         window.localStorage.setItem billId, res
         # Resolve the promise with the model instance
-        deferred.resolve( billModel )
+        deferred.resolve billModel 
     else
       # If the billId exists in local storage, create a new model with the
       # parse data and resolve the promise with it
       billModel = new BillModel JSON.parse window.localStorage.getItem billId
-      deferred.resolve( billModel )
+      deferred.resolve billModel 
 
     deferred.promise()
 
-  # Used to show a bills data when the billId is known
-  showBill: ( id ) ->
-    # Start the spinner in the content region
-    @showSpinner @options.regions.content
-    # Call for the bill model using the id
-    @getData( id ).then ( billModel ) =>
-      # Call to show all with the bill model
-      @showAll billModel
+  # Recreates content and search regions with new bill model
+  showAll: ( billModel, billId ) ->
+    # Update view region with bill model
+    @searchView billModel
+ 
+    # Check local storage to see if the user has visited the site before
+    if not window.localStorage.getItem 'omnibus-visited'
+      # If not, show the welcome view and set the state to 'visited'
+      @welcomeView billModel
+      window.localStorage.setItem 'omnibus-visited', true
+    
+    # Populate the content region
+    contentLayout = new ContentLayout
+    @options.regions.content.show contentLayout
+    chartView = new ChartView model: billModel
+    contentLayout.chart.show chartView
 
-  # Used to kick off the initial visualization before user bill selection
-  home: ->
-    # Parameters for the initial view bill
-    currentCongress = 113
-    firstBill = 'hr2397'
-    firstBillId = currentCongress + '-' + firstBill
+    # Create meta layout and show in contentlayout 'meta' region
+    metaLayout = new MetaLayout
+    contentLayout.meta.show metaLayout
+    @showSpinner metaLayout.meta1
+    @showSpinner metaLayout.meta2
+    
+    # Create main meta view
+    @makeInfoMeta billId
+      .then ( infoView ) ->
+        metaLayout[ 'meta1' ].show infoView
+      
+    # Create subjects meta view
+    @makeSubjectsMeta billId
+      .then ( subjectsView ) ->
+        metaLayout[ 'meta2' ].show subjectsView
+        
+  # Create InfoMeta model and view given a billId
+  makeInfoMeta: ( billId ) ->
+    deferred = new $.Deferred()
 
-    #Show the bill data
-    @showBill firstBillId 
+    infoModel = new InfoModel id: billId
+    infoModel.fetch().then ->
+      infoView = new InfoView model: infoModel
+      deferred.resolve infoView
+
+    deferred.promise()
+
+  # Create SubjectsMeta model and view given a billId
+  makeSubjectsMeta: ( billId ) ->
+    deferred = new $.Deferred()
+
+    subjectsModel = new SubjectsModel id: billId
+    subjectsModel.fetch().then ->
+      subjectsView = new SubjectsView model: subjectsModel
+      deferred.resolve subjectsView
+
+    deferred.promise()
 
   # Displays the welcome view to new users
   welcomeView: ( billModel ) ->
@@ -104,62 +162,16 @@ class MainController extends Marionette.Controller
   searchResults: ( query ) ->
     # Start the spinner in the content region
     @showSpinner @options.regions.content
-    
     # Set parameters and reference to this
-    that = @
-    billsCollection = 'unknown'
-    searchResults = 'unknown'
 
-    # Make a request for search results
-    $.ajax
-      url: 'http://omnibus-backend.azurewebsites.net/api/bills/search?q=' + query
-      data: JSON
-    .then ( data ) -> 
-      # Parse the returned data
-      data = JSON.parse( data ).results
-      # Create a collection with the results
-      billsCollection = new BillsCollection data
-    .then ( data ) ->
-      # Make composite view with bills collection
+    billsCollection = new BillsCollection query: query
+    billsCollection.fetch().then =>
       searchResults = new SearchResults collection: billsCollection
 
-      # Listen for click on itemView bill result
-      that.listenTo searchResults, 'bill:submit', ( billId ) ->
-        # Navigate to the address with the billId
-        that.router.navigate 'bills/' + billId, { trigger: true }
+      @listenTo searchResults, 'bill:submit', ( billId ) ->
+        @router.navigate 'bills/' + billId, { trigger: true }
 
-      # Show composite view
-      that.options.regions.content.show searchResults
-
-  # Recreates content and search regions with new bill model
-  showAll: ( billModel ) ->
-    # Update view region with bill model
-    @searchView billModel
- 
-    # Check local storage to see if the user has visited the site before
-    if not window.localStorage.getItem 'omnibus-visited'
-      # If not, show the welcome view and set the state to 'visited'
-      @welcomeView billModel
-      window.localStorage.setItem 'omnibus-visited', true
-    
-    # Populate the content region
-    contentLayout = new ContentLayout
-    @options.regions.content.show contentLayout
-
-    chartView = new ChartView model: billModel
-    contentLayout.chart.show chartView
-
-    metaLayout = new MetaLayout
-    contentLayout.meta.show metaLayout
-    
-    # Create all meta views
-    sponsor = new MetaView model: billModel
-    sponsorTwo = new MetaView model: billModel
-    sponsorThree = new MetaView model: billModel
-    metaLayout[ 'meta1' ].show sponsor
-    metaLayout[ 'meta2' ].show sponsorTwo
-    metaLayout[ 'meta3' ].show sponsorThree
-    
+      @options.regions.content.show searchResults
 
 
 module.exports = MainController
