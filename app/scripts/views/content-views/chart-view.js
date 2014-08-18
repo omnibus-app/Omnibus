@@ -33,7 +33,7 @@ ChartView = (function(_super) {
   };
 
   ChartView.prototype.render = function() {
-    var dataFix, height, makePositive, margin, parseDate, svg, width, x, xAxis, y;
+    var dataFix, height, makePositive, margin, parseDate, svg, svg2, width, x, xAxis, y;
     data = data.results.votes;
     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
     margin = {
@@ -50,6 +50,7 @@ ChartView = (function(_super) {
       return Math.abs(x);
     };
     xAxis = d3.svg.axis().scale(x).orient("top").tickValues([-250, -200, -150, -100, -50, 0, 50, 100, 150, 200, 250]).tickFormat(makePositive);
+    svg2 = d3.select(this.el).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     svg = d3.select(this.el).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     dataFix = data.reduce(function(acc, vote) {
       return acc.concat([
@@ -67,6 +68,21 @@ ChartView = (function(_super) {
     y.domain(data.map(function(d) {
       return d.description;
     }));
+    svg2.selectAll(".bar").data(dataFix).enter().append("rect").attr("class", function(d) {
+      if (d.yes < 0) {
+        return "bar negative";
+      } else {
+        return "bar positive";
+      }
+    }).attr("x", function(d) {
+      return x(Math.min(0, d.yes));
+    }).attr("y", function(d) {
+      return y(d.vote.description);
+    }).attr("width", function(d) {
+      return Math.abs(x(d.yes) - x(0));
+    }).attr("height", y.rangeBand());
+    svg2.append("g").attr("class", "x axis").call(xAxis);
+    svg2.append("g").attr("class", "y axis").append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y2", height);
     svg.selectAll(".bar").data(dataFix).enter().append("rect").attr("class", function(d) {
       if (d.yes < 0) {
         return "bar negative";

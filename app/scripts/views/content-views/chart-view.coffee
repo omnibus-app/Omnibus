@@ -43,6 +43,13 @@ class ChartView extends Marionette.ItemView
     xAxis = d3.svg.axis().scale(x)
       .orient("top").tickValues([-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]).tickFormat(makePositive)
 
+    svg2 = d3.select(@el).append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform","translate(" +
+          margin.left + "," + margin.top + ")")
+
     svg = d3.select(@el).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -50,6 +57,7 @@ class ChartView extends Marionette.ItemView
         .attr("transform","translate(" +
           margin.left + "," + margin.top + ")")
 
+    
     dataFix = data.reduce((acc, vote) ->
       acc.concat [
         {
@@ -70,6 +78,32 @@ class ChartView extends Marionette.ItemView
     #what's this line doing?
     y.domain data.map (d) ->
       d.description
+
+    svg2.selectAll(".bar")
+        .data(dataFix)
+      .enter().append("rect")
+        .attr("class", (d) ->
+          if d.yes < 0 then "bar negative" else "bar positive")
+        .attr("x", (d) ->
+          x Math.min(0, d.yes))
+        .attr("y", (d) ->
+          y(d.vote.description))
+        .attr("width", (d) ->
+          Math.abs x(d.yes) - x(0))
+        .attr( "height", y.rangeBand())
+
+    svg2.append("g")
+      .attr("class", "x axis")
+      .call(xAxis)
+
+    svg2.append("g")
+        .attr("class", "y axis")
+      .append("line")
+        .attr("x1", x(0))
+        .attr("x2", x(0))
+        .attr("y2", height)
+
+
 
     svg.selectAll(".bar")
         .data(dataFix)
