@@ -7,14 +7,37 @@
   margin: 1 rem 0
 
 #meta
+  border: 1px solid #999
   background: #eee
   padding: 1 rem
   min-height: 4rem
 
 #chart
-  border: 1px solid #999
-  min-height: 4 rem
+  min-height: 4 em
+  height: 450px
+  overflow: scroll
+
+#axis
+  min-height: 1 em
+
 
 footer
   text-align: center
 
+.bar
+  shape-rendering: crispEdges
+
+.bar.positive
+  fill: steelblue
+
+.bar.negative
+  fill: red
+
+.axis text
+  font: 10px sans-serif
+
+.axis path,
+.axis line
+  fill: none
+  stroke: #000
+  shape-rendering: crispEdges

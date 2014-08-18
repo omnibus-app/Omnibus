@@ -1,6 +1,6 @@
-class BillModel extends Backbone.Model
+class VoteModel extends Backbone.Model
   initialize: ( options ) ->
-    @url = 'http://omnibus-backend.azurewebsites.net/api/bills/' + 
+    @url = 'http://omnibus-backend.azurewebsites.net/api/votes/bill' + 
       options.id + '/votes'
 
   urlRoot: @url
@@ -11,4 +11,4 @@ class BillModel extends Backbone.Model
     data.results = JSON.parse response
     console.log data.results
 
-module.exports = BillModel
+module.exports = VoteModel
