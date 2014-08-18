@@ -36,6 +36,7 @@ ChartView = (function(_super) {
 
   ChartView.prototype.render = function() {
     var dataFix, height, makePositive, margin, parseDate, staticAxis, svg, width, x, xAxis, y;
+    console.log(this.model);
     data = data.results.votes;
     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
     margin = {
@@ -67,7 +68,6 @@ ChartView = (function(_super) {
         }
       ]);
     }, []);
-    console.log(dataFix);
     x.domain(d3.extent([-250, 250]));
     y.domain(data.map(function(d) {
       return d.description;
