@@ -16,7 +16,7 @@ InfoModel = require './models/meta-info-model.coffee'
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
     # Shows loading spinner on init
-    @showSpinner @options.regions.content 
+    @showSpinner @options.regions.content
 
   # Takes a region which it empties and attachs a loading spinner
   showSpinner: ( region ) ->
@@ -32,7 +32,7 @@ class MainController extends Marionette.Controller
     firstBillId = currentCongress + '-' + firstBill
 
     #Show the bill data
-    @showBill firstBillId 
+    @showBill firstBillId
 
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
@@ -52,14 +52,14 @@ class MainController extends Marionette.Controller
       billModel = new BillModel id: billId
       # Fetch the model to make a request to NYT wrapper
       billModel.fetch().then ( res ) ->
-        window.localStorage.setItem billId, res
+        window.localStorage.setItem billId, JSON.stringify res
         # Resolve the promise with the model instance
-        deferred.resolve billModel 
+        deferred.resolve billModel
     else
       # If the billId exists in local storage, create a new model with the
       # parse data and resolve the promise with it
-      billModel = new BillModel window.localStorage.getItem billId
-      deferred.resolve billModel 
+      billModel = new BillModel JSON.parse window.localStorage.getItem billId
+      deferred.resolve billModel
 
     deferred.promise()
 
@@ -67,13 +67,13 @@ class MainController extends Marionette.Controller
   showAll: ( billModel, billId ) ->
     # Update view region with bill model
     @searchView billModel
- 
+
     # Check local storage to see if the user has visited the site before
     if not window.localStorage.getItem 'omnibus-visited'
       # If not, show the welcome view and set the state to 'visited'
       @welcomeView billModel
       window.localStorage.setItem 'omnibus-visited', true
-    
+
     # Populate the content region
     contentLayout = new ContentLayout
     @options.regions.content.show contentLayout
@@ -85,17 +85,17 @@ class MainController extends Marionette.Controller
     contentLayout.meta.show metaLayout
     @showSpinner metaLayout.meta1
     @showSpinner metaLayout.meta2
-    
+
     # Create main meta view
     @makeInfoMeta billId
       .then ( infoView ) ->
         metaLayout[ 'meta1' ].show infoView
-      
+
     # Create subjects meta view
     @makeSubjectsMeta billId
       .then ( subjectsView ) ->
         metaLayout[ 'meta2' ].show subjectsView
-        
+
   # Create InfoMeta model and view given a billId
   makeInfoMeta: ( billId ) ->
     deferred = new $.Deferred()
@@ -130,15 +130,15 @@ class MainController extends Marionette.Controller
       @options.regions.welcome.empty()
       # Show the information button in the search view
       $('#information').show()
-    
+
     # Show the welcome vew in the welcome region
     @options.regions.welcome.show welcomeView
 
-  # Initiates the Search view and 
+  # Initiates the Search view and
   searchView: ( billModel ) ->
     # Create the search view with the billModel (bill model not currently used)
     searchView = new SearchView model: billModel
- 
+
     # Listen to submit event on known bill number
     @listenTo searchView, 'findBill:submit', ( billId ) ->
       # Navigate to the address with the billId
