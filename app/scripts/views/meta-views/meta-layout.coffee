@@ -1,9 +1,9 @@
 class MetaLayout extends Marionette.LayoutView
 
   template: '<div>'+
-  '<div id="meta-1">Meta 1</div>'+
-  '<div id="meta-2">Meta 2</div>'+
-  '<div id="meta-3">Meta 3</div>'+
+  '<div id="meta-1"></div>'+
+  '<div id="meta-2"></div>'+
+  '<div id="meta-3"></div>'+
   '</div>'
 
   regions:
