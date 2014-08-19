@@ -8,6 +8,7 @@ class BillModel extends Backbone.Model
 
   parse: ( response ) ->
     data = {}
-    data.results = response
+    data.votes = response
+    data
 
 module.exports = BillModel
