@@ -6,7 +6,6 @@ class ChartView extends Marionette.ItemView
   model: "BillModel"
   tagName: "svg"
 
-
   initialize: ->
 
   @defaults: ->
@@ -34,92 +33,88 @@ class ChartView extends Marionette.ItemView
     height = data.length * 12
 
     #Set the scale
-    x = d3.scale.linear()
-      .range([0, width])
+    x = d3.scale
+      .linear()
+      .range [0, width]
 
     y = d3.scale.ordinal()
-      .rangeRoundBands([0, height], .2)
+      .rangeRoundBands [0, height], .2
 
     makePositive = (x)->
       Math.abs x
 
+    ticks = [-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]
 
-    xAxis = d3.svg.axis().scale(x)
-      .orient("top").tickValues([-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]).tickFormat(makePositive)
+    xAxis = d3.svg
+      .axis()
+      .scale x
+      .orient 'top'
+        .tickValues ticks
+        .tickFormat makePositive
 
-    staticAxis = d3.select("#axis").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", "30px")
-      .append("g")
-        .attr("transform","translate(" +
-          margin.left + "," + margin.top + ")")
-
-
-    svg = d3.select(@el).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform","translate(" +
-          margin.left + ")")
-
-    
-    dataFix = data.reduce((acc, vote, i) ->
-      acc.concat [
-        {
-          yes: vote.democratic.yes * -1
-          vote: vote
-          i: i
-        }
-        {
-          yes: vote.republican.yes * 1
-          vote: vote
-          i: i
-        }
-      ]
-    , [])
+    staticAxis = d3
+      .select '#axis'
+      .append 'svg'
+        .attr 'width', width + margin.left + margin.right 
+        .attr 'height', '30px'
+      .append 'g'
+        .attr 'transform', 'translate(' +
+          margin.left + ',' + margin.top + ')'
 
 
+    svg = d3.select @el
+      .append 'svg'
+        .attr 'width', width + margin.left + margin.right
+        .attr 'height', height + margin.top + margin.bottom
+      .append 'g'
+        .attr 'transform', 'translate(' + margin.left + ')'
 
-    x.domain d3.extent([-250,250])
+    url = 'http://localhost:3000/api/bills/113-hr2397/votes/'
+  
+    d3.json url, (error, json) ->
+      data = json.map util.buildData
 
-    #what's this line doing?
-    y.domain data.map (d) ->
-      d.description
+      x.domain d3.extent data, (d) ->
+        if d.demY > d.repY then d.demY else d.repY
+      y.domain data.map (d) ->
+        d.number
 
+      svg
+        .selectAll '.bar'
+          .data data
+        .enter()
+          .append 'g'
+          .attr 'class', 'test'
+          .each (el, i) ->
+            d3.select @
+              .append 'rect'
+              .attr 'class', 'republican'
+              .attr 'height', (d) ->
+                8
+              .attr 'width', (d) ->
+                d.repY
+            d3.select @
+              .append 'rect'
+              .attr 'class', 'democrat'
+              .attr 'height', (d) ->
+                d.demY
+            d3.select @
+              .attr 'data-amdt', (d) ->
+                d.amdt
+              .attr 'transform', 'translate(' + 0 + ',' + i * 10 + ')'
 
-    staticAxis.append("g")
-      .data(dataFix)
-      .attr("class", "x axis")
-      .call(xAxis)
+    svg
+      .append 'g'
+      .attr 'class', 'x axis'
+      .call xAxis
 
-
-
-    svg.selectAll(".bar")
-        .data(dataFix)
-      .enter().append("rect")
-        .attr("class", (d) ->
-          if d.yes < 0 then "bar negative" else "bar positive")
-        .attr("x", (d) ->
-          x Math.min(0, d.yes))
-        .attr("y", (d) ->
-          y(d.vote.description))
-        .attr("width", (d) ->
-          Math.abs x(d.yes) - x(0))
-        .attr( "height", y.rangeBand())
-    
-    # Original X-axis
-    # svg.append("g")
-    #   .attr("class", "x axis")
-    #   .call(xAxis)
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(0, 0)")
-      .append("line")
-        .attr("x1", x(0))
-        .attr("x2", x(0))
-        .attr("y2", height )
-
+    svg
+      .append 'g'
+        .attr 'class', 'y axis'
+      .append 'line'
+        .attr 'x1', x 0
+        .attr 'x2', x 0
+        .attr 'y2', height
 
 
 module.exports = ChartView

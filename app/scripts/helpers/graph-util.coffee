@@ -1,8 +1,16 @@
-module.exports =
-  findData: ( data ) ->
-    result = data.actions.map (item) -> 
-      x: Date.parse(new Date(item.datetime))
-    result.sort (a, b) -> (a.x - b.x)
-    result[i].y = i + 1 for i in [0..result.length - 1]
-    result
+buildData = (json, i) ->
+  temp = {}
+  console.log(json, i)
+  temp.number = json.number
+  temp.repY = +json.vote.republican.yes
+  temp.repN = +json.vote.republican.no
+  temp.repAbs = +json.vote.republican.not_voting
+  temp.demY = +json.vote.democratic.yes
+  temp.demN = +json.vote.democratic.no
+  temp.demAbs = +json.vote.democratic.not_voting
+  temp.amdt = json.amendment_id
+  temp.bill = json.bill_id
+  temp
 
+module.exports =
+  buildData: buildData
