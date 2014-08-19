@@ -1,15 +1,20 @@
+_ = require 'underscore'
 util = require '../../helpers/graph-util.coffee'
 d3 = require 'd3'
 data = require './../../../../assets/data/votes_month.json'
+
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
   model: "BillModel"
   tagName: "svg"
 
+  events:
+    'mouseover [data-amdt]': 'showAmendmentData'
+
   initialize: ->
 
   @defaults: ->
-    margin = 
+    margin =
       top: 30
       right: 10
       bottom: 10
@@ -22,7 +27,7 @@ class ChartView extends Marionette.ItemView
 
     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse
 
-    margin = 
+    margin =
       top: 30
       right: 10
       bottom: 10
@@ -55,7 +60,7 @@ class ChartView extends Marionette.ItemView
     staticAxis = d3
       .select '#axis'
       .append 'svg'
-        .attr 'width', width + margin.left + margin.right 
+        .attr 'width', width + margin.left + margin.right
         .attr 'height', '30px'
       .append 'g'
         .attr 'transform', 'translate(' +
@@ -70,7 +75,7 @@ class ChartView extends Marionette.ItemView
         .attr 'transform', 'translate(' + margin.left + ')'
 
     url = 'http://localhost:3000/api/bills/113-hr2397/votes/'
-  
+
     d3.json url, (error, json) ->
       data = json.map util.buildData
 
@@ -115,6 +120,8 @@ class ChartView extends Marionette.ItemView
         .attr 'x1', x 0
         .attr 'x2', x 0
         .attr 'y2', height
+
+  showAmendmentData: (e) ->
 
 
 module.exports = ChartView

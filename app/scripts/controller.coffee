@@ -12,6 +12,7 @@ SubjectsModel = require './models/meta-subjects-model.coffee'
 InfoView = require './views/meta-views/meta-info-view.coffee'
 InfoModel = require './models/meta-info-model.coffee'
 
+window.billModel = undefined
 
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
@@ -49,7 +50,7 @@ class MainController extends Marionette.Controller
     # Check if the billId is stored in local storage
     if not window.localStorage.getItem billId
       # If not, create the model with the id
-      billModel = new BillModel id: billId
+      window.billModel = billModel = new BillModel id: billId
       # Fetch the model to make a request to NYT wrapper
       billModel.fetch().then ( res ) ->
         window.localStorage.setItem billId, JSON.stringify res
@@ -58,7 +59,7 @@ class MainController extends Marionette.Controller
     else
       # If the billId exists in local storage, create a new model with the
       # parse data and resolve the promise with it
-      billModel = new BillModel JSON.parse window.localStorage.getItem billId
+      window.billModel = billModel = new BillModel JSON.parse window.localStorage.getItem billId
       deferred.resolve billModel
 
     deferred.promise()
