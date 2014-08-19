@@ -12,7 +12,6 @@ SubjectsModel = require './models/meta-subjects-model.coffee'
 InfoView = require './views/meta-views/meta-info-view.coffee'
 InfoModel = require './models/meta-info-model.coffee'
 
-
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
     # Shows loading spinner on init
@@ -79,6 +78,8 @@ class MainController extends Marionette.Controller
     @options.regions.content.show contentLayout
     chartView = new ChartView model: billModel
     contentLayout.chart.show chartView
+
+    @listenTo chartView, 'showAmendmentData', (data) ->
 
     # Create meta layout and show in contentlayout 'meta' region
     metaLayout = new MetaLayout
