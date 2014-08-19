@@ -11,6 +11,8 @@ SubjectsView = require './views/meta-views/meta-subjects-view.coffee'
 SubjectsModel = require './models/meta-subjects-model.coffee'
 InfoView = require './views/meta-views/meta-info-view.coffee'
 InfoModel = require './models/meta-info-model.coffee'
+AmendView = require './views/meta-views/meta-amend-view.coffee'
+AmendModel = require './models/meta-amend-model.coffee'
 
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
@@ -32,6 +34,11 @@ class MainController extends Marionette.Controller
 
     #Show the bill data
     @showBill firstBillId
+
+  # Show Bubble View
+  # home: ->
+    # Get Bubble Model
+    # display bubble view in content chart region
 
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
@@ -80,6 +87,9 @@ class MainController extends Marionette.Controller
     contentLayout.chart.show chartView
 
     @listenTo chartView, 'showAmendmentData', (data) ->
+      @makeAmendmentMeta data
+        .then ( amendView ) ->
+          metaLayout[ 'meta3' ].show amendView
 
     # Create meta layout and show in contentlayout 'meta' region
     metaLayout = new MetaLayout
@@ -116,6 +126,18 @@ class MainController extends Marionette.Controller
     subjectsModel.fetch().then ->
       subjectsView = new SubjectsView model: subjectsModel
       deferred.resolve subjectsView
+
+    deferred.promise()
+
+  # Pass ammendment data in and create a model/view with it
+  # Returns jQuery promise for consistency
+  makeAmendmentMeta: ( amendData ) ->
+    deferred = new $.Deferred()
+
+    amendModel = new AmendModel results: amendData
+    amendView = new AmendView model: amendModel
+
+    deferred.resolve amendView
 
     deferred.promise()
 
