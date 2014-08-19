@@ -1,7 +1,5 @@
 _ = window._
 util = require '../../helpers/graph-util.coffee'
-d3 = require 'd3'
-data = require './../../../../assets/data/votes_month.json'
 
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
@@ -77,52 +75,49 @@ class ChartView extends Marionette.ItemView
       .append 'g'
         .attr 'transform', 'translate(' + margin.left + ')'
 
-    url = 'http://localhost:3000/api/bills/113-hr2397/votes/'
 
-    d3.json url, (error, json) ->
-      data = json.map util.buildData
+    dems = data.map (el) ->
+      el.demY
+    reps = data.map (el) ->
+      el.repY
 
-      dems = data.map (el) ->
-        el.demY
-      reps = data.map (el) ->
-        el.repY
+    max = Math.max (d3.max dems), (d3.max reps)
 
-      max = Math.max (d3.max dems), (d3.max reps)
+    x.domain [ -max, max ]
+      .nice();
+    y.domain data.map (d) ->
+      d.number
 
-      x.domain [ -max, max ]
-        .nice();
-      y.domain data.map (d) ->
-        d.number
+    svg
+      .selectAll '.bar'
+        .data data
+      .enter()
+        .append 'g'
+        .attr 'class', 'amdt-bar'
+        .each (el, i) ->
+          d3.select @
+            .append 'rect'
+            .attr 'class', 'bar republican'
+            .attr 'height', (d) ->
+              10
+            .attr 'width', (d) ->
+              Math.abs (x d.repY) - (x 0)
+            .attr 'x', (d) ->
+              x(0)
+          d3.select @
+            .append 'rect'
+            .attr 'class', 'bar democrat'
+            .attr 'height', (d) ->
+              10
+            .attr 'width', (d) ->
+              Math.abs (x d.demY) - (x 0)
+            .attr 'x', (d) ->
+              x -d.demY
+          d3.select @
+            .attr 'data-amdt', (d) ->
+              d.amdt
+            .attr 'transform', 'translate(' + 0 + ',' + i * 15 + ')'
 
-      svg
-        .selectAll '.bar'
-          .data data
-        .enter()
-          .append 'g'
-          .attr 'class', 'amdt-bar'
-          .each (el, i) ->
-            d3.select @
-              .append 'rect'
-              .attr 'class', 'bar republican'
-              .attr 'height', (d) ->
-                10
-              .attr 'width', (d) ->
-                Math.abs (x d.repY) - (x 0)
-              .attr 'x', (d) ->
-                x(0)
-            d3.select @
-              .append 'rect'
-              .attr 'class', 'bar democrat'
-              .attr 'height', (d) ->
-                10
-              .attr 'width', (d) ->
-                Math.abs (x d.demY) - (x 0)
-              .attr 'x', (d) ->
-                x -d.demY
-            d3.select @
-              .attr 'data-amdt', (d) ->
-                d.amdt
-              .attr 'transform', 'translate(' + 0 + ',' + i * 15 + ')'
     svg
       .append 'g'
       .attr 'class', 'x axis'
