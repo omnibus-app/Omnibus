@@ -102,6 +102,8 @@ class ChartView extends Marionette.ItemView
               .append 'rect'
               .attr 'class', 'democrat'
               .attr 'height', (d) ->
+                8
+              .attr 'width', (d) ->
                 d.demY
             d3.select @
               .attr 'data-amdt', (d) ->
