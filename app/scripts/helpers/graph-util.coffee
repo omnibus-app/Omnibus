@@ -1,6 +1,5 @@
 buildData = (json, i) ->
   temp = {}
-  console.log(json, i)
   temp.number = json.number
   temp.repY = +json.vote.republican.yes
   temp.repN = +json.vote.republican.no

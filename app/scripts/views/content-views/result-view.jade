@@ -1,3 +1,8 @@
-p Bill Name: #{ short_title }
+p Title: #{ short_title }
+p Nicknames:
+  if nicknames
+    each name, i in nicknames
+      |  #{ name }
+      - if(i < nicknames.length-1)
+        |,
 p Sponsor: #{ sponsor.first_name } #{ sponsor.last_name }
-p Description: #{ official_title }
