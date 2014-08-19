@@ -89,7 +89,7 @@ class ChartView extends Marionette.ItemView
           .data data
         .enter()
           .append 'g'
-          .attr 'class', 'test'
+          .attr 'class', 'amdt-bar'
           .each (el, i) ->
             d3.select @
               .append 'rect'
