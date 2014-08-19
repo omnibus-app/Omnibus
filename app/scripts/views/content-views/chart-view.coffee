@@ -52,12 +52,11 @@ class ChartView extends Marionette.ItemView
 
     ticks = [-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]
 
-    xAxis = d3.svg
-      .axis()
+    xAxis = d3.svg.axis()
       .scale x
       .orient 'top'
-        .tickValues ticks
-        .tickFormat makePositive
+      .tickValues ticks
+      .tickFormat makePositive
 
     staticAxis = d3
       .select '#axis'
@@ -103,7 +102,7 @@ class ChartView extends Marionette.ItemView
             .attr 'width', (d) ->
               Math.abs (x d.repY) - (x 0)
             .attr 'x', (d) ->
-              x(0)
+              x 0
           d3.select @
             .append 'rect'
             .attr 'class', 'bar democrat'
@@ -118,7 +117,7 @@ class ChartView extends Marionette.ItemView
               d.amdt
             .attr 'transform', 'translate(' + 0 + ',' + i * 15 + ')'
 
-    svg
+    staticAxis
       .append 'g'
       .attr 'class', 'x axis'
       .call xAxis
@@ -126,6 +125,7 @@ class ChartView extends Marionette.ItemView
     svg
       .append 'g'
         .attr 'class', 'y axis'
+        .attr 'transform', 'translate(0, 0)'
       .append 'line'
         .attr 'x1', x 0
         .attr 'x2', x 0
