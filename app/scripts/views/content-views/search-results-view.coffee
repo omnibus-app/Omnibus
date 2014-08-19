@@ -1,4 +1,6 @@
 class SearchResults extends Marionette.CompositeView
+  tagName: 'div'
+  className: 'search-results'
   template: require './search-results-view.jade'
   childView: require './result-view.coffee'
   childViewContainer: '.results-container'
