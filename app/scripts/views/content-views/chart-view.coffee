@@ -1,4 +1,4 @@
-_ = require 'underscore'
+_ = window._
 util = require '../../helpers/graph-util.coffee'
 d3 = require 'd3'
 data = require './../../../../assets/data/votes_month.json'
@@ -124,6 +124,8 @@ class ChartView extends Marionette.ItemView
         .attr 'y2', height
 
   showAmendmentData: (e) ->
-
+    amendmentId = @$( e.currentTarget ).attr 'data-amdt'
+    amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
+    @trigger 'showAmendmentData', amendmentData
 
 module.exports = ChartView

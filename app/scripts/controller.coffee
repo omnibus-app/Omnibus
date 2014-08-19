@@ -79,6 +79,8 @@ class MainController extends Marionette.Controller
     chartView = new ChartView model: billModel
     contentLayout.chart.show chartView
 
+    @listenTo chartView, 'showAmendmentData', (data) ->
+
     # Create meta layout and show in contentlayout 'meta' region
     metaLayout = new MetaLayout
     contentLayout.meta.show metaLayout
