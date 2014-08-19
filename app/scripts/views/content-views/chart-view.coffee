@@ -82,8 +82,15 @@ class ChartView extends Marionette.ItemView
     d3.json url, (error, json) ->
       data = json.map util.buildData
 
-      x.domain d3.extent data, (d) ->
-        if d.demY > d.repY then d.demY else d.repY
+      dems = data.map (el) ->
+        el.demY
+      reps = data.map (el) ->
+        el.repY
+
+      max = Math.max (d3.max dems), (d3.max reps)
+
+      x.domain [ -max, max ]
+        .nice();
       y.domain data.map (d) ->
         d.number
 
@@ -96,22 +103,26 @@ class ChartView extends Marionette.ItemView
           .each (el, i) ->
             d3.select @
               .append 'rect'
-              .attr 'class', 'republican'
+              .attr 'class', 'bar republican'
               .attr 'height', (d) ->
-                8
+                10
               .attr 'width', (d) ->
-                d.repY
+                Math.abs (x d.repY) - (x 0)
+              .attr 'x', (d) ->
+                x(0)
             d3.select @
               .append 'rect'
-              .attr 'class', 'democrat'
+              .attr 'class', 'bar democrat'
               .attr 'height', (d) ->
-                8
+                10
               .attr 'width', (d) ->
-                d.demY
+                Math.abs (x d.demY) - (x 0)
+              .attr 'x', (d) ->
+                x -d.demY
             d3.select @
               .attr 'data-amdt', (d) ->
                 d.amdt
-              .attr 'transform', 'translate(' + 0 + ',' + i * 10 + ')'
+              .attr 'transform', 'translate(' + 0 + ',' + i * 15 + ')'
     svg
       .append 'g'
       .attr 'class', 'x axis'
