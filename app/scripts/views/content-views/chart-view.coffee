@@ -78,7 +78,6 @@ class ChartView extends Marionette.ItemView
       .append 'g'
         .attr 'transform', 'translate(' + margin.left + ')'
 
-<<<<<<< HEAD
     url = 'http://localhost:3000/api/bills/113-hr2397/votes/'
 
     d3.json url, (error, json) ->
@@ -114,37 +113,6 @@ class ChartView extends Marionette.ItemView
               .attr 'data-amdt', (d) ->
                 d.amdt
               .attr 'transform', 'translate(' + 0 + ',' + i * 10 + ')'
-=======
-    x.domain d3.extent data, (d) ->
-      if d.demY > d.repY then d.demY else d.repY
-    y.domain data.map (d) ->
-      d.number
-
-    svg
-      .selectAll '.bar'
-        .data data
-      .enter()
-        .append 'g'
-        .attr 'class', 'amdt-bar'
-        .each (el, i) ->
-          d3.select @
-            .append 'rect'
-            .attr 'class', 'republican'
-            .attr 'height', (d) ->
-              8
-            .attr 'width', (d) ->
-              d.repY
-          d3.select @
-            .append 'rect'
-            .attr 'class', 'democrat'
-            .attr 'height', (d) ->
-              d.demY
-          d3.select @
-            .attr 'data-amdt', (d) ->
-              d.amdt
-            .attr 'transform', 'translate(' + 0 + ',' + i * 10 + ')'
->>>>>>> dfce5329ebed1eb0a3e4ad738159e7396b7211a8
-
     svg
       .append 'g'
       .attr 'class', 'x axis'
