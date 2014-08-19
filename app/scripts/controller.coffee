@@ -35,6 +35,11 @@ class MainController extends Marionette.Controller
     #Show the bill data
     @showBill firstBillId
 
+  # Show Bubble View
+  # home: ->
+    # Get Bubble Model
+    # display bubble view in content chart region
+
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
     # Start the spinner in the content region
@@ -121,6 +126,18 @@ class MainController extends Marionette.Controller
     subjectsModel.fetch().then ->
       subjectsView = new SubjectsView model: subjectsModel
       deferred.resolve subjectsView
+
+    deferred.promise()
+
+  # Pass ammendment data in and create a model/view with it
+  # Returns jQuery promise for consistency
+  makeAmendmentMeta: ( amendData ) ->
+    deferred = new $.Deferred()
+
+    amendModel = new AmendModel results: amendData
+    amendView = new AmendView model: amendModel
+
+    deferred.resolve amendView
 
     deferred.promise()
 
