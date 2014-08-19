@@ -27,7 +27,6 @@ InfoView = require('./views/meta-views/meta-info-view.coffee');
 
 InfoModel = require('./models/meta-info-model.coffee');
 
-
 AmendView = require('./views/meta-views/meta-amend-view.coffee');
 
 AmendModel = require('./models/meta-amend-model.coffee');
@@ -35,6 +34,10 @@ AmendModel = require('./models/meta-amend-model.coffee');
 EnactedView = require('./views/content-views/enacted-view.coffee');
 
 EnactedModel = require('./models/enacted-model.coffee');
+
+AmendView = require('./views/meta-views/meta-amend-view.coffee');
+
+AmendModel = require('./models/meta-amend-model.coffee');
 
 MainController = (function(_super) {
   __extends(MainController, _super);
