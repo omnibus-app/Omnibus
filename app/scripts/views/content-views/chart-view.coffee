@@ -1,6 +1,5 @@
 util = require '../../helpers/graph-util.coffee'
-# d3 = require 'd3'
-# data = require './../../../../assets/data/votes_month.json'
+
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
   model: "BillModel"
