@@ -70,7 +70,6 @@ class ChartView extends Marionette.ItemView
         .attr 'transform', 'translate(' +
           margin.left + ',' + margin.top + ')'
 
-
     svg = d3.select @el
       .append 'svg'
         .attr 'width', width + margin.left + margin.right
