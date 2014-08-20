@@ -1,0 +1,28 @@
+@import colors
+
+button
+  border-radius: .25em
+  padding: .25em .5em
+  background: $bg
+  font: inherit
+  border: 1px solid $text
+  cursor: pointer
+  display: inline-block
+  box-shadow 0 0 0 0 transparent
+  transition-property: border, box-shadow
+  transition-duration: .25s
+  transition-timing-function: ease
+  &:not(:last-of-type)
+    margin-right: .5rem
+  &:hover
+    background: white
+  &:focus
+    outline: none
+    border-color: $accent
+    box-shadow: 0 0 2px 2px $accent
+
+.btn--dem
+  background: $dem
+
+.btn--rep
+  background: $rep
