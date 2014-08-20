@@ -1,9 +1,10 @@
 class Search extends Marionette.ItemView
   template: require './search-view.jade'
+  className: 'search-view'
 
   initialize: ->
 
-  events: 
+  events:
     'click #find-bill': 'findBill'
     'click #information': 'welcomeShow'
     'click #search-bills': 'searchBills'

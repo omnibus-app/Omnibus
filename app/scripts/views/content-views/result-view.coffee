@@ -1,10 +1,10 @@
 class ResultView extends Marionette.ItemView
   tagName: 'li'
-  id: 'bill-result'
+  className: 'bill-result'
   template: require './result-view.jade'
-  events: 
+  events:
     'click': 'billResult'
-    
+
   billResult: ->
     @trigger 'bill:submit'
 

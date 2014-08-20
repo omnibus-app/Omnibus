@@ -1,14 +1,13 @@
-.search-view
-  h4.search-intro If you know the Bill you're looking for go ahead and enter the congress and Bill numbers.  Or you can search through bills with keywords.
+h4.search-intro If you know the Bill you're looking for go ahead and enter the congress and Bill numbers.  Or you can search through bills with keywords.
 
-  .form-field.enter-bill
-    input(id='congress' type='number' max='113' placeholder='Enter Congress here')
-    input(id='bill-number', type='text', placeholder='Enter the bill number here! ex. hr2397')
-    button(id='find-bill') Show Bill
+.form-field.enter-bill
+  input(id='congress' type='number' max='113' placeholder='Enter Congress here')
+  input(id='bill-number', type='text', placeholder='Enter the bill number here! ex. hr2397')
+  button(id='find-bill') Show Bill
 
-  .form-field.enter-search-string
-    input(id='find-input', type='text', placeholder='Enter Keywords to Search Bills')
-    button(id='search-bills') Find Bills
+.form-field.enter-search-string
+  input(id='find-input', type='text', placeholder='Enter Keywords to Search Bills')
+  button(id='search-bills') Find Bills
 
-  p#information.info-icon
-    img(src= "/info-icon.png")
+p#information.info-icon
+  img(src= "/info-icon.png")
