@@ -2,7 +2,7 @@ class BubbleChart
   constructor: (data) ->
     @data = data
     @width = $("#chart").width()
-    @height = 600
+    @height = $("#chart").height()
 
 
     # locations the nodes will move towards
@@ -45,7 +45,7 @@ class BubbleChart
   create_nodes: () =>
     @data.forEach (d, i) =>
       node = {
-        id: i
+        id: d.bill_id
         radius: @radius_scale(parseInt(d.last_version.pages))
         value: d.last_version.pages
         name: d.short_title
@@ -84,11 +84,10 @@ class BubbleChart
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
-      .attr("data-bill-id", (d) -> d.bill_id)
       .attr("fill", (d) => @fill_color(d.group))
       .attr("stroke-width", 2)
       .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
-      .attr("id", (d) -> "bubble_#{d.id}")
+      .attr("id", (d) -> "#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
       .on("click", (d,i) -> that.transitionBill(d,i,this))
@@ -110,7 +109,7 @@ class BubbleChart
   # Dividing by 8 scales down the charge to be
   # appropriate for the visualization dimensions.
   charge: (d) ->
-    -Math.pow(d.radius, 2.0) / 8
+    d.radius * d.radius / - 9.5
 
   # Starts up the force layout with
   # the default values
@@ -124,7 +123,7 @@ class BubbleChart
   display_group_all: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(0.9)
+      .friction(.9)
       .on "tick", (e) =>
         @circles.each(this.move_towards_center(e.alpha))
           .attr("cx", (d) -> d.x)
@@ -193,4 +192,4 @@ class BubbleChart
     d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
 
 
-root = exports ? this
+module.exports = BubbleChart
