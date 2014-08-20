@@ -7,10 +7,29 @@ BubbleChart = require './../../helpers/bubble-chart.coffee'
 class EnactedView extends Marionette.ItemView
   template: require './enacted-view.jade'
   model: "EnactedModel"
-  tagName: "svg"
+  id: "bubbleChart"
 
+  events:
+    'click circle': "showBillData"
+    'click #combined': "combine"
+    'click #byYear': 'byYear'
+    'click #byParty': 'byParty'
+  
   initialize: ->
 
+  combine: ->
+    BubbleChart.display_all()
+
+  byParty: ->
+    BubbleChart.display_party()
+
+  byYear: ->
+    BubbleChart.display_year()
+
+  showBillData: (e) ->
+    console.log e.currentTarget
+    # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
+    # @trigger 'showAmendmentData', amendmentData
 
   render: ->
     $ ->
@@ -25,14 +44,24 @@ class EnactedView extends Marionette.ItemView
         chart.display_group_all()
       BubbleChart.display_year = () =>
         chart.display_by_year()
+      BubbleChart.display_party = () =>
+        chart.display_by_party()
+      BubbleChart.transitionBill=() =>
+        chart.transitionBill()
       BubbleChart.toggle_view = (view_type) =>
         if view_type == 'year'
           BubbleChart.display_year()
         else
           BubbleChart.display_all()
-
+          
       #Render the chart
-      render_vis data
+      render_vis data 
 
+      a = $("#axis")
+      a.remove()
+
+#     amendmentId = @$( e.currentTarget ).attr 'data-bill'
+#     # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
+#     # @trigger 'showAmendmentData', amendmentData
 
 module.exports = EnactedView

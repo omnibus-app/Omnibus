@@ -4,15 +4,30 @@ class BubbleChart
     @width = $("#chart").width()
     @height = $("#chart").height()
 
+   #create buttons and append
+    buttons = [
+      ['combined', 'All Bills'],
+      ['byYear', 'By Congress'],
+      ['byParty', 'By Party']
+    ]
+
+    buttonHolder = $("#bubbleChart")
+    for pair in buttons
+      buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
 
     # locations the nodes will move towards
     # depending on which view is currently being
     # used
     @center = {x: @width / 2, y: @height / 2}
     @year_centers = {
-      "111": {x: @width / 3, y: 2 * @height / 3},
+      "111": {x: @width / 3, y: @height / 2},
       "112": {x: @width / 2, y: @height / 2},
-      "113": {x: 2.3 * @width / 3, y: 2 * @height / 3}
+      "113": {x: 2.3 * @width / 3, y: @height / 2}
+    }
+    @party_centers = {
+      "Republican": {x: @width / 3, y: @height / 2},
+      "Split": {x: @width / 2, y: @height / 2},
+      "Democrat": {x: 2.3 * @width / 3, y: @height / 2}
     }
 
     # used when setting up force and
@@ -54,6 +69,7 @@ class BubbleChart
         sponsorId: d.sponsor_id
         committee: d.committee_ids
         introduced: d.introduced_on
+        # party: d.party
         congress: d.congress
         exited: d.last_action_at
         x: Math.random() * 900
@@ -64,10 +80,11 @@ class BubbleChart
     @nodes.sort (a,b) -> b.value - a.value
 
 
+
   # create svg at #vis and then 
   # create circle representation for each node
   create_vis: () =>
-    @vis = d3.select("#chart").append("svg")
+    @vis = d3.select("#bubbleChart").append("svg")
       .attr("width", @width)
       .attr("height", @height)
       .attr("id", "svg_vis")
@@ -84,18 +101,19 @@ class BubbleChart
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
+      .attr("class","bubble")
       .attr("fill", (d) => @fill_color(d.group))
       .attr("stroke-width", 2)
       .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
-      .attr("id", (d) -> "#{d.id}")
+      .attr("data-bill", (d) -> "#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
-      .on("click", (d,i) -> that.transitionBill(d,i,this))
 
     # Fancy transition to make bubbles appear, ending with the
     # correct radius
     @circles.transition().duration(2000).attr("r", (d) -> 
       d.radius)
+
 
 
   # Charge function that is called for each node.
@@ -110,6 +128,7 @@ class BubbleChart
   # appropriate for the visualization dimensions.
   charge: (d) ->
     d.radius * d.radius / - 9.5
+
 
   # Starts up the force layout with
   # the default values
@@ -136,8 +155,8 @@ class BubbleChart
   # of the visualization
   move_towards_center: (alpha) =>
     (d) =>
-      d.x = d.x + (@center.x - d.x) * (@damper + 0.01) * alpha
-      d.y = d.y + (@center.y - d.y) * (@damper + 0.01) * alpha
+      d.x = d.x + (@center.x - d.x) * (@damper + 0.03) * alpha
+      d.y = d.y + (@center.y - d.y) * (@damper + 0.03) * alpha
 
   # sets the display of bubbles to be separated
   # into each year. Does this by calling move_towards_year
@@ -153,10 +172,28 @@ class BubbleChart
 
     this.display_years()
 
+  display_by_party: () =>
+    @force.gravity(@layout_gravity)
+      .charge(this.charge)
+      .friction(0.9)
+      .on "tick", (e) =>
+        @circles.each(this.move_towards_party(e.alpha))
+          .attr("cx", (d) -> d.x)
+          .attr("cy", (d) -> d.y)
+    @force.start()
+
+    this.display_partys()
+
   # move all circles to their associated @year_centers 
   move_towards_year: (alpha) =>
     (d) =>
       target = @year_centers[d.congress]
+      d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
+      d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
+
+  move_towards_party: (alpha) =>
+    (d) =>
+      target = @party_centers[d.party]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
@@ -174,6 +211,19 @@ class BubbleChart
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
+  display_partys: () =>
+    partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
+    partys_data = d3.keys(partys_x)
+    partys = @vis.selectAll(".partys")
+      .data(years_data)
+
+    years.enter().append("text")
+      .attr("class", "partys")
+      .attr("x", (d) => partys_x[d] )
+      .attr("y", 40)
+      .attr("text-anchor", "middle")
+      .text((d) -> d)
+
   # Method to hide year titles
   hide_years: () =>
     years = @vis.selectAll(".years").remove()
@@ -181,12 +231,6 @@ class BubbleChart
   #highlight moused bill
   show_details: (data, i, element) =>
     d3.select(element).attr("stroke", "black")
-
-  #transition to individual bill view
-  transitionBill: (data, i, element) =>
-    d3.select(element).attr("stroke", (d) ->
-      console.log d
-    )
 
   hide_details: (data, i, element) =>
     d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
