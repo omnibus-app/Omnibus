@@ -1,9 +1,10 @@
 _ = window._
 util = require '../../helpers/graph-util.coffee'
 data = require './../../../../assets/data/enacted.json'
-bubbles = require './../../helpers/bubble-chart.coffee'
+BubbleChart = require './../../helpers/bubble-chart.coffee'
 
-class EnactedtView extends Marionette.ItemView
+
+class EnactedView extends Marionette.ItemView
   template: require './enacted-view.jade'
   model: "EnactedModel"
   tagName: "svg"
