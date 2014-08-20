@@ -91,7 +91,6 @@ class BubbleChart
       .attr("data-bill", (d) -> "#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
-      # .on("click", (d,i) -> that.transitionBill(d,i,this))
 
     # Fancy transition to make bubbles appear, ending with the
     # correct radius
@@ -182,12 +181,6 @@ class BubbleChart
   #highlight moused bill
   show_details: (data, i, element) =>
     d3.select(element).attr("stroke", "black")
-
-  #transition to individual bill view
-  transitionBill: (data, i, element) =>
-    d3.select(element).attr("stroke", (d) ->
-      console.log d
-    )
 
   hide_details: (data, i, element) =>
     d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
