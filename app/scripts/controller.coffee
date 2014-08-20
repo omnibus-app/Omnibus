@@ -17,6 +17,8 @@ EnactedView = require './views/content-views/enacted-view.coffee'
 EnactedModel = require './models/enacted-model.coffee'
 AmendView = require './views/meta-views/meta-amend-view.coffee'
 AmendModel = require './models/meta-amend-model.coffee'
+EnactedView = require './views/content-views/enacted-view.coffee'
+EnactedModel = require './models/enacted-model.coffee'
 
 
 class MainController extends Marionette.Controller
