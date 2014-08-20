@@ -109,7 +109,7 @@ class BubbleChart
   # Dividing by 8 scales down the charge to be
   # appropriate for the visualization dimensions.
   charge: (d) ->
-    d.radius * d.radius / - 9
+    d.radius * d.radius / - 9.5
 
   # Starts up the force layout with
   # the default values
@@ -123,7 +123,7 @@ class BubbleChart
   display_group_all: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(.9)
+      .friction(.85)
       .on "tick", (e) =>
         @circles.each(this.move_towards_center(e.alpha))
           .attr("cx", (d) -> d.x)
@@ -136,8 +136,8 @@ class BubbleChart
   # of the visualization
   move_towards_center: (alpha) =>
     (d) =>
-      d.x = d.x + (@center.x - d.x) * (@damper + 0.01) * alpha
-      d.y = d.y + (@center.y - d.y) * (@damper + 0.01) * alpha
+      d.x = d.x + (@center.x - d.x) * (@damper + 0.03) * alpha
+      d.y = d.y + (@center.y - d.y) * (@damper + 0.03) * alpha
 
   # sets the display of bubbles to be separated
   # into each year. Does this by calling move_towards_year
