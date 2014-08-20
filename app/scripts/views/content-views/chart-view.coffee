@@ -1,13 +1,22 @@
 _ = window._
 util = require '../../helpers/graph-util.coffee'
+sortUtil = require '../../helpers/sorting.coffee'
 
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
   model: "BillModel"
-  tagName: "svg"
+  className: 'test'
 
   events:
     'mouseover [data-amdt]': 'showAmendmentData'
+    'click #oldest': 'oldestFirst'
+    'click #newest': 'newestFirst'
+    'click #dem-total': 'demTotal'
+    'click #rep-total': 'repTotal'
+    'click #dem-biased': 'demBiased'
+    'click #rep-biased': 'repBiased'
+    'click #least-voted': 'leastVoted'
+    'click #most-voted': 'mostVoted'
 
   initialize: ->
 
@@ -24,8 +33,9 @@ class ChartView extends Marionette.ItemView
     data = votes.filter ( ammendment ) ->
       if ammendment.vote
         return ammendment
-
+      
     data = data.map util.buildData
+      .sort sortUtil.order
 
     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse
 
@@ -39,7 +49,6 @@ class ChartView extends Marionette.ItemView
 
     height = data.length * 12
 
-    #Set the scale
     x = d3.scale
       .linear()
       .range [0, width]
@@ -51,6 +60,24 @@ class ChartView extends Marionette.ItemView
       Math.abs x
 
     ticks = [-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]
+
+
+    buttons = [
+      ['oldest', 'oldest'],
+      ['newest', 'newest'],
+      ['dem-total', 'most dem votes'],
+      ['rep-total', 'most rep votes'],
+      ['dem-biased', 'most dem weighted'],
+      ['rep-biased', 'most rep weighted'],
+      ['most-voted', 'most voted'],
+      ['least-voted', 'least voted']
+    ]
+
+    buttonHolder = @$el
+    for pair in buttons
+      buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
+
+    console.log @$el
 
     xAxis = d3.svg.axis()
       .scale x
@@ -73,7 +100,7 @@ class ChartView extends Marionette.ItemView
         .attr 'height', height + margin.top + margin.bottom
       .append 'g'
         .attr 'transform', 'translate(' + margin.left + ')'
-
+    console.log svg
 
     dems = data.map (el) ->
       el.demY
@@ -117,6 +144,7 @@ class ChartView extends Marionette.ItemView
               d.amdt
             .attr 'transform', 'translate(' + 0 + ',' + i * 15 + ')'
 
+
     staticAxis
       .append 'g'
       .attr 'class', 'x axis'
@@ -130,10 +158,36 @@ class ChartView extends Marionette.ItemView
         .attr 'x1', x 0
         .attr 'x2', x 0
         .attr 'y2', height
+    @svg = svg
+
 
   showAmendmentData: (e) ->
     amendmentId = @$( e.currentTarget ).attr 'data-amdt'
     amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
     @trigger 'showAmendmentData', amendmentData
+
+  oldestFirst: (e) ->
+    sortUtil.sortBy @svg, sortUtil.oldestFirst
+
+  newestFirst: (e) ->
+    sortUtil.sortBy @svg, sortUtil.newestFirst
+
+  demTotal: (e) ->
+    sortUtil.sortBy @svg, sortUtil.democratTotal
+
+  repTotal: (e) ->
+    sortUtil.sortBy @svg, sortUtil.republicanTotal
+
+  demBiased: (e) ->
+    sortUtil.sortBy @svg, sortUtil.democratDiff
+
+  repBiased: (e) ->
+    sortUtil.sortBy @svg, sortUtil.republicanDiff
+
+  leastVoted: (e) ->
+    sortUtil.sortBy @svg, sortUtil.noVote
+
+  mostVoted: (e) ->
+    sortUtil.sortBy @svg, sortUtil.mostVote
 
 module.exports = ChartView
