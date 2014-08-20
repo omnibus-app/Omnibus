@@ -1,7 +1,7 @@
 .bill-info
   p.bill-title Title: #{ short_title }
-  p.bill-nicknames Nicknames:
-    if nicknames
+  if nicknames
+    p.bill-nicknames Nicknames:
       each name, i in nicknames
         |  #{ name }
         - if(i < nicknames.length-1)
