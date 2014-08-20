@@ -4,6 +4,16 @@ class BubbleChart
     @width = $("#chart").width()
     @height = $("#chart").height()
 
+   #create buttons and append
+    buttons = [
+      ['combined', 'All Bills'],
+      ['byYear', 'By Congress'],
+      ['byParty', 'By Party']
+    ]
+
+    buttonHolder = $("#axis")
+    for pair in buttons
+      buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
 
     # locations the nodes will move towards
     # depending on which view is currently being
@@ -96,6 +106,7 @@ class BubbleChart
     # correct radius
     @circles.transition().duration(2000).attr("r", (d) -> 
       d.radius)
+
 
 
   # Charge function that is called for each node.

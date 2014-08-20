@@ -11,8 +11,20 @@ class EnactedView extends Marionette.ItemView
 
   events:
     'click circle': "showBillData"
+    'click #combined': "combine"
+    'click #byYear': 'byYear'
+    'click #byParty': 'byParty'
   
   initialize: ->
+
+  combine: ->
+    BubbleChart.display_all()
+
+  byParty: ->
+    BubbleChart.display_party()
+
+  byYear: ->
+    BubbleChart.display_year()
 
   showBillData: (e) ->
     console.log e.currentTarget

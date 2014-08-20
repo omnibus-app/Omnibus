@@ -71,7 +71,7 @@ ChartView = (function(_super) {
     };
     ticks = [-250, -200, -150, -100, -50, 0, 50, 100, 150, 200, 250];
     buttons = [['oldest', 'oldest'], ['newest', 'newest'], ['dem-total', 'most dem votes'], ['rep-total', 'most rep votes'], ['dem-biased', 'most dem weighted'], ['rep-biased', 'most rep weighted'], ['most-voted', 'most voted'], ['least-voted', 'least voted']];
-    buttonHolder = this.$el;
+    buttonHolder = $("#bubbleChart");
     for (_i = 0, _len = buttons.length; _i < _len; _i++) {
       pair = buttons[_i];
       buttonHolder.append("<button id=" + pair[0] + ">" + pair[1] + "</button>");
