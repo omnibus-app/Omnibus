@@ -67,7 +67,7 @@ class BubbleChart
   # create svg at #vis and then 
   # create circle representation for each node
   create_vis: () =>
-    @vis = d3.select("#chart").append("svg")
+    @vis = d3.select("#bubbleChart").append("svg")
       .attr("width", @width)
       .attr("height", @height)
       .attr("id", "svg_vis")
@@ -84,13 +84,14 @@ class BubbleChart
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
+      .attr("class","bubble")
       .attr("fill", (d) => @fill_color(d.group))
       .attr("stroke-width", 2)
       .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
-      .attr("id", (d) -> "#{d.id}")
+      .attr("data-bill", (d) -> "#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
-      .on("click", (d,i) -> that.transitionBill(d,i,this))
+      # .on("click", (d,i) -> that.transitionBill(d,i,this))
 
     # Fancy transition to make bubbles appear, ending with the
     # correct radius
@@ -109,7 +110,7 @@ class BubbleChart
   # Dividing by 8 scales down the charge to be
   # appropriate for the visualization dimensions.
   charge: (d) ->
-    d.radius * d.radius / - 9.5
+    d.radius * d.radius / - 9
 
   # Starts up the force layout with
   # the default values
