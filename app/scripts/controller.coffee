@@ -18,6 +18,7 @@ EnactedModel = require './models/enacted-model.coffee'
 AmendView = require './views/meta-views/meta-amend-view.coffee'
 AmendModel = require './models/meta-amend-model.coffee'
 
+
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
     # Shows loading spinner on init
