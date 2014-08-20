@@ -220,7 +220,7 @@ class BubbleChart
     partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
     partys_data = d3.keys(partys_x)
     partys = @vis.selectAll(".partys")
-      .data(years_data)
+      .data(partys_data)
 
     years.enter().append("text")
       .attr("class", "partys")
