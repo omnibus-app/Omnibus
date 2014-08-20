@@ -12,10 +12,7 @@ SubjectsModel = require './models/meta-subjects-model.coffee'
 InfoView = require './views/meta-views/meta-info-view.coffee'
 InfoModel = require './models/meta-info-model.coffee'
 AmendView = require './views/meta-views/meta-amend-view.coffee'
-AmendModel = require './models/meta-amend-model.coffee'
-EnactedView = require './views/content-views/enacted-view.coffee'
-EnactedModel = require './models/enacted-model.coffee'
-AmendView = require './views/meta-views/meta-amend-view.coffee'
+AmendEmptyView = require './views/meta-views/meta-amend-info-view.coffee'
 AmendModel = require './models/meta-amend-model.coffee'
 EnactedView = require './views/content-views/enacted-view.coffee'
 EnactedModel = require './models/enacted-model.coffee'
@@ -23,38 +20,71 @@ EnactedModel = require './models/enacted-model.coffee'
 
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
-    # Shows loading spinner on init
-    @showSpinner @options.regions.content
+    @searchView()
+    contentLayout = new ContentLayout
+    @options.regions.content.show contentLayout
+    @showSpinner contentLayout.chart
 
   # Takes a region which it empties and attachs a loading spinner
   showSpinner: ( region ) ->
     region.empty()
-    # Loading spinner is created on App
     region.$el.append App.spinner.el
 
   # Used to kick off the initial visualization before user bill selection
   home: ->
-    # Parameters for the initial view bill
-    currentCongress = 113
-    firstBill = 'hr2397'
-    firstBillId = currentCongress + '-' + firstBill
+    # base = 'http://omnibus-backend.azurewebsites.net/api/congress/'
+    # congressOne = $.ajax base + '111/enacted'
+    # congressTwo = $.ajax base + '112/enacted'
+    # congressThree = $.ajax base + '113/enacted'
 
-    #Show the bill data
-    @showBill firstBillId
+    # $.when congressOne, congressTwo, congressThree
+    #   .done ( dataOne, dataTwo, dataThree ) =>
+    #     data = [].concat dataOne[ 0 ], dataTwo[ 0 ], dataThree[ 0 ]
+    #     enactedModel = new EnactedModel bills: data
+    #     enactedView = new EnactedView model: enactedModel
+    #     @options.regions.content.currentView.chart.show enactedView
 
-  # Show Bubble View
-  # home: ->
-    # Get Bubble Model
-    # display bubble view in content chart region
+    enactedModel = new EnactedModel id: 113
+    enactedView = new EnactedView model: enactedModel
+    @options.regions.content.currentView.chart.show enactedView
+
+    # Make Meta
+    @makeEnactedMeta enactedModel
+
+  makeEnactedMeta: ( model ) ->
+    metaLayout = new MetaLayout
+    @options.regions.content.currentView.meta.show metaLayout
+
+  
+  # makeBillHover: ( amendData ) ->
+  #   deferred = new $.Deferred()
+  #   if amendData
+  #     amendModel = new AmendModel data: amendData
+  #     amendView = new AmendView model: amendModel
+  #   else
+  #     amendModel = new AmendModel
+  #     amendView = new AmendEmptyView model: amendModel
+
+  #   deferred.resolve amendView
+  #   deferred.promise()
+
+  # makeBillAggregate: ( billId ) ->
+  #   deferred = new $.Deferred()
+  #   infoModel = new InfoModel id: billId
+  #   infoModel.fetch().then ->
+  #     infoView = new InfoView model: infoModel
+  #     deferred.resolve infoView
+
+  #   deferred.promise()
+
+    
+
 
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
-    # Start the spinner in the content region
     @showSpinner @options.regions.content
-    # Call for the bill model using the id
     @getData( billId ).then ( billModel ) =>
-      # Call to show all with the bill model
-      @showAll billModel, billId
+      @makeBill billModel, billId
 
   # Grabs data from NYT wrapper for a given bill Id ( congress - bill: '113-hr2397' )
   getData: ( billId )->
@@ -65,64 +95,70 @@ class MainController extends Marionette.Controller
       billModel = new BillModel id: billId
       # Fetch the model to make a request to NYT wrapper
       billModel.fetch().then ( res ) ->
+        console.log res
         window.localStorage.setItem billId, JSON.stringify res
         # Resolve the promise with the model instance
         deferred.resolve billModel
     else
       # If the billId exists in local storage, create a new model with the
       # parse data and resolve the promise with it
+      console.log JSON.parse window.localStorage.getItem billId
       billModel = new BillModel votes: JSON.parse window.localStorage.getItem billId
       deferred.resolve billModel
 
     deferred.promise()
 
   # Recreates content and search regions with new bill model
-  showAll: ( billModel, billId ) ->
-    # Update view region with bill model
-    @searchView billModel
-
+  makeBill: ( billModel, billId ) ->
     # Check local storage to see if the user has visited the site before
-    if not window.localStorage.getItem 'omnibus-visited'
       # If not, show the welcome view and set the state to 'visited'
+    if not window.localStorage.getItem 'omnibus-visited'
       @welcomeView billModel
       window.localStorage.setItem 'omnibus-visited', true
 
-    # Populate the content region
-    contentLayout = new ContentLayout
-    @options.regions.content.show contentLayout
     chartView = new ChartView model: billModel
-    # contentLayout.chart.show chartView
-    enactedModel = new EnactedModel id: '113'
-    enactedView = new EnactedView model: enactedModel
-    contentLayout.chart.show enactedView
+    if not @options.regions.content.currentView
+      contentLayout = new ContentLayout
+      @options.regions.content.show contentLayout
+    @options.regions.content.currentView.chart.show chartView
 
+    @makeBillMeta billModel, billId
 
-    @listenTo chartView, 'showAmendmentData', (data) ->
-      @makeAmendmentMeta data
-        .then ( amendView ) ->
-          metaLayout[ 'meta3' ].show amendView
-
-
-    # Create meta layout and show in contentlayout 'meta' region
+  makeBillMeta: ( model, billId ) ->
+    chartView = @options.regions.content.currentView
     metaLayout = new MetaLayout
-    contentLayout.meta.show metaLayout
-    @showSpinner metaLayout.meta1
-    @showSpinner metaLayout.meta2
+    chartView.meta.show metaLayout
 
-    # Create main meta view
-    @makeInfoMeta billId
-      .then ( infoView ) ->
-        metaLayout[ 'meta1' ].show infoView
+    
+    @listenTo chartView.chart.currentView, 'showAmendmentData', (data) ->
+      @makeAmendHover data
+        .then ( amendView ) ->
+          metaLayout[ 'meta1' ].show amendView
 
-    # Create subjects meta view
-    @makeSubjectsMeta billId
-      .then ( subjectsView ) ->
-        metaLayout[ 'meta2' ].show subjectsView
+    @makeAmendHover()
+      .then ( amendView ) ->
+        metaLayout[ 'meta1' ].show amendView
 
-  # Create InfoMeta model and view given a billId
-  makeInfoMeta: ( billId ) ->
+    @makeAmendAggregate billId
+      .then ( metaView ) ->
+        metaLayout[ 'meta2' ].show metaView
+
+  # Pass ammendment data in and create a model/view with it
+  # Returns jQuery promise for consistency
+  makeAmendHover: ( amendData ) ->
     deferred = new $.Deferred()
+    if amendData
+      amendModel = new AmendModel data: amendData
+      amendView = new AmendView model: amendModel
+    else
+      amendModel = new AmendModel
+      amendView = new AmendEmptyView model: amendModel
 
+    deferred.resolve amendView
+    deferred.promise()
+
+  makeAmendAggregate: ( billId ) ->
+    deferred = new $.Deferred()
     infoModel = new InfoModel id: billId
     infoModel.fetch().then ->
       infoView = new InfoView model: infoModel
@@ -130,28 +166,6 @@ class MainController extends Marionette.Controller
 
     deferred.promise()
 
-  # Create SubjectsMeta model and view given a billId
-  makeSubjectsMeta: ( billId ) ->
-    deferred = new $.Deferred()
-
-    subjectsModel = new SubjectsModel id: billId
-    subjectsModel.fetch().then ->
-      subjectsView = new SubjectsView model: subjectsModel
-      deferred.resolve subjectsView
-
-    deferred.promise()
-
-  # Pass ammendment data in and create a model/view with it
-  # Returns jQuery promise for consistency
-  makeAmendmentMeta: ( amendData ) ->
-    deferred = new $.Deferred()
-
-    amendModel = new AmendModel results: amendData
-    amendView = new AmendView model: amendModel
-
-    deferred.resolve amendView
-
-    deferred.promise()
 
   # Displays the welcome view to new users
   welcomeView: ( billModel ) ->
@@ -170,25 +184,21 @@ class MainController extends Marionette.Controller
     @options.regions.welcome.show welcomeView
 
   # Initiates the Search view and
-  searchView: ( billModel ) ->
-    # Create the search view with the billModel (bill model not currently used)
-    searchView = new SearchView model: billModel
+  searchView: ( ) ->
+
+    searchView = new SearchView
 
     # Listen to submit event on known bill number
     @listenTo searchView, 'findBill:submit', ( billId ) ->
-      # Navigate to the address with the billId
       @router.navigate 'bills/' + billId, trigger: true
 
     # Listen to show Welcome view event on info button click
     @listenTo searchView, 'welcome:show', ->
-      # Show the welcome view with the bill model
       @welcomeView searchView.model
 
     # Listen to search bills submit event
     @listenTo searchView, 'search:bills:submit', ( query ) ->
-      # forward the query to searchResults
       @router.navigate 'bills/search/' + query, trigger: true
-      # @searchResults( query )
 
     # Show the search view in the search region
     @options.regions.search.show searchView
@@ -197,7 +207,6 @@ class MainController extends Marionette.Controller
   searchResults: ( query ) ->
     # Start the spinner in the content region
     @showSpinner @options.regions.content
-    # Set parameters and reference to this
 
     billsCollection = new BillsCollection query: query
     billsCollection.fetch().then =>
