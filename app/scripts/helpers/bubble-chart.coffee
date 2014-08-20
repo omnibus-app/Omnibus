@@ -2,7 +2,7 @@ class BubbleChart
   constructor: (data) ->
     @data = data
     @width = $("#chart").width()
-    @height = 600
+    @height = $("#chart").height()
 
 
     # locations the nodes will move towards
@@ -110,7 +110,7 @@ class BubbleChart
   # Dividing by 8 scales down the charge to be
   # appropriate for the visualization dimensions.
   charge: (d) ->
-    -Math.pow(d.radius, 2.0) / 8
+    -Math.pow(d.radius, 2.0) / 9.5
 
   # Starts up the force layout with
   # the default values
@@ -124,7 +124,7 @@ class BubbleChart
   display_group_all: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(0.9)
+      .friction(.9)
       .on "tick", (e) =>
         @circles.each(this.move_towards_center(e.alpha))
           .attr("cx", (d) -> d.x)
@@ -193,4 +193,4 @@ class BubbleChart
     d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
 
 
-root = exports ? this
+module.exports = BubbleChart
