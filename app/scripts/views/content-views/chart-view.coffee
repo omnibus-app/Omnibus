@@ -73,7 +73,7 @@ class ChartView extends Marionette.ItemView
       ['least-voted', 'least voted']
     ]
 
-    buttonHolder = $("#bubbleChart")
+    buttonHolder = @$el
     for pair in buttons
       buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
 

@@ -44,6 +44,8 @@ class EnactedView extends Marionette.ItemView
         chart.display_group_all()
       BubbleChart.display_year = () =>
         chart.display_by_year()
+      BubbleChart.display_party = () =>
+        chart.display_by_party()
       BubbleChart.transitionBill=() =>
         chart.transitionBill()
       BubbleChart.toggle_view = (view_type) =>
@@ -54,6 +56,9 @@ class EnactedView extends Marionette.ItemView
           
       #Render the chart
       render_vis data 
+
+      a = $("#axis")
+      a.remove()
 
 #     amendmentId = @$( e.currentTarget ).attr 'data-bill'
 #     # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId

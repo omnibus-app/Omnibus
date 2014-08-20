@@ -11,7 +11,7 @@ class BubbleChart
       ['byParty', 'By Party']
     ]
 
-    buttonHolder = $("#axis")
+    buttonHolder = $("#bubbleChart")
     for pair in buttons
       buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
 
@@ -20,9 +20,14 @@ class BubbleChart
     # used
     @center = {x: @width / 2, y: @height / 2}
     @year_centers = {
-      "111": {x: @width / 3, y: 2 * @height / 3},
+      "111": {x: @width / 3, y: @height / 2},
       "112": {x: @width / 2, y: @height / 2},
-      "113": {x: 2.3 * @width / 3, y: 2 * @height / 3}
+      "113": {x: 2.3 * @width / 3, y: @height / 2}
+    }
+    @party_centers = {
+      "Republican": {x: @width / 3, y: @height / 2},
+      "Split": {x: @width / 2, y: @height / 2},
+      "Democrat": {x: 2.3 * @width / 3, y: @height / 2}
     }
 
     # used when setting up force and
@@ -64,6 +69,7 @@ class BubbleChart
         sponsorId: d.sponsor_id
         committee: d.committee_ids
         introduced: d.introduced_on
+        # party: d.party
         congress: d.congress
         exited: d.last_action_at
         x: Math.random() * 900
@@ -72,6 +78,7 @@ class BubbleChart
       @nodes.push node
 
     @nodes.sort (a,b) -> b.value - a.value
+
 
 
   # create svg at #vis and then 
@@ -122,6 +129,7 @@ class BubbleChart
   charge: (d) ->
     d.radius * d.radius / - 9.5
 
+
   # Starts up the force layout with
   # the default values
   start: () =>
@@ -134,7 +142,7 @@ class BubbleChart
   display_group_all: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(.85)
+      .friction(.9)
       .on "tick", (e) =>
         @circles.each(this.move_towards_center(e.alpha))
           .attr("cx", (d) -> d.x)
@@ -164,10 +172,28 @@ class BubbleChart
 
     this.display_years()
 
+  display_by_party: () =>
+    @force.gravity(@layout_gravity)
+      .charge(this.charge)
+      .friction(0.9)
+      .on "tick", (e) =>
+        @circles.each(this.move_towards_party(e.alpha))
+          .attr("cx", (d) -> d.x)
+          .attr("cy", (d) -> d.y)
+    @force.start()
+
+    this.display_partys()
+
   # move all circles to their associated @year_centers 
   move_towards_year: (alpha) =>
     (d) =>
       target = @year_centers[d.congress]
+      d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
+      d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
+
+  move_towards_party: (alpha) =>
+    (d) =>
+      target = @party_centers[d.party]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
@@ -181,6 +207,19 @@ class BubbleChart
     years.enter().append("text")
       .attr("class", "years")
       .attr("x", (d) => years_x[d] )
+      .attr("y", 40)
+      .attr("text-anchor", "middle")
+      .text((d) -> d)
+
+  display_partys: () =>
+    partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
+    partys_data = d3.keys(partys_x)
+    partys = @vis.selectAll(".partys")
+      .data(years_data)
+
+    years.enter().append("text")
+      .attr("class", "partys")
+      .attr("x", (d) => partys_x[d] )
       .attr("y", 40)
       .attr("text-anchor", "middle")
       .text((d) -> d)
