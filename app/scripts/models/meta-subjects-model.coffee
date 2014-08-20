@@ -7,7 +7,6 @@ class SubjectsModel extends Backbone.Model
   urlRoot: @url
 
   parse: ( response ) ->
-    data = {}
-    data.results = JSON.parse response
+    JSON.parse response
 
 module.exports = SubjectsModel

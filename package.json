@@ -7,20 +7,15 @@
   "scripts": {
     "start": "npm install",
     "post install": "gulp build",
-    "test": "gulp buildTest && testling"
+    "test": "gulp buildTest && testling --ui"
   },
   "testling": {
     "browsers": [
       "ie/6..latest",
       "chrome/22..latest",
-      "firefox/16..latest",
-      "safari/latest",
-      "opera/11.0..latest",
-      "iphone/6",
-      "ipad/6",
-      "android-browser/latest"
+      "firefox/16..latest"
     ],
-    "harness": "mocha-bdd",
+    "harness": "mocha",
     "scripts": [
       "./bower_components/chai/chai.js",
       "./bower_components/jquery/dist/jquery.js",
@@ -29,7 +24,8 @@
       "./bower_components/spin.js/spin.js",
       "./bower_components/marionette/lib/backbone.marionette.js",
       "./test/test.js"
-    ]
+    ],
+    "preprocesses": "gulp buildTest"
   },
   "dependencies": {
     "backbone": "^1.1.2",

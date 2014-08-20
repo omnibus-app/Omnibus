@@ -5,6 +5,9 @@
 [![Build Status](https://img.shields.io/travis-ci/omnibus-app/test-stack.svg?branch=master&style=flat)](https://travis-ci.org/omnibus-app/test-stack)
 [![Gulp](http://img.shields.io/badge/Built%20with-Gulp-blue.svg?style=flat)](http://gulpjs.com)
 
+[![browser support](https://ci.testling.com/omnibus-app/Omnibus.png)
+](https://ci.testling.com/omnibus-app/Omnibus)
+
 Omnibus is an interactive data visualization app that will make understanding large and complex bills easy.
 
 It's increasingly common for legislation to be bundled into large omnibus bills which makes untangling the content of these bills more difficult. Visualization is a powerful tool for distilling this data into a more digestible format.
