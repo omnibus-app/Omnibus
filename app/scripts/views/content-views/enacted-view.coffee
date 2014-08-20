@@ -11,51 +11,30 @@ class EnactedView extends Marionette.ItemView
 
   initialize: ->
 
-  @defaults: ->
-    margin =
-      top: 30
-      right: 10
-      bottom: 10
-      left: 10
 
   render: ->
-    #votes = @model.get 'votes'
-
-    #data = data.map util.buildData
-
-    # parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse
-
-    # margin =
-    #   top: 30
-    #   right: 10
-    #   bottom: 10
-    #   left: 10
-
-    @data = data
-    # console.log data
-    # width = $("#chart").width() - margin.right - margin.left
-    # height = data.length * 12
-
     $ ->
 
       chart = null
+      @data = JSON.stringify data
 
 
       render_vis = (json) ->
         chart = new BubbleChart json
         chart.start()
-        root.display_all()
-      root.display_all = () =>
+        BubbleChart.display_all()
+      BubbleChart.display_all = () =>
         chart.display_group_all()
-      root.display_year = () =>
+      BubbleChart.display_year = () =>
         chart.display_by_year()
-      root.toggle_view = (view_type) =>
+      BubbleChart.toggle_view = (view_type) =>
         if view_type == 'year'
-          root.display_year()
+          BubbleChart.display_year()
         else
-          root.display_all()
+          BubbleChart.display_all()
 
-      d3.json @data, render_vis
+      #Render the chart
+      render_vis data
 
 
 module.exports = EnactedView
