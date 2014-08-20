@@ -16,8 +16,6 @@ class EnactedView extends Marionette.ItemView
     $ ->
 
       chart = null
-      @data = JSON.stringify data
-
 
       render_vis = (json) ->
         chart = new BubbleChart json

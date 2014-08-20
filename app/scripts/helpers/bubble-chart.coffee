@@ -45,7 +45,7 @@ class BubbleChart
   create_nodes: () =>
     @data.forEach (d, i) =>
       node = {
-        id: i
+        id: d.bill_id
         radius: @radius_scale(parseInt(d.last_version.pages))
         value: d.last_version.pages
         name: d.short_title
@@ -84,11 +84,10 @@ class BubbleChart
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
-      .attr("data-bill-id", (d) -> d.bill_id)
       .attr("fill", (d) => @fill_color(d.group))
       .attr("stroke-width", 2)
       .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
-      .attr("id", (d) -> "bubble_#{d.id}")
+      .attr("id", (d) -> "#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
       .on("click", (d,i) -> that.transitionBill(d,i,this))
