@@ -7,7 +7,7 @@ gulp.task('watch', ['setWatch','browserSync'], function(){
   gulp
     .watch(paths.src + '/index.jade', ['html']);
   gulp
-    .watch(paths.src + '/styles/*.styl',['styles']);
+    .watch(paths.src + '/styles/**/*.sass',['styles']);
   gulp
     .watch([
              paths.dest + 'js/*.js',
