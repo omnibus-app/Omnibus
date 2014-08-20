@@ -10,21 +10,14 @@ class EnactedView extends Marionette.ItemView
   id: "bubbleChart"
 
   events:
-    'click [class~=bubble]': "fun"
+    'click circle': "showBillData"
   
   initialize: ->
-    console.log @el
-    
-    
 
-    fun: ->
-      console.log 'hey'
-
-
-    # this.d3 = d3.select(this.el)
-    showBillData: (e) ->
-      console.log e
-      console.log 'hey'
+  showBillData: (e) ->
+    console.log e.currentTarget
+    # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
+    # @trigger 'showAmendmentData', amendmentData
 
   render: ->
     $ ->
@@ -49,10 +42,6 @@ class EnactedView extends Marionette.ItemView
           
       #Render the chart
       render_vis data 
-
-#     ar = d3.select('data-bill-id')
-#     console.log ar
-
 
 #     amendmentId = @$( e.currentTarget ).attr 'data-bill'
 #     # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
