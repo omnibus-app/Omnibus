@@ -7,9 +7,7 @@ class SearchResults extends Marionette.CompositeView
 
   initialize: ->
     @on 'childview:bill:submit', ( data ) ->
-      congress = data.model.get 'congress'
-      type = data.model.get 'bill_type'
-      number = data.model.get 'number'
-      billId = congress + '-' + type + number
+      bill = data.model.get 'bill_id'
+      billId = bill.slice( -3 ) + '-' + bill.slice( 0, -4 )
       @trigger 'bill:submit', billId
 module.exports = SearchResults

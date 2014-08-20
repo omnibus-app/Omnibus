@@ -1,15 +1,4 @@
-class YearsModel extends Backbone.Model
-  initialize: ( options ) ->
-    @url = 'http://omnibus-backend.azurewebsites.net/api/congress/' +
-      options.id + '/enacted'
-      
-
-  urlRoot: @url
+class SearchResult extends Backbone.Model
 
 
-  parse: ( response ) ->
-    data = {}
-    data.votes = response
-    data
-
-module.exports = YearsModel
+module.exports = SearchResult
