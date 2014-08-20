@@ -110,7 +110,7 @@ class BubbleChart
   # Dividing by 8 scales down the charge to be
   # appropriate for the visualization dimensions.
   charge: (d) ->
-    -Math.pow(d.radius, 2.0) / 9.5
+    d.radius * d.radius / - 9.5
 
   # Starts up the force layout with
   # the default values
