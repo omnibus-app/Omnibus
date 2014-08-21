@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm install",
     "post install": "gulp build",
-    "test": "gulp buildTest && testling --ui"
+    "test": "gulp buildTest && testling"
   },
   "testling": {
     "browsers": [
@@ -15,8 +15,9 @@
       "chrome/22..latest",
       "firefox/16..latest"
     ],
-    "harness": "mocha",
+    "harness": "mocha-bdd",
     "scripts": [
+      "./npm_modules/js-fixtures/fixtures.js",
       "./bower_components/chai/chai.js",
       "./bower_components/jquery/dist/jquery.js",
       "./bower_components/underscore/underscore.js",
@@ -57,6 +58,7 @@
     "gulp-util": "^3.0.0",
     "jade": "~1.1.5",
     "jadeify": "^2.5.0",
+    "js-fixtures": "^1.5.1",
     "mocha": "~1.17.1",
     "nib": "^1.0.3",
     "pretty-hrtime": "^0.2.1",
