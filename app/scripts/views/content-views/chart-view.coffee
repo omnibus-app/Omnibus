@@ -5,7 +5,7 @@ sortUtil = require '../../helpers/sorting.coffee'
 class ChartView extends Marionette.ItemView
   template: require './chart-view.jade'
   model: "BillModel"
-  className: 'test'
+  className: 'main'
 
   events:
     'mouseover [data-amdt]': 'showAmendmentData'
