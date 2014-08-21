@@ -4,6 +4,11 @@ class BubbleChart
     @width = $("#chart").width()
     @height = $("#chart").height()
 
+    d3.selection::moveToFront = ->
+      @each ->
+        @parentNode.appendChild this
+        return
+
    #create buttons and append
     buttons = [
       ['combined', 'All Bills'],
@@ -48,7 +53,7 @@ class BubbleChart
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.last_version.pages))
-    @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 60])
+    @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 45])
 
   # create node objects from original data
   # that will serve as the data behind each
@@ -99,11 +104,12 @@ class BubbleChart
 
     # radius will be set to 0 initially.
     # see transition below
+
     @circles.enter().append("circle")
       .attr("r", 0)
       .attr("class","bubble")
       .attr("fill", (d) => @fill_color(d.group))
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 1.5)
       .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
       .attr("data-bill", (d) -> "#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
@@ -127,7 +133,7 @@ class BubbleChart
   # Dividing by 8 scales down the charge to be
   # appropriate for the visualization dimensions.
   charge: (d) ->
-    d.radius * d.radius / - 9.5
+    d.radius * d.radius / - 8.7
 
 
   # Starts up the force layout with
@@ -155,8 +161,8 @@ class BubbleChart
   # of the visualization
   move_towards_center: (alpha) =>
     (d) =>
-      d.x = d.x + (@center.x - d.x) * (@damper + 0.03) * alpha
-      d.y = d.y + (@center.y - d.y) * (@damper + 0.03) * alpha
+      d.x = d.x + (@center.x - d.x) * (@damper + 0.025) * alpha
+      d.y = d.y + (@center.y - d.y) * (@damper + 0.025) * alpha
 
   # sets the display of bubbles to be separated
   # into each year. Does this by calling move_towards_year
@@ -175,7 +181,7 @@ class BubbleChart
   display_by_party: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(0.9)
+      .friction(0.8)
       .on "tick", (e) =>
         @circles.each(this.move_towards_party(e.alpha))
           .attr("cx", (d) -> d.x)
@@ -215,7 +221,7 @@ class BubbleChart
     partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
     partys_data = d3.keys(partys_x)
     partys = @vis.selectAll(".partys")
-      .data(years_data)
+      .data(partys_data)
 
     years.enter().append("text")
       .attr("class", "partys")
@@ -230,10 +236,13 @@ class BubbleChart
 
   #highlight moused bill
   show_details: (data, i, element) =>
-    d3.select(element).attr("stroke", "black")
+    sel = d3.select(element)
+    sel.attr("stroke", "black")
+    sel.moveToFront()
 
   hide_details: (data, i, element) =>
     d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
+
 
 
 module.exports = BubbleChart
