@@ -29,7 +29,6 @@ App.on 'before:start', ( options ) ->
       'bills/search/:query': 'searchResults'
   @controller.router = @router
 
-
   # Start backbone history after init
 App.on 'start', ( options ) ->
   # pushState set to true to eliminate '#'

@@ -1,8 +1,5 @@
 expect = chai.expect
-
 App = require "./app.coffee"
-MainController = require "./controller.coffee"
-
 
 describe "app", ->
   App.start()

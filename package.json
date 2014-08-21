@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm install",
     "post install": "gulp build",
-    "test": "gulp buildTest && testling --ui"
+    "test": "gulp buildTest && testling"
   },
   "testling": {
     "browsers": [
