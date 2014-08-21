@@ -2,9 +2,10 @@
 language: node_js
 node_js:
   - "0.10"
+before_install:
+  - gem install sass
 before_script:
   - npm install -g bower
   - bower install
-  - gem install sass
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
