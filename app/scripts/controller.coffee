@@ -7,15 +7,17 @@ SearchResults = require './views/content-views/search-results-view.coffee'
 MetaLayout = require './views/meta-views/meta-layout.coffee'
 BillModel = require './models/bill-model.coffee'
 BillsCollection = require './collections/bills-collection.coffee'
-SubjectsView = require './views/meta-views/meta-subjects-view.coffee'
-SubjectsModel = require './models/meta-subjects-model.coffee'
-InfoView = require './views/meta-views/meta-info-view.coffee'
-InfoModel = require './models/meta-info-model.coffee'
+AmendInfoView = require './views/meta-views/meta-amend-info-view.coffee'
+AmendInfoModel = require './models/meta-amend-info-model.coffee'
 AmendView = require './views/meta-views/meta-amend-view.coffee'
-AmendEmptyView = require './views/meta-views/meta-amend-info-view.coffee'
+MetaInfoView = require './views/meta-views/meta-info-view.coffee'
 AmendModel = require './models/meta-amend-model.coffee'
 EnactedView = require './views/content-views/enacted-view.coffee'
 EnactedModel = require './models/enacted-model.coffee'
+BillHoverModel = require './models/meta-bill-hover-model.coffee'
+BillHoverView = require './views/meta-views/meta-bill-hover-view.coffee'
+EnactedAggView = require './views/meta-views/meta-enacted-agg-view.coffee'
+EnactedAggModel = require './models/meta-enacted-agg-model.coffee'
 
 
 class MainController extends Marionette.Controller
@@ -39,46 +41,58 @@ class MainController extends Marionette.Controller
 
     $.when congressOne, congressTwo, congressThree
       .done ( dataOne, dataTwo, dataThree ) =>
-        data = [].concat dataThree[ 0 ], dataTwo[ 0 ], dataOne[ 0 ]
+        data = [].concat dataOne[ 0 ], dataTwo[ 0 ], dataThree[ 0 ]
         enactedModel = new EnactedModel bills: data
         enactedView = new EnactedView model: enactedModel
         @options.regions.content.currentView.chart.show enactedView
-        @makeEnactedMeta enactedModel
         enactedView.render()
+        @makeEnactedMeta enactedModel
 
-
-    # Make Meta
 
   makeEnactedMeta: ( model ) ->
+    chartView = @options.regions.content.currentView
     metaLayout = new MetaLayout
-    @options.regions.content.currentView.meta.show metaLayout
+    chartView.meta.show metaLayout
+    @showSpinner metaLayout[ 'meta2' ]
+
+    @listenTo chartView.chart.currentView, 'showBill', ( billId ) ->
+      @router.navigate 'bills/' + billId, trigger: true
+
+    @listenTo chartView.chart.currentView, 'showMeta', ( data ) ->
+      @makeBillHover data
+        .then ( billView ) ->
+          metaLayout[ 'meta1' ].show billView
+
+    @makeBillHover()
+      .then ( billView ) ->
+        metaLayout[ 'meta1' ].show billView
+
+    @makeEnactedAggregate model
+      .then ( metaView ) ->
+        metaLayout[ 'meta2' ].show metaView
 
 
   
-  # makeBillHover: ( amendData ) ->
-  #   deferred = new $.Deferred()
-  #   if amendData
-  #     amendModel = new AmendModel data: amendData
-  #     amendView = new AmendView model: amendModel
-  #   else
-  #     amendModel = new AmendModel
-  #     amendView = new AmendEmptyView model: amendModel
+  makeBillHover: ( hoverData ) ->
+    deferred = new $.Deferred()
+    if hoverData
+      billHoverModel = new BillHoverModel data: hoverData
+      billHoverView = new BillHoverView model: billHoverModel
+    else
+      amendModel = new AmendModel
+      billHoverView = new MetaInfoView model: amendModel
 
-  #   deferred.resolve amendView
-  #   deferred.promise()
+    deferred.resolve billHoverView
+    deferred.promise()
 
-  # makeBillAggregate: ( billId ) ->
-  #   deferred = new $.Deferred()
-  #   infoModel = new InfoModel id: billId
-  #   infoModel.fetch().then ->
-  #     infoView = new InfoView model: infoModel
-  #     deferred.resolve infoView
+  makeEnactedAggregate: ( model ) ->
+    deferred = new $.Deferred()
+    # enactedAggModel = new EnactedAggModel data: data
+    enactedAggView = new EnactedAggView model: model
+    deferred.resolve enactedAggView
 
-  #   deferred.promise()
-
+    deferred.promise()
     
-
-
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
     @showSpinner @options.regions.content
@@ -94,14 +108,12 @@ class MainController extends Marionette.Controller
       billModel = new BillModel id: billId
       # Fetch the model to make a request to NYT wrapper
       billModel.fetch().then ( res ) ->
-        console.log res
         window.localStorage.setItem billId, JSON.stringify res
         # Resolve the promise with the model instance
         deferred.resolve billModel
     else
       # If the billId exists in local storage, create a new model with the
       # parse data and resolve the promise with it
-      console.log JSON.parse window.localStorage.getItem billId
       billModel = new BillModel votes: JSON.parse window.localStorage.getItem billId
       deferred.resolve billModel
 
@@ -128,7 +140,6 @@ class MainController extends Marionette.Controller
     metaLayout = new MetaLayout
     chartView.meta.show metaLayout
 
-    
     @listenTo chartView.chart.currentView, 'showAmendmentData', (data) ->
       @makeAmendHover data
         .then ( amendView ) ->
@@ -151,17 +162,17 @@ class MainController extends Marionette.Controller
       amendView = new AmendView model: amendModel
     else
       amendModel = new AmendModel
-      amendView = new AmendEmptyView model: amendModel
+      amendView = new MetaInfoView model: amendModel
 
     deferred.resolve amendView
     deferred.promise()
 
   makeAmendAggregate: ( billId ) ->
     deferred = new $.Deferred()
-    infoModel = new InfoModel id: billId
-    infoModel.fetch().then ->
-      infoView = new InfoView model: infoModel
-      deferred.resolve infoView
+    amendInfoModel = new AmendInfoModel id: billId
+    amendInfoModel.fetch().then ->
+      amendInfoView = new AmendInfoView model: amendInfoModel
+      deferred.resolve amendInfoView
 
     deferred.promise()
 

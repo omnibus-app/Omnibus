@@ -77,8 +77,6 @@ class ChartView extends Marionette.ItemView
     for pair in buttons
       buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
 
-    console.log @$el
-
     xAxis = d3.svg.axis()
       .scale x
       .orient 'top'
@@ -100,7 +98,6 @@ class ChartView extends Marionette.ItemView
         .attr 'height', height + margin.top + margin.bottom
       .append 'g'
         .attr 'transform', 'translate(' + margin.left + ')'
-    console.log svg
 
     dems = data.map (el) ->
       el.demY

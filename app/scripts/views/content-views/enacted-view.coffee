@@ -1,6 +1,5 @@
 _ = window._
 util = require '../../helpers/graph-util.coffee'
-# data = require './../../../../assets/data/enacted.json'
 BubbleChart = require './../../helpers/bubble-chart.coffee'
 
 
@@ -36,7 +35,8 @@ class EnactedView extends Marionette.ItemView
 
 
   showBillData: (e) ->
-    billId = JSON.stringify @$(e.currentTarget).attr("data-bill")
+    billId = @$(e.currentTarget).attr("data-bill")
+    billId = billId.slice( -3 ) + '-' + billId.slice( 0, -4 )
     @trigger 'showBill', billId 
 
   render: ->

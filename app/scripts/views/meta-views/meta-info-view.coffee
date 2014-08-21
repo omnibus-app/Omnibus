@@ -1,4 +1,5 @@
-class InfoView extends Marionette.ItemView
-  template: require './meta-info-view.jade'
 
-module.exports = InfoView
+class MetaInfoView extends Marionette.ItemView
+  template: '<p>Hover over the display for more information.<p>'
+
+module.exports = MetaInfoView
