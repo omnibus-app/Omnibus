@@ -15,6 +15,7 @@ class EnactedView extends Marionette.ItemView
     'click #combined': "combine"
     'click #byYear': 'byYear'
     'click #byParty': 'byParty'
+    'mouseover [class~=bubble]': 'showDetails'
   
   initialize: ->
     @bills = @model.get 'bills'
@@ -28,10 +29,15 @@ class EnactedView extends Marionette.ItemView
   byYear: ->
     BubbleChart.display_year()
 
+  showDetails: (e) ->
+    billId = @$(e.currentTarget).attr("data-bill")
+    billData = _.findWhere @model.get( 'bills' ), bill_id: billId
+    @trigger "showMeta", billData
+
+
   showBillData: (e) ->
-    console.log e.currentTarget
-  
-  onBeforeRender: ->
+    billId = JSON.stringify @$(e.currentTarget).attr("data-bill")
+    @trigger 'showBill', billId 
 
   render: ->
     that = @
@@ -45,6 +51,8 @@ class EnactedView extends Marionette.ItemView
         BubbleChart.display_all()
       BubbleChart.display_all = () =>
         chart.display_group_all()
+      BubbleChart.show_details = (e) =>
+        chart.show_details(e)
       BubbleChart.display_year = () =>
         chart.display_by_year()
       BubbleChart.display_party = () =>
