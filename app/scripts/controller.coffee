@@ -32,28 +32,27 @@ class MainController extends Marionette.Controller
 
   # Used to kick off the initial visualization before user bill selection
   home: ->
-    # base = 'http://omnibus-backend.azurewebsites.net/api/congress/'
-    # congressOne = $.ajax base + '111/enacted'
-    # congressTwo = $.ajax base + '112/enacted'
-    # congressThree = $.ajax base + '113/enacted'
+    base = 'http://omnibus-backend.azurewebsites.net/api/congress/'
+    congressOne = $.ajax base + '111/enacted'
+    congressTwo = $.ajax base + '112/enacted'
+    congressThree = $.ajax base + '113/enacted'
 
-    # $.when congressOne, congressTwo, congressThree
-    #   .done ( dataOne, dataTwo, dataThree ) =>
-    #     data = [].concat dataOne[ 0 ], dataTwo[ 0 ], dataThree[ 0 ]
-    #     enactedModel = new EnactedModel bills: data
-    #     enactedView = new EnactedView model: enactedModel
-    #     @options.regions.content.currentView.chart.show enactedView
+    $.when congressOne, congressTwo, congressThree
+      .done ( dataOne, dataTwo, dataThree ) =>
+        data = [].concat dataThree[ 0 ], dataTwo[ 0 ], dataOne[ 0 ]
+        enactedModel = new EnactedModel bills: data
+        enactedView = new EnactedView model: enactedModel
+        @options.regions.content.currentView.chart.show enactedView
+        @makeEnactedMeta enactedModel
+        enactedView.render()
 
-    enactedModel = new EnactedModel id: 113
-    enactedView = new EnactedView model: enactedModel
-    @options.regions.content.currentView.chart.show enactedView
 
     # Make Meta
-    @makeEnactedMeta enactedModel
 
   makeEnactedMeta: ( model ) ->
     metaLayout = new MetaLayout
     @options.regions.content.currentView.meta.show metaLayout
+
 
   
   # makeBillHover: ( amendData ) ->

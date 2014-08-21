@@ -104,6 +104,7 @@ class BubbleChart
 
     # radius will be set to 0 initially.
     # see transition below
+
     @circles.enter().append("circle")
       .attr("r", 0)
       .attr("class","bubble")

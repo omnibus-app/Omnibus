@@ -1,6 +1,6 @@
 _ = window._
 util = require '../../helpers/graph-util.coffee'
-data = require './../../../../assets/data/enacted.json'
+# data = require './../../../../assets/data/enacted.json'
 BubbleChart = require './../../helpers/bubble-chart.coffee'
 
 
@@ -9,6 +9,7 @@ class EnactedView extends Marionette.ItemView
   model: "EnactedModel"
   id: "bubbleChart"
 
+
   events:
     'click circle': "showBillData"
     'click #combined': "combine"
@@ -16,6 +17,7 @@ class EnactedView extends Marionette.ItemView
     'click #byParty': 'byParty'
   
   initialize: ->
+    @bills = @model.get 'bills'
 
   combine: ->
     BubbleChart.display_all()
@@ -28,10 +30,11 @@ class EnactedView extends Marionette.ItemView
 
   showBillData: (e) ->
     console.log e.currentTarget
-    # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
-    # @trigger 'showAmendmentData', amendmentData
+  
+  onBeforeRender: ->
 
   render: ->
+    that = @
     $ ->
 
       chart = null
@@ -55,10 +58,8 @@ class EnactedView extends Marionette.ItemView
           BubbleChart.display_all()
           
       #Render the chart
-      render_vis data 
+      render_vis that.bills
 
-      a = $("#axis")
-      a.remove()
 
 #     amendmentId = @$( e.currentTarget ).attr 'data-bill'
 #     # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
