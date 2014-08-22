@@ -1,4 +1,5 @@
 class AmendInfoView extends Marionette.ItemView
+  template: require './meta-amend-info-view.jade'
 
   initialize: ( options ) ->
     amends = @model.get 'votes'
@@ -24,9 +25,9 @@ class AmendInfoView extends Marionette.ItemView
       repY = temp.repY
       total = temp.total
       nonY = temp.total - demY - repY
-      data.push title: 'Democratic', votes: demY, percent: Math.round( demY / total * 100 ) + '%'
-      data.push title: 'Republican', votes: repY, percent: Math.round( repY / total * 100 ) + '%'
-      data.push title: 'No', votes: nonY, percent: Math.round( nonY / total * 100 ) + '%'
+      data.push title: 'Democrat Yes', votes: demY, percent: Math.round( demY / total * 100 ) + '%'
+      data.push title: 'Republican Yes', votes: repY, percent: Math.round( repY / total * 100 ) + '%'
+      data.push title: 'Combined Nay', votes: nonY, percent: Math.round( nonY / total * 100 ) + '%'
 
       arc = d3.svg.arc()
         .outerRadius radius - 10
@@ -52,9 +53,9 @@ class AmendInfoView extends Marionette.ItemView
       g.append "path"
           .attr "d", arc
           .style "fill", (d) ->
-            if d.data.title is 'Democratic' then return 'blue'
-            if d.data.title is 'Republican' then return 'red'
-            if d.data.title is 'No' then return 'gray'
+            if d.data.title is 'Democrat Yes' then return 'blue'
+            if d.data.title is 'Republican Yes' then return 'red'
+            if d.data.title is 'Combined Nay' then return 'gray'
 
       g.append "text"
           .attr "class", "pie-chart-text"
@@ -63,7 +64,17 @@ class AmendInfoView extends Marionette.ItemView
           .attr "dy", ".35em"
           .style "text-anchor", "middle"
           .text (d) ->
+            d.data.title
+
+      g.append "text"
+          .attr "class", "pie-chart-text"
+          .attr "transform", (d) ->
+            "translate(" + arc.centroid(d) + ")"
+          .attr "dy", "1.4em"
+          .style "text-anchor", "middle"
+          .text (d) ->
             d.data.percent
+            # d.data.title d.data.percent
 
 
 
