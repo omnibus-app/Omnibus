@@ -1,10 +1,10 @@
 module.exports =
   
   leastSupported: (a, b) ->
-    (b.demY + b.repY) - (a.demY + a.repY)
+    (a.demY + a.repY) - (b.demY + b.repY)
 
   mostSupported: (a, b) ->
-    (a.demY + a.repY) - (b.demY + b.repY)
+    (b.demY + b.repY) - (a.demY + a.repY)
   
   democratTotal: (a, b) ->
     b.demY - a.demY
