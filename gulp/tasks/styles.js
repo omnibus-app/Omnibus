@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');
+var sass = require('gulp-sass');
 var plumber = require('gulp-plumber');
 var paths = require('../paths');
 
