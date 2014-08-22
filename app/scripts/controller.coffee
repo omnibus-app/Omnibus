@@ -23,9 +23,6 @@ EnactedAggModel = require './models/meta-enacted-agg-model.coffee'
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
     @searchView()
-    contentLayout = new ContentLayout
-    @options.regions.content.show contentLayout
-    @showSpinner contentLayout.chart
 
   # Takes a region which it empties and attachs a loading spinner
   showSpinner: ( region ) ->
@@ -34,6 +31,10 @@ class MainController extends Marionette.Controller
 
   # Used to kick off the initial visualization before user bill selection
   home: ->
+    contentLayout = new ContentLayout
+    @options.regions.content.show contentLayout
+    $('#chart').append App.spinner.el
+
     base = 'http://omnibus-backend.azurewebsites.net/api/congress/'
     congressOne = $.ajax base + '111/enacted'
     congressTwo = $.ajax base + '112/enacted'
@@ -53,7 +54,6 @@ class MainController extends Marionette.Controller
     chartView = @options.regions.content.currentView
     metaLayout = new MetaLayout
     chartView.meta.show metaLayout
-    @showSpinner metaLayout[ 'meta2' ]
 
     @listenTo chartView.chart.currentView, 'showBill', ( billId ) ->
       @router.navigate 'bills/' + billId, trigger: true
@@ -149,9 +149,10 @@ class MainController extends Marionette.Controller
       .then ( amendView ) ->
         metaLayout[ 'meta1' ].show amendView
 
-    @makeAmendAggregate billId
+    @makeAmendAggregate model, billId
       .then ( metaView ) ->
         metaLayout[ 'meta2' ].show metaView
+        # metaView.render()
 
   # Pass ammendment data in and create a model/view with it
   # Returns jQuery promise for consistency
@@ -167,12 +168,11 @@ class MainController extends Marionette.Controller
     deferred.resolve amendView
     deferred.promise()
 
-  makeAmendAggregate: ( billId ) ->
+  makeAmendAggregate: ( model, billId ) ->
     deferred = new $.Deferred()
-    amendInfoModel = new AmendInfoModel id: billId
-    amendInfoModel.fetch().then ->
-      amendInfoView = new AmendInfoView model: amendInfoModel
-      deferred.resolve amendInfoView
+    amendInfoView = new AmendInfoView model: model
+    # amendInfoView.render()
+    deferred.resolve amendInfoView    
 
     deferred.promise()
 
