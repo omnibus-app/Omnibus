@@ -9,6 +9,6 @@ class BillsCollection extends Backbone.Collection
 
   parse: ( response ) ->
     data = {}
-    data.results = JSON.parse( response ).results
+    data.results = ( response ).results
   
 module.exports = BillsCollection
