@@ -1,1 +1,14 @@
-p some Enacted aggregation data here
+p.
+  #{ pages.getTopPercent }% of Bills make up 
+  #{ Math.round( pages.topPagesPercent ) }% of the total pages since the beginning of
+  the 111th Congress.  The top #{ pages.getTopNumber } Bills alone account for
+  #{ pages.topNumber }% of the total pages in the same span.
+p. 
+  Average Number of Pages per Bill:
+  #{ Math.round( pages.pages / pages.numBills ) }
+p. 
+  Median Number of Pages:
+  #{ pages.pageStore[ pages.pageStore.length / 2 ] }
+p. 
+  Largest Number of Pages:
+  #{ Math.max.apply( null, pages.pageStore ) }
