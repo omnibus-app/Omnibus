@@ -10,6 +10,7 @@
     "test": "gulp buildTest && testling"
   },
   "testling": {
+    "files": "",
     "browsers": [
       "ie/6..latest",
       "chrome/22..latest",
