@@ -1,0 +1,94 @@
+html {
+  font-size: 125%; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal; }
+
+button {
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  background: ghostwhite;
+  font: inherit;
+  border: 1px solid #333333;
+  cursor: pointer;
+  display: inline-block;
+  box-shadow: 0 0 0 0 transparent;
+  transition-property: border, box-shadow;
+  transition-duration: 0.25s;
+  transition-timing-function: ease; }
+  button:not(:last-of-type) {
+    margin-right: 0.5rem; }
+  button:hover {
+    background: white; }
+  button:focus {
+    outline: none;
+    border-color: #72a1ef;
+    box-shadow: 0 0 2px 2px #72a1ef; }
+
+.btn--dem {
+  background: #013f8a; }
+
+.btn--rep {
+  background: #920005; }
+
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="url"],
+input[type="color"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="time"],
+input[type="week"] {
+  border: 1px solid #333333;
+  padding: 0.25em 0.5em;
+  border-radius: 0.25em;
+  transition-property: border, box-shadow;
+  transition-duration: 0.25s;
+  transition-timing-function: ease; }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="password"]:focus,
+  input[type="search"]:focus,
+  input[type="tel"]:focus,
+  input[type="text"]:focus,
+  input[type="url"]:focus,
+  input[type="color"]:focus,
+  input[type="date"]:focus,
+  input[type="datetime"]:focus,
+  input[type="datetime-local"]:focus,
+  input[type="month"]:focus,
+  input[type="time"]:focus,
+  input[type="week"]:focus {
+    outline: none;
+    border-color: #72a1ef;
+    box-shadow: 0 0 2px 2px #72a1ef; }
+
+.form-field {
+  margin: 1rem 0; }
+
+.results-container {
+  list-style-type: none;
+  padding: 0; }
+
+.bill-result {
+  border-bottom: 1px solid #cccccc;
+  cursor: pointer; }
+  .bill-result:hover {
+    background: #cedef9; }
+  .bill-result .bill-info {
+    padding: 1rem; }
+  .bill-result .bill-title {
+    font-weight: bold; }
+  .bill-result .bill-sponsor {
+    margin-bottom: 0; }
