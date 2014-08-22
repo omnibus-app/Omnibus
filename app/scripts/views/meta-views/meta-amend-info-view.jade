@@ -1,4 +1,3 @@
-h6.
-  Some Meta:
-  Sponsored by #{ results[ 0 ].bill }
-  Sponsored by #{ results[ 0 ].sponsor }
+p Percentage of yes votes from Democrats: #{ Math.round( yesAgg.demY / yesAgg.total * 100 ) }%
+p Percentage of yes votes from Rebublicans: #{ Math.round( yesAgg.repY / yesAgg.total * 100 ) }%
+p Total amendment votes: #{ yesAgg.total }

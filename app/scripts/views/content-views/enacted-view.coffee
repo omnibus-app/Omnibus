@@ -40,8 +40,7 @@ class EnactedView extends Marionette.ItemView
     @trigger 'showBill', billId 
 
   render: ->
-    that = @
-    $ ->
+    $ =>
 
       chart = null
 
@@ -66,11 +65,7 @@ class EnactedView extends Marionette.ItemView
           BubbleChart.display_all()
           
       #Render the chart
-      render_vis that.bills
+      render_vis @bills
 
-
-#     amendmentId = @$( e.currentTarget ).attr 'data-bill'
-#     # amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
-#     # @trigger 'showAmendmentData', amendmentData
 
 module.exports = EnactedView
