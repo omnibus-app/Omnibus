@@ -4,7 +4,7 @@ link(rel='stylesheet', href='/css/vendor.css')
 link(rel='stylesheet', href='/css/main.css')
 link(rel='stylesheet', href='/css/app.css')
 meta(charset='utf-8')
-title Omnibus Viz
+title Omnibus
 
 body
 
@@ -32,15 +32,3 @@ body
   script(src='/js/bower_components.js')
   script(src='/js/app.js')
   script $( function() { App.start() })
-  script.
-    $(document).on('click', 'a[href]:not([data-bypass])', function(event) {
-        var href = $(this).prop('href'),
-            root = location.protocol + '//' + location.host + module.config().rootUrl + '/';
-
-        if (href.slice(0, root.length) === root) {
-            event.preventDefault();
-
-            console.log(href.slice(root.length), true);
-            Backbone.history.navigate(href.slice(root.length), true);
-        }
-    });

@@ -15,8 +15,8 @@ class ChartView extends Marionette.ItemView
     'click #rep-total': 'repTotal'
     'click #dem-biased': 'demBiased'
     'click #rep-biased': 'repBiased'
-    'click #least-voted': 'leastVoted'
-    'click #most-voted': 'mostVoted'
+    'click #least-supported': 'mostSupport'
+    'click #most-supported': 'leastSupport'
 
   initialize: ->
 
@@ -69,8 +69,8 @@ class ChartView extends Marionette.ItemView
       ['rep-total', 'most rep votes'],
       ['dem-biased', 'most dem weighted'],
       ['rep-biased', 'most rep weighted'],
-      ['most-voted', 'most voted'],
-      ['least-voted', 'least voted']
+      ['least-supported', 'least supported'],
+      ['most-supported', 'most supported']
     ]
 
     buttonHolder = @$el
@@ -181,10 +181,10 @@ class ChartView extends Marionette.ItemView
   repBiased: (e) ->
     sortUtil.sortBy @svg, sortUtil.republicanDiff
 
-  leastVoted: (e) ->
-    sortUtil.sortBy @svg, sortUtil.noVote
+  mostSupport: (e) ->
+    sortUtil.sortBy @svg, sortUtil.leastSupported
 
-  mostVoted: (e) ->
-    sortUtil.sortBy @svg, sortUtil.mostVote
+  leastSupport: (e) ->
+    sortUtil.sortBy @svg, sortUtil.mostSupported
 
 module.exports = ChartView

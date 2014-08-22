@@ -94,6 +94,8 @@ selectNodeVersion () {
   fi
 }
 
+
+
 ##################################################################################################################################
 # Deployment
 # ----------
@@ -120,7 +122,7 @@ fi
 # 4. Install bower packages
 if [ -e "$DEPLOYMENT_TARGET/bower.json" ]; then
   cd "$DEPLOYMENT_TARGET"
-  eval $NPM_CMD install bower
+  eval $NPM_CMD install bower -g
   exitWithMessageOnError "installing bower failed"
   ./node_modules/.bin/bower install
   exitWithMessageOnError "bower failed"
@@ -129,14 +131,15 @@ fi
 
 #Gulp is failing here
 # 5. Run gulp 
-# if [ -e "$DEPLOYMENT_TARGET/gulpfile.js" ]; then
-#   cd "$DEPLOYMENT_TARGET"
-#   eval $NPM_CMD install gulp
-#   exitWithMessageOnError "installing gulp failed"
-#   ./node_modules/.bin/gulp --no-color build
-#   exitWithMessageOnError "gulp failed"
-#   cd - > /dev/null
-# fi
+ if [ -e "$DEPLOYMENT_TARGET/gulpfile.js" ]; then
+   cd "$DEPLOYMENT_TARGET"
+   eval $NPM_CMD install gulp
+   exitWithMessageOnError "installing gulp failed"
+   ./node_modules/.bin/gulp --no-color build
+   exitWithMessageOnError "gulp failed"
+   eval $NPM_CMD gulp
+   cd - > /dev/null
+ fi
 ##################################################################################################################################
 
 # Post deployment stub

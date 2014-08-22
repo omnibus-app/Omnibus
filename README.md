@@ -15,8 +15,8 @@ It's increasingly common for legislation to be bundled into large omnibus bills 
 ## Team
 
   - __Product Owner__: Nick Bottomley
-  - __Scrum Master__: Will Johnson
-  - __Development Team Members__: Will LaBranche, Mike Schippert
+  - __Project Manager__: Will Johnson
+  - __Development Team Members__: Will LaBranche, Mike Schippert, Will Johnson, Nick Bottomley
 
 ## Table of Contents
 
@@ -30,24 +30,26 @@ It's increasingly common for legislation to be bundled into large omnibus bills 
 
 ## Usage
 
-> Some usage instructions
+Head [here](http://omnibusviz.azurewebsites.net) to see this repo deployed and connected to the Omnibus REST API. Hover over the bubbles or use the search bar to look for a particular bill, click on it for a more detailed view of this bill.
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- [Omnibus REST API](https://github.com/omnibus-app/omnibus-backend) 
+- Up to date versions of Node, Bower and Gulp on your local machine
+- That's it!
 
 ## Tech Stack Features
 
-- Custom Region with empty view
-- Startable / stoppable Modules, communicating with each other
-- Routes enclosed within / handled from modules
-- Separate production / development builds
+- Backbone Marionette Layouts and Regions for seperation of rendering logic
+- D3 and Backbone Routes enclosed within / handled from modules
+- CoffeScript
+- Jade Templating
+- SCSS
+- Browserify for max modularity, requiring front-end depencies
+- Separate production / development automated builds
 
 ## Development
+
 
 ### Installing Dependencies
 
@@ -65,9 +67,9 @@ Build
 gulp
 ```
 
-This will open a live page that will updated as you edit files.
+This will open a live page that will update as you edit files.
 
-## Production
+### Production
 
 
 Install
@@ -89,6 +91,11 @@ gulp production
 ```
 
 Works with the Chrome livereload extension (https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
+
+### Deployment
+
+We've had to push our compiled assets to github because Azure couldn't run some of our gulp tasks because ruby wasn't available in the box.
+If you are hosting on another service, such as Heroku or AWS, uncomment the gulp tast lines in deploy.sh, remove public/ from the github repo and add public/ to the .gitignore
 
 ### Tasks
 
