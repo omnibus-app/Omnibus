@@ -135,8 +135,6 @@ fi
    exitWithMessageOnError "installing gulp failed"
    ./node_modules/.bin/gulp --no-color build
    exitWithMessageOnError "gulp failed"
-   eval curl -L https://get.rvm.io | bash -s stable --ruby
-   eval rvm install 1.9.3 --with-gcc=gcc
    eval $NPM_CMD gulp
    cd - > /dev/null
  fi
