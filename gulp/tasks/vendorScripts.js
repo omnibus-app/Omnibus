@@ -11,7 +11,7 @@ gulp.task('vendor-styles', function() {
     paths.styles + '/bootstrap-grid.css'
   ])
   .pipe(plumber());
-  // .pipe(concat('vendor.css'));
+  .pipe(concat('vendor.css'));
 
   stream.pipe(gulp.dest(paths.dest + 'css/'));
 });
