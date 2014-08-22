@@ -15,7 +15,7 @@ It's increasingly common for legislation to be bundled into large omnibus bills 
 ## Team
 
   - __Product Owner__: Nick Bottomley
-  - __Scrum Master__: Will Johnson
+  - __Project Manager__: Will Johnson
   - __Development Team Members__: Will LaBranche, Mike Schippert
 
 ## Table of Contents
