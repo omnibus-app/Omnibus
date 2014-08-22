@@ -7,13 +7,28 @@ meta(charset='utf-8')
 title Omnibus
 
 body
+
+  header
+    ul.header-items
+      li.header-link.about
+        a(href="/about") About
+      li.banner
+        h1
+          span.star.star--left ★
+          span.text Omnibus
+          span.star.star--right ★
+      li.header-link.source
+        a(href="https://github.com/omnibus-app/Omnibus") Source
+
   .container
     #welcome.row
     #search.row
     #content.row
-    footer
-      p.
-        Made by team Omnibus
+
+  footer
+    p.
+      Made by team Omnibus
+
   script(src='/js/bower_components.js')
   script(src='/js/app.js')
   script $( function() { App.start() })

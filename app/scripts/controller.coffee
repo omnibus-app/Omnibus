@@ -18,7 +18,7 @@ BillHoverModel = require './models/meta-bill-hover-model.coffee'
 BillHoverView = require './views/meta-views/meta-bill-hover-view.coffee'
 EnactedAggView = require './views/meta-views/meta-enacted-agg-view.coffee'
 EnactedAggModel = require './models/meta-enacted-agg-model.coffee'
-
+AboutView = require './views/about-view.coffee'
 
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
@@ -72,7 +72,7 @@ class MainController extends Marionette.Controller
         metaLayout[ 'meta2' ].show metaView
 
 
-  
+
   makeBillHover: ( hoverData ) ->
     deferred = new $.Deferred()
     if hoverData
@@ -92,7 +92,7 @@ class MainController extends Marionette.Controller
     deferred.resolve enactedAggView
 
     deferred.promise()
-    
+
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
     @showSpinner @options.regions.content
@@ -227,5 +227,9 @@ class MainController extends Marionette.Controller
 
       @options.regions.content.show searchResults
 
+  showAbout: ->
+    console.log 'about'
+    aboutView = new AboutView()
+    @options.regions.content.show aboutView
 
 module.exports = MainController

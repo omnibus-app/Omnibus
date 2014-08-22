@@ -23,11 +23,21 @@ App.on 'before:start', ( options ) ->
       content: @content
   @router = new Marionette.AppRouter
     controller: @controller
-    appRoutes: 
+    appRoutes:
       '': 'home'
       'bills/:id': 'showBill'
       'bills/search/:query': 'searchResults'
+      'about': 'showAbout'
   @controller.router = @router
+
+  # catch links
+  $( document.body ).on "click", "a", ( evt ) ->
+    console.log 'caught'
+    href = prop: $( this ).prop( "href" ), attr: $( this ).attr( "href" )
+    root = "#{ location.protocol }//#{ location.host }/"
+    if href.prop and href.prop.slice( 0, root.length ) is root
+      evt.preventDeafult()
+      Backbone.history.navigate href.attr, true
 
   # Start backbone history after init
 App.on 'start', ( options ) ->
