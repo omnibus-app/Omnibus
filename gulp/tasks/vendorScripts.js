@@ -3,15 +3,16 @@ var plumber = require('gulp-plumber');
 var minify = require('gulp-minify-css');
 var concat = require('gulp-concat');
 
-var paths = require('../paths');
+var paths = require('../paths.js');
 
-// compile bootstrap css, my be able to alter this in some way
+// compile bootstrap css, may be able to alter this in some way
 gulp.task('vendor-styles', function() {
-  var stream = gulp.src([
-    paths.styles + '/bootstrap-grid.css'
-  ])
-  .pipe(plumber());
-  .pipe(concat('vendor.css'));
-
-  stream.pipe(gulp.dest(paths.dest + 'css/'));
+  gulp
+    .src([
+      paths.assets + 'styles/' + 'bootstrap-grid.css',
+      paths.assets + 'styles/' + 'bootstrap.css'
+    ])
+    .pipe(plumber())
+    .pipe(concat('vendor.css'))
+    .pipe(gulp.dest(paths.dest + 'css/'));
 });
