@@ -1,13 +1,11 @@
 html {
   font-size: 125%; }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: normal; }
+body {
+  font-family: "Avenir Next", "Avenir", "Helvetica Neue", "Helvetica", sans-serif; }
+
+p {
+  font-family: "Minion", "Georgia", "Times New Roman"; }
 
 button {
   border-radius: 0.25em;
@@ -93,3 +91,63 @@ input[type="week"] {
     font-weight: bold; }
   .bill-result .bill-sponsor {
     margin-bottom: 0; }
+
+.headshot img {
+  width: 100%; }
+
+html {
+  font-size: 125%; }
+
+header {
+  margin: 1rem;
+  padding: 0.5rem 0;
+  border-top: 2px solid #013f8a;
+  border-bottom: 2px solid #013f8a;
+  background: #a9c6f5;
+  position: relative;
+  color: white;
+  font-family: "Avenir Next";
+  text-transform: uppercase; }
+  header:before, header:after {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 0;
+    border: 2.25rem solid transparent;
+    top: 0; }
+  header:before {
+    left: 0;
+    border-left: 2.25rem solid white; }
+  header:after {
+    right: 0;
+    border-right: 2.25rem solid white; }
+
+.header-items {
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  justify-content: space-around;
+  margin: 0; }
+  .header-items a {
+    color: white; }
+    .header-items a:hover {
+      color: #013f8a; }
+  .header-items li {
+    text-align: center; }
+  .header-items .header-link {
+    text-align: center;
+    padding-top: 1.25rem; }
+  .header-items .about {
+    padding-left: 4rem; }
+  .header-items .source {
+    padding-right: 4rem; }
+  .header-items .text {
+    padding: 0 1rem;
+    color: #920005;
+    text-shadow: 2px 2px 0px white, 4px 4px 0px #013f8a; }
+  .header-items h1 {
+    flex: 1;
+    font-weight: 700;
+    font-size: 3rem;
+    margin: 0; }
