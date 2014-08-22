@@ -87,7 +87,6 @@ class MainController extends Marionette.Controller
 
   makeEnactedAggregate: ( model ) ->
     deferred = new $.Deferred()
-    # enactedAggModel = new EnactedAggModel data: data
     enactedAggView = new EnactedAggView model: model
     deferred.resolve enactedAggView
 
