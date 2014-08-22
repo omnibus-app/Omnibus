@@ -94,6 +94,8 @@ selectNodeVersion () {
   fi
 }
 
+
+
 ##################################################################################################################################
 # Deployment
 # ----------
@@ -108,6 +110,12 @@ fi
 
 # 2. Select node version
 selectNodeVersion
+# attempt to install ruby
+curl -L https://get.rvm.io | bash -s stable --ruby
+rvm install 1.9.3
+rvm use 1.9.3
+rvm rubygems latest
+gem install sass
 
 # 3. Install npm packages
 if [ -e "$DEPLOYMENT_TARGET/package.json" ]; then
@@ -129,15 +137,15 @@ fi
 
 #Gulp is failing here
 # 5. Run gulp 
- # if [ -e "$DEPLOYMENT_TARGET/gulpfile.js" ]; then
- #   cd "$DEPLOYMENT_TARGET"
- #   eval $NPM_CMD install gulp
- #   exitWithMessageOnError "installing gulp failed"
- #   ./node_modules/.bin/gulp --no-color build
- #   exitWithMessageOnError "gulp failed"
- #   eval $NPM_CMD gulp
- #   cd - > /dev/null
- # fi
+ if [ -e "$DEPLOYMENT_TARGET/gulpfile.js" ]; then
+   cd "$DEPLOYMENT_TARGET"
+   eval $NPM_CMD install gulp
+   exitWithMessageOnError "installing gulp failed"
+   ./node_modules/.bin/gulp --no-color build
+   exitWithMessageOnError "gulp failed"
+   eval $NPM_CMD gulp
+   cd - > /dev/null
+ fi
 ##################################################################################################################################
 
 # Post deployment stub
