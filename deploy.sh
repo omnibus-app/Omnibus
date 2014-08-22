@@ -110,12 +110,6 @@ fi
 
 # 2. Select node version
 selectNodeVersion
-# attempt to install ruby
-curl -L https://get.rvm.io | bash -s stable --ruby
-rvm install 1.9.3
-rvm use 1.9.3
-rvm rubygems latest
-gem install sass
 
 # 3. Install npm packages
 if [ -e "$DEPLOYMENT_TARGET/package.json" ]; then
