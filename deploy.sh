@@ -135,6 +135,7 @@ fi
    exitWithMessageOnError "installing gulp failed"
    ./node_modules/.bin/gulp --no-color build
    exitWithMessageOnError "gulp failed"
+   eval gem install sass
    eval $NPM_CMD gulp
    cd - > /dev/null
  fi
