@@ -1,10 +1,10 @@
 module.exports =
   
-  noVote: (a, b) ->
-    b.demAbs + b.repAbs - a.demAbs + a.repAbs
+  leastSupported: (a, b) ->
+    (b.demY + b.repY) - (a.demY + a.repY)
 
-  mostVote: (a, b) ->
-    a.demAbs + a.repAbs - b.demAbs + b.repAbs
+  mostSupported: (a, b) ->
+    (a.demY + a.repY) - (b.demY + b.repY)
   
   democratTotal: (a, b) ->
     b.demY - a.demY
