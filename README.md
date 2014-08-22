@@ -2,7 +2,7 @@
 
 
 
-[![Build Status](https://img.shields.io/travis-ci/omnibus-app/test-stack.svg?branch=master&style=flat)](https://travis-ci.org/omnibus-app/test-stack)
+[![Build Status](https://img.shields.io/travis-ci/omnibus-app/Omnibus.svg?branch=master&style=flat)](https://travis-ci.org/omnibus-app/Omnibus)
 [![Gulp](http://img.shields.io/badge/Built%20with-Gulp-blue.svg?style=flat)](http://gulpjs.com)
 
 [![browser support](https://ci.testling.com/omnibus-app/Omnibus.png)
