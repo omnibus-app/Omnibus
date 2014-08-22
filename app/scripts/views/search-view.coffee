@@ -54,5 +54,4 @@ class Search extends Marionette.ItemView
     @$( '#bill-number' ).val('')
     @$( '#find-input' ).val('')
 
-
 module.exports = Search
