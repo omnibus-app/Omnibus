@@ -9,8 +9,7 @@ var paths = require('../paths.js');
 gulp.task('vendor-styles', function() {
   gulp
     .src([
-      paths.assets + 'styles/' + 'bootstrap-grid.css',
-      paths.assets + 'styles/' + 'bootstrap.css'
+      paths.bower + 'bootstrap/' + 'bootstrap.css'
     ])
     .pipe(plumber())
     .pipe(concat('vendor.css'))
