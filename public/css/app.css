@@ -2,7 +2,13 @@ html {
   font-size: 125%; }
 
 body {
+  font-size: 1rem;
   font-family: "Avenir Next", "Avenir", "Helvetica Neue", "Helvetica", sans-serif; }
+
+input,
+button,
+textarea {
+  font: inherit; }
 
 p {
   font-family: "Minion", "Georgia", "Times New Roman"; }

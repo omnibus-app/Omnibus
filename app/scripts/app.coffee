@@ -32,11 +32,10 @@ App.on 'before:start', ( options ) ->
 
   # catch links
   $( document.body ).on "click", "a", ( evt ) ->
-    console.log 'caught'
     href = prop: $( this ).prop( "href" ), attr: $( this ).attr( "href" )
     root = "#{ location.protocol }//#{ location.host }/"
     if href.prop and href.prop.slice( 0, root.length ) is root
-      evt.preventDeafult()
+      evt.preventDefault()
       Backbone.history.navigate href.attr, true
 
   # Start backbone history after init

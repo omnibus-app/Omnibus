@@ -78,7 +78,6 @@ class ChartView extends Marionette.ItemView
       buttonHolder.append "<button id=#{pair[0]}>#{pair[1]}</button>"
     @$el.append buttonHolder
 
-
     xAxis = d3.svg.axis()
       .scale x
       .orient 'top'
