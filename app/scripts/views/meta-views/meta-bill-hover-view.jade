@@ -1,9 +1,10 @@
-P. 
-  Bill ID:
-  #{ data.bill_id.toUpperCase() }
-p.
-  Sponsor:
-  #{ data.sponsor.title } #{ data.sponsor.first_name } #{ data.sponsor.last_name }
-P.
-  Official Bill Title: <br>
-  #{ data.official_title }
+h2 Bill Info
+p.info-item
+  span.info-item--name Bill ID:
+  span.info-item--value  #{ data.bill_id.toUpperCase() }
+p.info-item
+  span.info-item--name Sponsor:
+  span.info-item--value  #{ data.sponsor.title } #{ data.sponsor.first_name } #{ data.sponsor.last_name }
+P.info-item
+  span.info-item--name Official Bill Title: <br>
+  span.info-item--value  #{ data.official_title }

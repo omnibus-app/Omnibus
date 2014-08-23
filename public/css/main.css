@@ -5,8 +5,9 @@
   margin: 1 rem 0; }
 
 #meta {
+  margin: 1rem 0;
   background: #eeeeee;
-  padding: 1 rem;
+  padding: 1rem;
   min-height: 4rem; }
 
 #chart {
@@ -70,4 +71,36 @@ footer {
   width: auto; }
 
 .search-results h3 {
+  text-align: center; }
+
+.info-item--name {
+  font-weight: bold; }
+
+.stat-value {
+  font-weight: bold; }
+
+#meta-3 {
+  display: none; }
+
+#meta-2 {
+  height: 16rem;
+  overflow-y: scroll; }
+
+#meta-1,
+#meta-2,
+#meta-3 {
+  background: white;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #cccccc; }
+  #meta-1:first-child :first-child,
+  #meta-2:first-child :first-child,
+  #meta-3:first-child :first-child {
+    margin-top: 0; }
+
+#meta-1 svg {
+  margin: 1rem auto;
+  display: block; }
+
+#meta-1 p {
   text-align: center; }
