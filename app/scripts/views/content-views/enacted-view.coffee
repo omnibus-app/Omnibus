@@ -38,6 +38,7 @@ class EnactedView extends Marionette.ItemView
     billId = @$(e.currentTarget).attr("data-bill")
     billId = billId.slice( -3 ) + '-' + billId.slice( 0, -4 )
     @trigger 'showBill', billId 
+    d3.selectAll("circle").remove()
 
   render: ->
     $ =>
