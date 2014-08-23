@@ -5,8 +5,6 @@
 [![Build Status](https://img.shields.io/travis-ci/omnibus-app/Omnibus.svg?branch=master&style=flat)](https://travis-ci.org/omnibus-app/Omnibus)
 [![Gulp](http://img.shields.io/badge/Built%20with-Gulp-blue.svg?style=flat)](http://gulpjs.com)
 
-[![browser support](https://ci.testling.com/omnibus-app/Omnibus.png)
-](https://ci.testling.com/omnibus-app/Omnibus)
 
 Omnibus is an interactive data visualization app that will make understanding large and complex bills easy.
 
