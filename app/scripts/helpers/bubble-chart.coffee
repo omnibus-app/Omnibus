@@ -242,15 +242,27 @@ class BubbleChart
 
   # Method to display year titles
   display_years: () =>
-    years_x = {"111": 160, "112": @width / 2, "113": @width - 160}
+    congress_x = {"111": 160, "112": @width / 2, "113": @width - 160}
+    years_x = {"2009-2010": 160, "2011-2012": @width / 2, "2013-2014": @width - 160}
+    congress_data = d3.keys(congress_x)
     years_data = d3.keys(years_x)
+    congress = @vis.selectAll(".congress")
+      .data(congress_data)
+
+    congress.enter().append("text")
+      .attr("class", "congress")
+      .attr("x", (d) => congress_x[d] )
+      .attr("y", 40)
+      .attr("text-anchor", "middle")
+      .text((d) -> d)
+
     years = @vis.selectAll(".years")
       .data(years_data)
 
     years.enter().append("text")
       .attr("class", "years")
       .attr("x", (d) => years_x[d] )
-      .attr("y", 40)
+      .attr("y", 60)
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
