@@ -67,5 +67,7 @@ class EnactedView extends Marionette.ItemView
       #Render the chart
       render_vis @bills
 
+      window.bubble = @
+
 
 module.exports = EnactedView
