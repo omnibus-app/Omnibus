@@ -8,9 +8,7 @@ var paths = require('../paths.js');
 // compile bootstrap css, may be able to alter this in some way
 gulp.task('vendor-styles', function() {
   gulp
-    .src([
-      paths.bower + 'bootstrap/' + 'bootstrap.css'
-    ])
+    .src(paths.bower + 'bootstrap/dist/css/' + 'bootstrap.css')
     .pipe(plumber())
     .pipe(concat('vendor.css'))
     .pipe(gulp.dest(paths.dest + 'css/'));
