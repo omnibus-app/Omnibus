@@ -174,7 +174,7 @@ class MainController extends Marionette.Controller
     deferred = new $.Deferred()
     amendInfoView = new AmendInfoView model: model
     # amendInfoView.render()
-    deferred.resolve amendInfoView    
+    deferred.resolve amendInfoView
 
     deferred.promise()
 

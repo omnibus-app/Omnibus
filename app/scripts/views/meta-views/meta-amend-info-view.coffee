@@ -38,20 +38,9 @@ class AmendInfoView extends Marionette.ItemView
         .value (d) ->
           d.votes
 
-      bubsTitle = document.createElement 'div'
-      bubs = document.createElement 'div'
-      idP = document.createElement 'h4'
-      bubsTitle.id = 'bubs-title'
-      bubs.id = 'bubs'
-      billId = @model.get( 'votes' )[ 0 ].bill_id
-
-
-      @el.appendChild bubsTitle
-      @el.firstChild.appendChild idP
-      @el.firstChild.firstChild.innerText = "Bill ID: #{ billId }"
-      @el.appendChild bubs
-
-      svg = d3.select @el.lastChild
+      # console.log @el.parentNode
+      #
+      svg = d3.select @el
        .append "svg"
         .attr "width", width
         .attr "height", height
@@ -88,14 +77,8 @@ class AmendInfoView extends Marionette.ItemView
           .text (d) ->
             d.data.percent
 
-      titleP = document.createElement 'p'
-      @el.lastChild.appendChild titleP
-      @el.lastChild.lastChild.innerText = "Combined support for all amendments"
-
   render: =>
     super()
     @renderChart()
-
-
 
 module.exports = AmendInfoView
