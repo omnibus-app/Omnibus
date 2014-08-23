@@ -1,3 +1,4 @@
+datum = require './../../../public/data/all-enacted-with-passing-vote.json'
 class BubbleChart
   constructor: (data) ->
     @data = data
@@ -46,14 +47,34 @@ class BubbleChart
     @force = null
     @circles = null
 
-    # nice looking colors - no reason to buck the trend
-    @fill_color = d3.scale.ordinal()
-      .domain(["low", "medium", "high"])
-      .range(["#d84b2a", "#beccae", "#7aa25c"])
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.last_version.pages))
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 45])
+
+    
+
+    # Map support data from datum onto @data
+    @data = @data.map (d) ->
+      if datum[d.bill_id]
+        id = d.bill_id
+        d.support = {demVotes: parseInt(datum[id].democratic.yes), repVotes: parseInt(datum[id].republican.yes), allVoteTotal: parseInt(datum[id].total.yes) + parseInt(datum[id].total.no) + parseInt(datum[id].total.no) + parseInt(datum[id].total.present), allVotes: datum[id].total}
+      else d.support = false
+      return d
+
+    console.log @data
+
+
+
+    # Function for filling colors of nodes
+    @fill_color = d3.scale.linear()
+      .domain([0, 1])
+      .range(["#920005", "#013F8A"])
+
+    @support_scale = d3.scale.linear()
+      .domain([0, 1])
+      .range([0, @width])
+     
 
   # create node objects from original data
   # that will serve as the data behind each
@@ -71,10 +92,10 @@ class BubbleChart
         name: d.short_title
         description: d.official_title
         sponsor: if d.sponsor then d.sponsor.title + " " + d.sponsor.first_name + " " + d.sponsor.last_name else null
+        support: d.support.demVotes / d.support.allVoteTotal
         sponsorId: d.sponsor_id
         committee: d.committee_ids
         introduced: d.introduced_on
-        # party: d.party
         congress: d.congress
         exited: d.last_action_at
         x: Math.random() * 900
@@ -108,7 +129,9 @@ class BubbleChart
     @circles.enter().append("circle")
       .attr("r", 0)
       .attr("class","bubble")
-      .attr("fill", (d) => @fill_color(d.group))
+      .attr("fill", (d) => 
+        return "#ddd" if isNaN d.support
+        @fill_color(d.support))
       .attr("stroke-width", 1.5)
       .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
       .attr("data-bill", (d) -> "#{d.id}")
@@ -197,11 +220,20 @@ class BubbleChart
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
+
+      # .attr("fill", (d) => 
+      #   return "#ddd" if isNaN(d.support)
+      #   @fill_color(d.support))
+
   move_towards_party: (alpha) =>
     (d) =>
-      target = @party_centers[d.party]
-      d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
-      d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
+      if isNaN d.support 
+        d.x = d.x * (@damper + 0.02) * alpha
+        d.y = d.y * (@damper + 0.02) * alpha
+      else
+        target = @support_scale[d.support]
+        d.x = target * (@damper + 0.02) * alpha * 1.1
+        d.y = d.y
 
   # Method to display year titles
   display_years: () =>
@@ -223,7 +255,7 @@ class BubbleChart
     partys = @vis.selectAll(".partys")
       .data(partys_data)
 
-    years.enter().append("text")
+    partys.enter().append("text")
       .attr("class", "partys")
       .attr("x", (d) => partys_x[d] )
       .attr("y", 40)
@@ -236,6 +268,7 @@ class BubbleChart
 
   #highlight moused bill
   show_details: (data, i, element) =>
+    console.log data
     sel = d3.select(element)
     sel.attr("stroke", "black")
     sel.moveToFront()
