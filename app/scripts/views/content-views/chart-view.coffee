@@ -30,9 +30,9 @@ class ChartView extends Marionette.ItemView
   render: ->
     votes = @model.get 'votes'
 
-    data = votes.filter ( ammendment ) ->
-      if ammendment.vote
-        return ammendment
+    data = votes.filter ( amendment ) ->
+      if amendment.vote
+        return amendment
       
     data = data.map util.buildData
       .sort sortUtil.order

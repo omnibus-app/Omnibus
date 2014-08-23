@@ -22,7 +22,6 @@ AboutView = require './views/about-view.coffee'
 
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
-    @searchView()
 
   # Takes a region which it empties and attachs a loading spinner
   showSpinner: ( region ) ->
@@ -31,9 +30,11 @@ class MainController extends Marionette.Controller
 
   # Used to kick off the initial visualization before user bill selection
   home: ->
+    if $( '#search' ).children().length is 0
+    then @searchView()
     contentLayout = new ContentLayout
     @options.regions.content.show contentLayout
-    $('#chart').append App.spinner.el
+    $( '#chart' ).append App.spinner.el
 
     base = 'http://omnibus-backend.azurewebsites.net/api/congress/'
     congressOne = $.ajax base + '111/enacted'
@@ -94,6 +95,8 @@ class MainController extends Marionette.Controller
 
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
+    if $( '#search' ).children().length is 0
+    then @searchView()
     @showSpinner @options.regions.content
     @getData( billId ).then ( billModel ) =>
       @makeBill billModel, billId
@@ -122,9 +125,9 @@ class MainController extends Marionette.Controller
   makeBill: ( billModel, billId ) ->
     # Check local storage to see if the user has visited the site before
       # If not, show the welcome view and set the state to 'visited'
-    if not window.localStorage.getItem 'omnibus-visited'
-      @welcomeView billModel
-      window.localStorage.setItem 'omnibus-visited', true
+    # if not window.localStorage.getItem 'omnibus-visited'
+    #   @welcomeView billModel
+    #   window.localStorage.setItem 'omnibus-visited', true
 
     chartView = new ChartView model: billModel
     if not @options.regions.content.currentView
@@ -227,7 +230,7 @@ class MainController extends Marionette.Controller
       @options.regions.content.show searchResults
 
   showAbout: ->
-    console.log 'about'
+    @options.regions.search.empty()
     aboutView = new AboutView()
     @options.regions.content.show aboutView
 
