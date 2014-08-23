@@ -28,7 +28,7 @@ class BubbleChart
     @year_centers = {
       "111": {x: @width / 3, y: @height / 2},
       "112": {x: @width / 2, y: @height / 2},
-      "113": {x: 2.3 * @width / 3, y: @height / 2}
+      "113": {x: 2 * @width / 3, y: @height / 2}
     }
     @party_centers = {
       "Republican": {x: @width / 3, y: @height / 2},
