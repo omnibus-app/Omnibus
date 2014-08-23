@@ -122,6 +122,7 @@ class BubbleChart
     that = this
 
 
+
     # radius will be set to 0 initially.
     # see transition below
 
@@ -207,7 +208,7 @@ class BubbleChart
       .on "tick", (e) =>
         @circles.each(this.move_towards_party(e.alpha))
           .attr("cx", (d) -> d.x)
-          .attr("cy", (d) -> d.y)
+          .attr("cy", 300)
     @force.start()
 
     this.display_partys()
@@ -222,9 +223,12 @@ class BubbleChart
 
       # .attr("fill", (d) => 
       #   return "#ddd" if isNaN(d.support)
-      #   @fill_color(d.support))
+      #   @fill_color(d.support)) 
+  that = this
 
   move_towards_party: (alpha) =>
+    # @vis.selectAll("*").remove()
+    # @vis.selectAll("circle").data(@data).enter().append("circle").attr("class","bubble")
     (d) =>
       if isNaN d.support 
         d.x = d.x * (@damper + 0.02) * alpha
@@ -233,6 +237,8 @@ class BubbleChart
         target = @support_scale[d.support]
         d.x = target * (@damper + 0.02) * alpha * 1.1
         d.y = d.y
+
+
 
   # Method to display year titles
   display_years: () =>
