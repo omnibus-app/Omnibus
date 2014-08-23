@@ -62,15 +62,15 @@ class MainController extends Marionette.Controller
     @listenTo chartView.chart.currentView, 'showMeta', ( data ) ->
       @makeBillHover data
         .then ( billView ) ->
-          metaLayout[ 'meta1' ].show billView
+          metaLayout[ 'meta2' ].show billView
 
     @makeBillHover()
       .then ( billView ) ->
-        metaLayout[ 'meta1' ].show billView
+        metaLayout[ 'meta2' ].show billView
 
     @makeEnactedAggregate model
       .then ( metaView ) ->
-        metaLayout[ 'meta2' ].show metaView
+        metaLayout[ 'meta1' ].show metaView
 
 
 
@@ -145,15 +145,15 @@ class MainController extends Marionette.Controller
     @listenTo chartView.chart.currentView, 'showAmendmentData', (data) ->
       @makeAmendHover data
         .then ( amendView ) ->
-          metaLayout[ 'meta1' ].show amendView
+          metaLayout[ 'meta2' ].show amendView
 
     @makeAmendHover()
       .then ( amendView ) ->
-        metaLayout[ 'meta1' ].show amendView
+        metaLayout[ 'meta2' ].show amendView
 
     @makeAmendAggregate model, billId
       .then ( metaView ) ->
-        metaLayout[ 'meta2' ].show metaView
+        metaLayout[ 'meta1' ].show metaView
         # metaView.render()
 
   # Pass ammendment data in and create a model/view with it
