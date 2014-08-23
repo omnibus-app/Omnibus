@@ -68,7 +68,8 @@ class BubbleChart
     # Function for filling colors of nodes
     @fill_color = d3.scale.linear()
       .domain([0, 1])
-      .range(["#920005", "#013F8A"])
+      .range(["#DC2039", "#405CD6"])
+      # .range(["#DC2039", "#2A53C1"])
 
     @support_scale = d3.scale.linear()
       .domain([0, 1])
