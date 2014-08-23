@@ -8,7 +8,7 @@ var paths = require( '../paths.js' );
 var shell = require('gulp-shell');
 var spawn = require('gulp-spawn');
 
-gulp.task('buildTest',['install','vendor', 'assets', 'html', 'styles', 'testhtml'], function(){
+gulp.task('buildTest',['install','vendor', 'assets', 'html', 'testhtml'], function(){
   var bundler =
     browserify({
       "entries": [paths.src + 'scripts/test.coffee'],
