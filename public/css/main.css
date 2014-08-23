@@ -111,3 +111,9 @@ footer {
 .bar-sort-buttons {
   position: absolute;
   top: -8rem; }
+
+.bar.republican {
+  fill: #df0008 !important; }
+
+.bar.democrat {
+  fill: #0262d6 !important; }
