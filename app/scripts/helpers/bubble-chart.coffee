@@ -62,7 +62,6 @@ class BubbleChart
       else d.support = false
       return d
 
-    console.log @data
 
 
 
@@ -268,7 +267,6 @@ class BubbleChart
 
   #highlight moused bill
   show_details: (data, i, element) =>
-    console.log data
     sel = d3.select(element)
     sel.attr("stroke", "black")
     sel.moveToFront()
