@@ -10,9 +10,7 @@
   min-height: 4rem; }
 
 #chart {
-  min-height: 4 em;
-  height: 450px;
-  overflow: scroll; }
+  height: 500px; }
 
 #axis {
   min-height: 1 em; }

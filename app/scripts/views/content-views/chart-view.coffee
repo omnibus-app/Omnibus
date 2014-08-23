@@ -33,7 +33,7 @@ class ChartView extends Marionette.ItemView
     data = votes.filter ( amendment ) ->
       if amendment.vote
         return amendment
-      
+
     data = data.map util.buildData
       .sort sortUtil.order
 
@@ -73,9 +73,11 @@ class ChartView extends Marionette.ItemView
       ['most-supported', 'most supported']
     ]
 
-    buttonHolder = @$el
+    buttonHolder = $ '<div class="bar-sort-buttons"></div>'
     for pair in buttons
-      buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
+      buttonHolder.append "<button id=#{pair[0]}>#{pair[1]}</button>"
+    @$el.append buttonHolder
+
 
     xAxis = d3.svg.axis()
       .scale x
