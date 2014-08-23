@@ -12,13 +12,13 @@ class AmendInfoView extends Marionette.ItemView
       return acc
      , demY: 0, repY: 0, total: 0
 
-  render: ->
+  renderChart: =>
     data = @model.get 'yesAgg'
     $ =>
       width = 280
       height = 280
       radius = Math.min(width, height) / 2
-      
+
       temp = data
       data = []
       demY = temp.demY
@@ -91,6 +91,10 @@ class AmendInfoView extends Marionette.ItemView
       titleP = document.createElement 'p'
       @el.lastChild.appendChild titleP
       @el.lastChild.lastChild.innerText = "Combined support for all amendments"
+
+  render: =>
+    super()
+    @renderChart()
 
 
 
