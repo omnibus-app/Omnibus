@@ -187,10 +187,10 @@ class ChartView extends Marionette.ItemView
   mostRepWeighted: (e) ->
     sortUtil.sortBy @svg, sortUtil.republicanDiff
 
-  mostSupported: (e) ->
+  leastSupported: (e) ->
     sortUtil.sortBy @svg, sortUtil.leastSupported
 
-  leastSupported: (e) ->
+  mostSupported: (e) ->
     sortUtil.sortBy @svg, sortUtil.mostSupported
 
 module.exports = ChartView
