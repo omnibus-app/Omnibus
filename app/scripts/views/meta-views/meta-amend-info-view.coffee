@@ -27,7 +27,9 @@ class AmendInfoView extends Marionette.ItemView
       nonY = temp.total - demY - repY
       data.push title: 'Democrat Yes', votes: demY, percent: Math.round( demY / total * 100 ) + '%'
       data.push title: 'Republican Yes', votes: repY, percent: Math.round( repY / total * 100 ) + '%'
-      data.push title: 'Combined Nay', votes: nonY, percent: Math.round( nonY / total * 100 ) + '%'
+      data.push title: 'Nay', votes: nonY, percent: Math.round( nonY / total * 100 ) + '%'
+      data.sort ( a, b ) ->
+        b.votes - a.votes
 
       arc = d3.svg.arc()
         .outerRadius radius - 10
@@ -58,10 +60,14 @@ class AmendInfoView extends Marionette.ItemView
           .attr "class", (d) ->
             if d.data.title is 'Democrat Yes' then return "democrat"
             if d.data.title is 'Republican Yes' then return "republican"
-            if d.data.title is 'Combined Nay' then return "nay"
+            if d.data.title is 'Nay' then return "nay"
 
       g.append "text"
           .attr "class", "pie-chart-text"
+          .attr "class", ( d ) ->
+            if d.data.title is 'Democrat Yes' then return "democrat-text"
+            if d.data.title is 'Republican Yes' then return "republican-text"
+            if d.data.title is 'Nay' then return "nay-text"
           .attr "transform", (d) ->
             "translate(" + arc.centroid(d) + ")"
           .attr "dy", ".35em"
@@ -71,6 +77,10 @@ class AmendInfoView extends Marionette.ItemView
 
       g.append "text"
           .attr "class", "pie-chart-text"
+          .attr "class", ( d ) ->
+            if d.data.title is 'Democrat Yes' then return "democrat-text"
+            if d.data.title is 'Republican Yes' then return "republican-text"
+            if d.data.title is 'Nay' then return "nay-text"
           .attr "transform", (d) ->
             "translate(" + arc.centroid(d) + ")"
           .attr "dy", "1.4em"
