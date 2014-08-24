@@ -1,5 +1,4 @@
 # Require Views and Models
-WelcomeView = require './views/welcome-view.coffee'
 SearchView = require './views/search-view.coffee'
 ContentLayout = require './views/content-views/content-layout.coffee'
 ChartView = require './views/content-views/chart-view.coffee'
@@ -19,6 +18,7 @@ BillHoverView = require './views/meta-views/meta-bill-hover-view.coffee'
 EnactedAggView = require './views/meta-views/meta-enacted-agg-view.coffee'
 EnactedAggModel = require './models/meta-enacted-agg-model.coffee'
 AboutView = require './views/about-view.coffee'
+ControlView = require './views/control-view.coffee'
 
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
@@ -27,6 +27,13 @@ class MainController extends Marionette.Controller
   showSpinner: ( region ) ->
     region.empty()
     region.$el.append App.spinner.el
+
+  setUpButtonView: ( buttons ) ->
+    buttons = new Backbone.Model buttons: buttons
+    controlView = new ControlView model: buttons
+    @options.regions.content.currentView.controls.show controlView
+    @listenTo controlView, "buttonClick", ( id ) =>
+      @options.regions.content.currentView.chart.currentView.trigger "buttonClick", id
 
   # Used to kick off the initial visualization before user bill selection
   home: ->
@@ -49,7 +56,7 @@ class MainController extends Marionette.Controller
         @options.regions.content.currentView.chart.show enactedView
         enactedView.render()
         @makeEnactedMeta enactedModel
-
+        @setUpButtonView ['allBills', 'byCongress', 'asTimeline']
 
   makeEnactedMeta: ( model ) ->
     chartView = @options.regions.content.currentView
@@ -134,8 +141,9 @@ class MainController extends Marionette.Controller
       contentLayout = new ContentLayout
       @options.regions.content.show contentLayout
     @options.regions.content.currentView.chart.show chartView
-
     @makeBillMeta billModel, billId
+    @setUpButtonView [ 'mostDemVotes', 'mostRepVotes', 'mostDemWeighted', 'mostRepWeighted', 'leastSupported', 'mostSupported' ]
+
 
   makeBillMeta: ( model, billId ) ->
     chartView = @options.regions.content.currentView
@@ -180,20 +188,20 @@ class MainController extends Marionette.Controller
 
 
   # Displays the welcome view to new users
-  welcomeView: ( billModel ) ->
-    # Create the welcome view with the billModel (billModel not currently used)
-    welcomeView = new WelcomeView model: billModel
-    # Hide the information button on search view
-    $('#information').hide()
+  # welcomeView: ( billModel ) ->
+  #   # Create the welcome view with the billModel (billModel not currently used)
+  #   welcomeView = new WelcomeView model: billModel
+  #   # Hide the information button on search view
+  #   $('#information').hide()
 
-    # Empty the region when the user closes it
-    @listenTo welcomeView, 'welcome:close', ->
-      @options.regions.welcome.empty()
-      # Show the information button in the search view
-      $('#information').show()
+  #   # Empty the region when the user closes it
+  #   @listenTo welcomeView, 'welcome:close', ->
+  #     @options.regions.welcome.empty()
+  #     # Show the information button in the search view
+  #     $('#information').show()
 
-    # Show the welcome vew in the welcome region
-    @options.regions.welcome.show welcomeView
+  #   # Show the welcome vew in the welcome region
+  #   @options.regions.welcome.show welcomeView
 
   # Initiates the Search view and
   searchView: ( ) ->
@@ -205,8 +213,8 @@ class MainController extends Marionette.Controller
       @router.navigate 'bills/' + billId, trigger: true
 
     # Listen to show Welcome view event on info button click
-    @listenTo searchView, 'welcome:show', ->
-      @welcomeView searchView.model
+    # @listenTo searchView, 'welcome:show', ->
+    #   @welcomeView searchView.model
 
     # Listen to search bills submit event
     @listenTo searchView, 'search:bills:submit', ( query ) ->

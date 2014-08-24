@@ -10,16 +10,16 @@ class BubbleChart
         @parentNode.appendChild this
         return
 
-   #create buttons and append
-    buttons = [
-      ['combined', 'All Bills'],
-      ['byYear', 'By Congress'],
-      ['byParty', 'By Party']
-    ]
+   # #create buttons and append
+   #  buttons = [
+   #    ['combined', 'All Bills'],
+   #    ['byYear', 'By Congress'],
+   #    ['byParty', 'By Party']
+   #  ]
 
-    buttonHolder = $("#bubbleChart")
-    for pair in buttons
-      buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
+   #  buttonHolder = $("#bubbleChart")
+   #  for pair in buttons
+   #    buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
 
     # locations the nodes will move towards
     # depending on which view is currently being
@@ -52,7 +52,7 @@ class BubbleChart
     max_amount = d3.max(@data, (d) -> parseInt(d.last_version.pages))
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 45])
 
-    
+
 
     # Map support data from datum onto @data
     @data = @data.map (d) ->
@@ -73,7 +73,7 @@ class BubbleChart
     @support_scale = d3.scale.linear()
       .domain([0, 1])
       .range([0, @width])
-     
+
 
   # create node objects from original data
   # that will serve as the data behind each
@@ -98,7 +98,7 @@ class BubbleChart
         congress: d.congress
         exited: d.last_action_at
         x: Math.random() * 900
-        y: Math.random() * 800 
+        y: Math.random() * 800
       }
       @nodes.push node
 
@@ -106,7 +106,7 @@ class BubbleChart
 
 
 
-  # create svg at #vis and then 
+  # create svg at #vis and then
   # create circle representation for each node
   create_vis: () =>
     @vis = d3.select("#bubbleChart").append("svg")
@@ -117,7 +117,7 @@ class BubbleChart
     @circles = @vis.selectAll("circle")
       .data(@nodes, (d) -> d.id)
 
-    # used because we need 'this' in the 
+    # used because we need 'this' in the
     # mouse callbacks
     that = this
 
@@ -129,7 +129,7 @@ class BubbleChart
     @circles.enter().append("circle")
       .attr("r", 0)
       .attr("class","bubble")
-      .attr("fill", (d) => 
+      .attr("fill", (d) =>
         return "#ddd" if isNaN d.support
         @fill_color(d.support))
       .attr("stroke-width", 1.5)
@@ -140,7 +140,7 @@ class BubbleChart
 
     # Fancy transition to make bubbles appear, ending with the
     # correct radius
-    @circles.transition().duration(2000).attr("r", (d) -> 
+    @circles.transition().duration(2000).attr("r", (d) ->
       d.radius)
 
 
@@ -149,9 +149,9 @@ class BubbleChart
   # Charge is proportional to the diameter of the
   # circle (which is stored in the radius attribute
   # of the circle's associated data.
-  # This is done to allow for accurate collision 
+  # This is done to allow for accurate collision
   # detection with nodes of different sizes.
-  # Charge is negative because we want nodes to 
+  # Charge is negative because we want nodes to
   # repel.
   # Dividing by 8 scales down the charge to be
   # appropriate for the visualization dimensions.
@@ -213,7 +213,7 @@ class BubbleChart
 
     this.display_partys()
 
-  # move all circles to their associated @year_centers 
+  # move all circles to their associated @year_centers
   move_towards_year: (alpha) =>
     (d) =>
       target = @year_centers[d.congress]
@@ -221,16 +221,16 @@ class BubbleChart
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
 
-      # .attr("fill", (d) => 
+      # .attr("fill", (d) =>
       #   return "#ddd" if isNaN(d.support)
-      #   @fill_color(d.support)) 
+      #   @fill_color(d.support))
   that = this
 
   move_towards_party: (alpha) =>
     # @vis.selectAll("*").remove()
     # @vis.selectAll("circle").data(@data).enter().append("circle").attr("class","bubble")
     (d) =>
-      if isNaN d.support 
+      if isNaN d.support
         d.x = d.x * (@damper + 0.02) * alpha
         d.y = d.y * (@damper + 0.02) * alpha
       else

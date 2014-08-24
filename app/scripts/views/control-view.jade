@@ -1,0 +1,8 @@
+- function camelToTitle ( str ) {
+-    str = str.replace( /([A-Z])/g, " $1" );
+-    return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
+- }
+
+.buttons
+  each id in buttons
+    button( class='.control-button', id='#{id}' ) #{ camelToTitle( id ) }
