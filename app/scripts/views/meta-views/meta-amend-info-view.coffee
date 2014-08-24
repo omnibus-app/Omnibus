@@ -51,13 +51,14 @@ class AmendInfoView extends Marionette.ItemView
         .data pie data
        .enter().append "g"
         .attr "class", "arc"
+          
 
       g.append "path"
           .attr "d", arc
-          .style "fill", (d) ->
-            if d.data.title is 'Democrat Yes' then return 'blue'
-            if d.data.title is 'Republican Yes' then return 'red'
-            if d.data.title is 'Combined Nay' then return 'gray'
+          .attr "class", (d) ->
+            if d.data.title is 'Democrat Yes' then return "democrat"
+            if d.data.title is 'Republican Yes' then return "republican"
+            if d.data.title is 'Combined Nay' then return "nay"
 
       g.append "text"
           .attr "class", "pie-chart-text"
