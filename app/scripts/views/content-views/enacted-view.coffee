@@ -11,22 +11,21 @@ class EnactedView extends Marionette.ItemView
 
   events:
     'click circle': "showBillData"
-    'click #combined': "combine"
-    'click #byYear': 'byYear'
-    'click #byParty': 'byParty'
     'mouseover [class~=bubble]': 'showDetails'
-  
+
   initialize: ->
     @bills = @model.get 'bills'
+    @on "buttonClick", ( method ) =>
+      console.log 'in handler', method
+      @[method]()
 
-  combine: ->
+  allBills: ->
     BubbleChart.display_all()
 
-  byParty: ->
-    BubbleChart.display_party()
-
-  byYear: ->
+  byCongress: ->
     BubbleChart.display_year()
+
+  asTimeline: ->
 
   showDetails: (e) ->
     billId = @$(e.currentTarget).attr("data-bill")
@@ -37,7 +36,7 @@ class EnactedView extends Marionette.ItemView
   showBillData: (e) ->
     billId = @$(e.currentTarget).attr("data-bill")
     billId = billId.slice( -3 ) + '-' + billId.slice( 0, -4 )
-    @trigger 'showBill', billId 
+    @trigger 'showBill', billId
     d3.selectAll("circle").remove()
 
   render: ->
@@ -64,7 +63,7 @@ class EnactedView extends Marionette.ItemView
           BubbleChart.display_year()
         else
           BubbleChart.display_all()
-          
+
       #Render the chart
       render_vis @bills
 

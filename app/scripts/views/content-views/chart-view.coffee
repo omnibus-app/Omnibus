@@ -9,16 +9,21 @@ class ChartView extends Marionette.ItemView
 
   events:
     'mouseover [data-amdt]': 'showAmendmentData'
-    'click #oldest': 'oldestFirst'
-    'click #newest': 'newestFirst'
-    'click #dem-total': 'demTotal'
-    'click #rep-total': 'repTotal'
-    'click #dem-biased': 'demBiased'
-    'click #rep-biased': 'repBiased'
-    'click #least-supported': 'mostSupport'
-    'click #most-supported': 'leastSupport'
+    # 'click #oldest': 'oldestFirst'
+    # 'click #newest': 'newestFirst'
+    # 'click #dem-total': 'demTotal'
+    # 'click #rep-total': 'repTotal'
+    # 'click #dem-biased': 'demBiased'
+    # 'click #rep-biased': 'repBiased'
+    # 'click #least-supported': 'mostSupport'
+    # 'click #most-supported': 'leastSupport'
+
+
 
   initialize: ->
+    @on "buttonClick", ( method ) =>
+      console.log 'in handler', method
+      @[method]()
 
   @defaults: ->
     margin =
@@ -62,21 +67,21 @@ class ChartView extends Marionette.ItemView
     ticks = [-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]
 
 
-    buttons = [
-      ['oldest', 'oldest'],
-      ['newest', 'newest'],
-      ['dem-total', 'most dem votes'],
-      ['rep-total', 'most rep votes'],
-      ['dem-biased', 'most dem weighted'],
-      ['rep-biased', 'most rep weighted'],
-      ['least-supported', 'least supported'],
-      ['most-supported', 'most supported']
-    ]
+    # buttons = [
+    #   ['oldest', 'oldest'],
+    #   ['newest', 'newest'],
+    #   ['dem-total', 'most dem votes'],
+    #   ['rep-total', 'most rep votes'],
+    #   ['dem-biased', 'most dem weighted'],
+    #   ['rep-biased', 'most rep weighted'],
+    #   ['least-supported', 'least supported'],
+    #   ['most-supported', 'most supported']
+    # ]
 
-    buttonHolder = $ '<div class="bar-sort-buttons"></div>'
-    for pair in buttons
-      buttonHolder.append "<button id=#{pair[0]}>#{pair[1]}</button>"
-    @$el.prepend buttonHolder
+    # buttonHolder = $ '<div class="bar-sort-buttons"></div>'
+    # for pair in buttons
+    #   buttonHolder.append "<button id=#{pair[0]}>#{pair[1]}</button>"
+    # @$el.prepend buttonHolder
 
     xAxis = d3.svg.axis()
       .scale x
@@ -164,28 +169,28 @@ class ChartView extends Marionette.ItemView
     amendmentData = _.findWhere @model.get( 'votes' ), amendment_id: amendmentId
     @trigger 'showAmendmentData', amendmentData
 
-  oldestFirst: (e) ->
-    sortUtil.sortBy @svg, sortUtil.oldestFirst
+  # oldestFirst: (e) ->
+  #   sortUtil.sortBy @svg, sortUtil.oldestFirst
 
-  newestFirst: (e) ->
-    sortUtil.sortBy @svg, sortUtil.newestFirst
+  # newestFirst: (e) ->
+  #   sortUtil.sortBy @svg, sortUtil.newestFirst
 
-  demTotal: (e) ->
+  mostDemVotes: (e) ->
     sortUtil.sortBy @svg, sortUtil.democratTotal
 
-  repTotal: (e) ->
+  mostRepVotes: (e) ->
     sortUtil.sortBy @svg, sortUtil.republicanTotal
 
-  demBiased: (e) ->
+  mostDemWeighted: (e) ->
     sortUtil.sortBy @svg, sortUtil.democratDiff
 
-  repBiased: (e) ->
+  mostRepWeighted: (e) ->
     sortUtil.sortBy @svg, sortUtil.republicanDiff
 
-  mostSupport: (e) ->
+  mostSupported: (e) ->
     sortUtil.sortBy @svg, sortUtil.leastSupported
 
-  leastSupport: (e) ->
+  leastSupported: (e) ->
     sortUtil.sortBy @svg, sortUtil.mostSupported
 
 module.exports = ChartView
