@@ -89,7 +89,7 @@ class BubbleChart
         committee: d.committee_ids
         introduced: d.introduced_on
         congress: d.congress
-        exited: parseDate(d.last_action_at)
+        exited: d.last_action_at
         x: Math.random() * 900
         y: Math.random() * 800
       }
@@ -198,17 +198,19 @@ class BubbleChart
 
     this.display_years()
 
-  display_by_party: () =>
+  display_by_party: (e) =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(0.8)
+      .friction(0.9)
       .on "tick", (e) =>
-        @circles.each(this.move_towards_party(e.alpha))
+        @circles.each(this.move_towards_year(e.alpha))
           .attr("cx", (d) -> d.x)
-          .attr("cy", 300)
+          .attr("cy", (d) -> d.y)
     @force.start()
 
-    this.display_partys()
+    this.display_years()
+        
+
 
   # move all circles to their associated @year_centers
   move_towards_year: (alpha) =>
@@ -259,6 +261,17 @@ class BubbleChart
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
+  display_timeline: () =>
+    @vis.selectAll("*").remove()
+    @vis.selectAll("circle").data(@data).enter().append("circle").attr("class","bubble")
+    
+    timeline = @vis.selectAll("circle")
+    t = timeline.transition().duration(500)
+
+    t.select("circle")
+      .attr("x", (d)=> d.exited)
+      .attr("y", 150)
+
   display_partys: () =>
     partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
     partys_data = d3.keys(partys_x)
@@ -267,7 +280,7 @@ class BubbleChart
 
     partys.enter().append("text")
       .attr("class", "partys")
-      .attr("x", partys_x[d] )
+      .attr("x", (d) => partys_x[d] )
       .attr("y", 40)
       .attr("text-anchor", "middle")
       .text((d) -> d)
