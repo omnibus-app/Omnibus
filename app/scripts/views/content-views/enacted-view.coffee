@@ -62,7 +62,7 @@ class EnactedView extends Marionette.ItemView
       BubbleChart.display_year = () =>
         chart.display_by_year()
       BubbleChart.display_timeline = () =>
-        chart.display_by_party()
+        chart.display_timeline()
       BubbleChart.transitionBill=() =>
         chart.transitionBill()
       BubbleChart.toggle_view = (view_type) =>
