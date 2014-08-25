@@ -57,8 +57,8 @@ class BubbleChart
     # Function for filling colors of nodes
     @fill_color = d3.scale.linear()
       .domain([0, 1])
-      .range(["#DC2039", "#405CD6"])
-      # .range(["#DC2039", "#2A53C1"])
+      # .range(["#DC2039", "#405CD6"])
+      .range(["#DC2039", "#2A53C1"])
 
     @support_scale = d3.scale.linear()
       .domain([0, 1])
@@ -215,11 +215,6 @@ class BubbleChart
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
 
-      # .attr("fill", (d) =>
-      #   return "#ddd" if isNaN(d.support)
-      #   @fill_color(d.support))
-  that = this
-
   move_towards_party: (alpha) =>
     # @vis.selectAll("*").remove()
     # @vis.selectAll("circle").data(@data).enter().append("circle").attr("class","bubble")
@@ -233,11 +228,12 @@ class BubbleChart
         d.y = d.y
 
 
-
   # Method to display year titles
   display_years: () =>
     congress_x = {"111": 160, "112": @width / 2, "113": @width - 160}
     years_x = {"2009-2010": 160, "2011-2012": @width / 2, "2013-2014": @width - 160}
+    years = @vis.selectAll([".sixYears"]).remove() if $(".sixYears")
+
     congress_data = d3.keys(congress_x)
     years_data = d3.keys(years_x)
     congress = @vis.selectAll(".congress")
@@ -260,6 +256,16 @@ class BubbleChart
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
+    sixYears = @vis.selectAll(".sixYears")
+      .data(sixYears_data)
+
+    sixYears.enter().append("text")
+      .attr("class", "sixYears")
+      .attr("x", (d) => sixYears_x[d] )
+      .attr("y", 40)
+      .attr("text-anchor", "middle")
+      .text((d) -> d) 
+
   display_partys: () =>
     partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
     partys_data = d3.keys(partys_x)
@@ -275,7 +281,19 @@ class BubbleChart
 
   # Method to hide year titles
   hide_years: () =>
-    years = @vis.selectAll(".years").remove()
+
+    years = @vis.selectAll([".years", ".congress"]).remove() if d3.select([".congress"])
+    sixYears_x = { "All Enacted Bills for the last 3 congresses 2009-2014": @width / 2}
+    sixYears_data = d3.keys(sixYears_x)
+    sixYears = @vis.selectAll(".sixYears")
+      .data(sixYears_data)
+
+    sixYears.enter().append("text")
+      .attr("class", "sixYears")
+      .attr("x", (d) => sixYears_x[d] )
+      .attr("y", 40)
+      .attr("text-anchor", "middle")
+      .text((d) -> d) 
 
   #highlight moused bill
   show_details: (data, i, element) =>

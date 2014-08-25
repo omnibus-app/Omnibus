@@ -19,6 +19,8 @@ class EnactedView extends Marionette.ItemView
     @on "buttonClick", ( method ) =>
       @[method]()
 
+    $("#axis").remove()
+
   allBills: ->
     BubbleChart.display_all()
 
