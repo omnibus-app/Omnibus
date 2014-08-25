@@ -270,7 +270,7 @@ class BubbleChart
 
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(0.9)
+      .friction(0.75)
       .on "tick", (e) =>
         @circles.each(this.move_timeline(e.alpha))
           .attr("cx", (d) -> d.x)
@@ -311,6 +311,7 @@ class BubbleChart
       target = @time_centers[d.congress]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 2
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 2
+
 
 
   # Method to hide year titles
