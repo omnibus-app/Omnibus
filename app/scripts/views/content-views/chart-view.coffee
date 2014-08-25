@@ -9,16 +9,6 @@ class ChartView extends Marionette.ItemView
 
   events:
     'mouseover [data-amdt]': 'showAmendmentData'
-    # 'click #oldest': 'oldestFirst'
-    # 'click #newest': 'newestFirst'
-    # 'click #dem-total': 'demTotal'
-    # 'click #rep-total': 'repTotal'
-    # 'click #dem-biased': 'demBiased'
-    # 'click #rep-biased': 'repBiased'
-    # 'click #least-supported': 'mostSupport'
-    # 'click #most-supported': 'leastSupport'
-
-
 
   initialize: ->
     @on "buttonClick", ( method ) =>

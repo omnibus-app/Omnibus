@@ -67,6 +67,7 @@ class MainController extends Marionette.Controller
       @router.navigate 'bills/' + billId, trigger: true
 
     @listenTo chartView.chart.currentView, 'showMeta', ( data ) ->
+      return metaLayout['meta2'].show new MetaInfoView() unless data
       @makeBillHover data
         .then ( billView ) ->
           metaLayout[ 'meta2' ].show billView
