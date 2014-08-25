@@ -25,8 +25,14 @@ footer {
 .democrat {
   fill: steelblue; }
 
+.democrat-no {
+  fill: #586d7f; }
+
 .republican {
   fill: red; }
+
+.republican-no {
+  fill: #7f2626; }
 
 .nay {
   fill: #eeeeee; }
