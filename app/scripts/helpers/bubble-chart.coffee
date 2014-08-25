@@ -41,7 +41,7 @@ class BubbleChart
     max_amount = d3.max(@data, (d) -> parseInt(d.last_version.pages))
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 45])
 
-
+    parseDate = d3.time.format.utc("%Y-%m-%d").parse;
 
     # Map support data from datum onto @data
     @data = @data.map (d) ->
@@ -50,8 +50,6 @@ class BubbleChart
         d.support = {demVotes: parseInt(datum[id].democratic.yes), repVotes: parseInt(datum[id].republican.yes), allVoteTotal: parseInt(datum[id].total.yes) + parseInt(datum[id].total.no) + parseInt(datum[id].total.no) + parseInt(datum[id].total.present), allVotes: datum[id].total}
       else d.support = false
       return d
-
-
 
 
     # Function for filling colors of nodes
@@ -73,6 +71,7 @@ class BubbleChart
     this.create_vis()
 
   create_nodes: () =>
+    parseDate = d3.time.format("%Y-%m-%d").parse;
     @data.forEach (d, i) =>
       node = {
         id: d.bill_id
@@ -86,13 +85,13 @@ class BubbleChart
         committee: d.committee_ids
         introduced: d.introduced_on
         congress: d.congress
-        exited: d.last_action_at
+        exited: parseDate d.last_action_at
         x: Math.random() * 900
         y: Math.random() * 800
       }
       @nodes.push node
 
-    @nodes.sort (a,b) -> b.value - a.value
+    @nodes.sort (a,b) -> b.exited - a.exited
 
 
 
@@ -195,17 +194,19 @@ class BubbleChart
 
     this.display_years()
 
-  display_by_party: () =>
-    @force.gravity(@layout_gravity)
-      .charge(this.charge)
-      .friction(0.8)
-      .on "tick", (e) =>
-        @circles.each(this.move_towards_party(e.alpha))
-          .attr("cx", (d) -> d.x)
-          .attr("cy", 300)
-    @force.start()
+  # display_by_party: (e) =>
+  #   @force.gravity(@layout_gravity)
+  #     .charge(this.charge)
+  #     .friction(0.9)
+  #     .on "tick", (e) =>
+  #       @circles.each(this.move_towards_year(e.alpha))
+  #         .attr("cx", (d) -> d.x)
+  #         .attr("cy", (d) -> d.y)
+  #   @force.start()
 
-    this.display_partys()
+  #   this.display_years()
+        
+
 
   # move all circles to their associated @year_centers
   move_towards_year: (alpha) =>
@@ -215,17 +216,17 @@ class BubbleChart
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
 
-  move_towards_party: (alpha) =>
-    # @vis.selectAll("*").remove()
-    # @vis.selectAll("circle").data(@data).enter().append("circle").attr("class","bubble")
-    (d) =>
-      if isNaN d.support
-        d.x = d.x * (@damper + 0.02) * alpha
-        d.y = d.y * (@damper + 0.02) * alpha
-      else
-        target = @support_scale[d.support]
-        d.x = target * (@damper + 0.02) * alpha * 1.1
-        d.y = d.y
+  # move_towards_party: (alpha) =>
+  #   # @vis.selectAll("*").remove()
+  #   # @vis.selectAll("circle").data(@data).enter().append("circle").attr("class","bubble")
+  #   (d) =>
+  #     if isNaN d.support
+  #       d.x = d.x * (@damper + 0.02) * alpha
+  #       d.y = d.y * (@damper + 0.02) * alpha
+  #     else
+  #       target = @support_scale[d.support]
+  #       d.x = target * (@damper + 0.02) * alpha * 1.1
+  #       d.y = d.y
 
 
   # Method to display year titles
@@ -256,18 +257,62 @@ class BubbleChart
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
-  display_partys: () =>
-    partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
-    partys_data = d3.keys(partys_x)
-    partys = @vis.selectAll(".partys")
-      .data(partys_data)
 
-    partys.enter().append("text")
-      .attr("class", "partys")
-      .attr("x", partys_x[d] )
-      .attr("y", 40)
-      .attr("text-anchor", "middle")
-      .text((d) -> d)
+  display_timeline: () =>
+    timeline = @vis.selectAll("circle")
+
+
+    # t = timeline.transition().duration(1500)
+    #   .attr("x", (d,i) -> time_scale(+d.exited))
+    #     # time_scale(+parseDate d.last_action_at))
+    #   .attr("cy", (d) -> years_y[d.congress])
+    #   .attr("r", (d) -> d.radius)
+
+    @force.gravity(@layout_gravity)
+      .charge(this.charge)
+      .friction(0.75)
+      .on "tick", (e) =>
+        @circles.each(this.move_timeline(e.alpha))
+          .attr("cx", (d) -> d.x)
+          .attr("cy", (d) -> d.y)
+    @force.start()
+
+    this.display_years()
+
+  move_timeline: (alpha) =>
+    parseDate = d3.time.format.utc("%Y-%m-%d").parse;
+    minDate111 = d3.min(@data, (d) ->
+      if d.congress is 111 
+        +parseDate d.last_action_at)
+    maxDate111 = d3.max(@data, (d) ->
+      if d.congress is 111 
+        +parseDate d.last_action_at)
+    minDate112 = d3.min(@data, (d) ->
+      if d.congress is 112 
+        +parseDate d.last_action_at)
+    maxDate112 = d3.max(@data, (d) ->
+      if d.congress is 112 
+        +parseDate d.last_action_at)
+    minDate113 = d3.min(@data, (d) ->
+      if d.congress is 113 
+        +parseDate d.last_action_at)
+    maxDate113 = d3.max(@data, (d) ->
+      if d.congress is 113 
+        +parseDate d.last_action_at)
+    timeScale = d3.time.scale().domain([minDate111, maxDate111]).range([95, @width - 125])
+    timeScale2 = d3.time.scale().domain([minDate112, maxDate112]).range([95, @width - 125])
+    timeScale3 = d3.time.scale().domain([minDate113, maxDate113]).range([95, @width - 125])
+    (d) =>
+      @time_centers = {
+        111 : {x: timeScale(d.exited), y: 180},
+        112 : {x: timeScale2(d.exited), y: @height / 2},
+        113 : {x: timeScale3(d.exited), y: @height - 180}
+      }
+      target = @time_centers[d.congress]
+      d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 2
+      d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 2
+
+
 
   # Method to hide year titles
   hide_years: () =>
@@ -288,6 +333,7 @@ class BubbleChart
   #highlight moused bill
   show_details: (data, i, element) =>
     sel = d3.select(element)
+    console.log sel
     sel.attr("stroke", "black")
     sel.moveToFront()
 

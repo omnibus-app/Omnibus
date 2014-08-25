@@ -28,6 +28,7 @@ class EnactedView extends Marionette.ItemView
     BubbleChart.display_year()
 
   asTimeline: ->
+    BubbleChart.display_timeline()
 
   showDetails: (e) ->
     billId = @$(e.currentTarget).attr("data-bill")
@@ -60,15 +61,15 @@ class EnactedView extends Marionette.ItemView
         chart.show_details(e)
       BubbleChart.display_year = () =>
         chart.display_by_year()
-      BubbleChart.display_party = () =>
-        chart.display_by_party()
+      BubbleChart.display_timeline = () =>
+        chart.display_timeline()
       BubbleChart.transitionBill=() =>
         chart.transitionBill()
-      BubbleChart.toggle_view = (view_type) =>
-        if view_type == 'year'
-          BubbleChart.display_year()
-        else
-          BubbleChart.display_all()
+      # BubbleChart.toggle_view = (view_type) =>
+      #   if view_type == 'year'
+      #     BubbleChart.display_year()
+      #   else
+      #     BubbleChart.display_all()
 
       #Render the chart
       render_vis @bills
