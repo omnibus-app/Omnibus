@@ -117,16 +117,20 @@ class BubbleChart
     # see transition below
 
     @circles.enter().append("circle")
-      .attr("r", 0)
-      .attr("class","bubble")
-      .attr("fill", (d) =>
+      .attr "r", 0
+      .attr "class", (d) =>
+        str = "bubble"
+        if isNaN d.support
+          str += " unanimous-consent"
+        str
+      .attr "fill", (d) =>
         return "#ddd" if isNaN d.support
-        @fill_color(d.support))
-      .attr("stroke-width", 1.5)
-      .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
-      .attr("data-bill", (d) -> "#{d.id}")
-      .on("mouseover", (d,i) -> that.show_details(d,i,this))
-      .on("mouseout", (d,i) -> that.hide_details(d,i,this))
+        @fill_color(d.support)
+      .attr "stroke-width", 1.5
+      .attr "stroke", (d) => d3.rgb(@fill_color(d.group)).darker()
+      .attr "data-bill", (d) -> "#{d.id}"
+      .on "mouseover", (d,i) -> that.show_details( d, i, this)
+      .on "mouseout", (d,i) -> that.hide_details( d, i, this)
 
     # Fancy transition to make bubbles appear, ending with the
     # correct radius

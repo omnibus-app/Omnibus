@@ -17,7 +17,6 @@ class EnactedView extends Marionette.ItemView
   initialize: ->
     @bills = @model.get 'bills'
     @on "buttonClick", ( method ) =>
-      console.log 'in handler', method
       @[method]()
 
   allBills: ->
@@ -37,7 +36,9 @@ class EnactedView extends Marionette.ItemView
     @trigger "showMeta", null
 
   showBillData: (e) ->
-    billId = @$(e.currentTarget).attr("data-bill")
+    target = $ e.currentTarget
+    return if target.is ".unanimous-consent"
+    billId = target.attr("data-bill")
     billId = billId.slice( -3 ) + '-' + billId.slice( 0, -4 )
     @trigger 'showBill', billId
     d3.selectAll("circle").remove()
