@@ -28,6 +28,21 @@ footer {
 .republican {
   fill: red; }
 
+.nay {
+  fill: #eeeeee; }
+
+.democrat-text {
+  fill: darkslateblue;
+  font-weight: bold; }
+
+.republican-text {
+  fill: darkslateblue;
+  font-weight: bold; }
+
+.nay-text {
+  fill: darkslateblue;
+  font-weight: bold; }
+
 .axis text {
   font: 10px sans-serif; }
 
