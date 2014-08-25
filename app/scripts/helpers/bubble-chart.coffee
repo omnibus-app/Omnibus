@@ -41,7 +41,7 @@ class BubbleChart
     max_amount = d3.max(@data, (d) -> parseInt(d.last_version.pages))
     @radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 45])
 
-
+    parseDate = d3.time.format("%Y-%m-%d").parse;
 
     # Map support data from datum onto @data
     @data = @data.map (d) ->
@@ -50,6 +50,9 @@ class BubbleChart
         d.support = {demVotes: parseInt(datum[id].democratic.yes), repVotes: parseInt(datum[id].republican.yes), allVoteTotal: parseInt(datum[id].total.yes) + parseInt(datum[id].total.no) + parseInt(datum[id].total.no) + parseInt(datum[id].total.present), allVotes: datum[id].total}
       else d.support = false
       return d
+
+    minDate = d3.min(@data, (d) -> parseDate(d.last_action_at))
+    maxDate = d3.max(@data, (d) -> parseDate(d.last_action_at))
 
 
 
@@ -86,13 +89,13 @@ class BubbleChart
         committee: d.committee_ids
         introduced: d.introduced_on
         congress: d.congress
-        exited: d.last_action_at
+        exited: parseDate(d.last_action_at)
         x: Math.random() * 900
         y: Math.random() * 800
       }
       @nodes.push node
 
-    @nodes.sort (a,b) -> b.value - a.value
+    @nodes.sort (a,b) -> b.exited - a.exited
 
 
 
