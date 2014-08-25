@@ -256,16 +256,6 @@ class BubbleChart
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
-    sixYears = @vis.selectAll(".sixYears")
-      .data(sixYears_data)
-
-    sixYears.enter().append("text")
-      .attr("class", "sixYears")
-      .attr("x", (d) => sixYears_x[d] )
-      .attr("y", 40)
-      .attr("text-anchor", "middle")
-      .text((d) -> d) 
-
   display_partys: () =>
     partys_x = {"Republican": 160, "Split": @width / 2, "Democrat": @width - 160}
     partys_data = d3.keys(partys_x)
@@ -274,7 +264,7 @@ class BubbleChart
 
     partys.enter().append("text")
       .attr("class", "partys")
-      .attr("x", (d) => partys_x[d] )
+      .attr("x", partys_x[d] )
       .attr("y", 40)
       .attr("text-anchor", "middle")
       .text((d) -> d)
