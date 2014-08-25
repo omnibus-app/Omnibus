@@ -162,6 +162,7 @@ class BubbleChart
   # Sets up force layout to display
   # all nodes in one circle.
   display_group_all: () =>
+    d3.selectAll(".x").remove() if d3.select(".x")
     @force.gravity(@layout_gravity)
       .charge(this.charge)
       .friction(.9)
@@ -183,6 +184,7 @@ class BubbleChart
   # sets the display of bubbles to be separated
   # into each year. Does this by calling move_towards_year
   display_by_year: () =>
+    d3.selectAll(".x").remove() if d3.select(".x")
     @force.gravity(@layout_gravity)
       .charge(this.charge)
       .friction(0.9)
@@ -194,19 +196,6 @@ class BubbleChart
 
     this.display_years()
 
-  # display_by_party: (e) =>
-  #   @force.gravity(@layout_gravity)
-  #     .charge(this.charge)
-  #     .friction(0.9)
-  #     .on "tick", (e) =>
-  #       @circles.each(this.move_towards_year(e.alpha))
-  #         .attr("cx", (d) -> d.x)
-  #         .attr("cy", (d) -> d.y)
-  #   @force.start()
-
-  #   this.display_years()
-        
-
 
   # move all circles to their associated @year_centers
   move_towards_year: (alpha) =>
@@ -214,19 +203,6 @@ class BubbleChart
       target = @year_centers[d.congress]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
-
-
-  # move_towards_party: (alpha) =>
-  #   # @vis.selectAll("*").remove()
-  #   # @vis.selectAll("circle").data(@data).enter().append("circle").attr("class","bubble")
-  #   (d) =>
-  #     if isNaN d.support
-  #       d.x = d.x * (@damper + 0.02) * alpha
-  #       d.y = d.y * (@damper + 0.02) * alpha
-  #     else
-  #       target = @support_scale[d.support]
-  #       d.x = target * (@damper + 0.02) * alpha * 1.1
-  #       d.y = d.y
 
 
   # Method to display year titles
@@ -259,14 +235,10 @@ class BubbleChart
 
 
   display_timeline: () =>
+
+    @hide_years()
     timeline = @vis.selectAll("circle")
 
-
-    # t = timeline.transition().duration(1500)
-    #   .attr("x", (d,i) -> time_scale(+d.exited))
-    #     # time_scale(+parseDate d.last_action_at))
-    #   .attr("cy", (d) -> years_y[d.congress])
-    #   .attr("r", (d) -> d.radius)
 
     @force.gravity(@layout_gravity)
       .charge(this.charge)
@@ -277,7 +249,7 @@ class BubbleChart
           .attr("cy", (d) -> d.y)
     @force.start()
 
-    this.display_years()
+
 
   move_timeline: (alpha) =>
     parseDate = d3.time.format.utc("%Y-%m-%d").parse;
@@ -302,6 +274,38 @@ class BubbleChart
     timeScale = d3.time.scale().domain([minDate111, maxDate111]).range([95, @width - 125])
     timeScale2 = d3.time.scale().domain([minDate112, maxDate112]).range([95, @width - 125])
     timeScale3 = d3.time.scale().domain([minDate113, maxDate113]).range([95, @width - 125])
+    
+
+    xAxis = d3.svg.axis()
+        .scale(timeScale)
+        .tickSize(6, 0)
+        .orient("top")
+
+    gx = @vis.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + @height / 2.5 + ")")
+    .call(xAxis)
+
+    xAxis2 = d3.svg.axis()
+        .scale(timeScale2)
+        .tickSize(6, 0)
+        .orient("top")
+
+    gx = @vis.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + @height / 1.5 + ")")
+    .call(xAxis2)
+
+    xAxis3 = d3.svg.axis()
+        .scale(timeScale3)
+        .tickSize(6, 0)
+        .orient("top")
+
+    gx = @vis.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + @height / .75 + ")")
+    .call(xAxis3)
+
     (d) =>
       @time_centers = {
         111 : {x: timeScale(d.exited), y: 180},
@@ -311,6 +315,7 @@ class BubbleChart
       target = @time_centers[d.congress]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 2
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 2
+    
 
 
 
