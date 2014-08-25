@@ -299,18 +299,18 @@ class BubbleChart
     maxDate113 = d3.max(@data, (d) ->
       if d.congress is 113 
         +parseDate d.last_action_at)
-    timeScale = d3.time.scale().domain([minDate111, maxDate111]).range([0, @width])
-    timeScale2 = d3.time.scale().domain([minDate112, maxDate112]).range([0, @width])
-    timeScale3 = d3.time.scale().domain([minDate113, maxDate113]).range([0, @width])
+    timeScale = d3.time.scale().domain([minDate111, maxDate111]).range([95, @width - 125])
+    timeScale2 = d3.time.scale().domain([minDate112, maxDate112]).range([95, @width - 125])
+    timeScale3 = d3.time.scale().domain([minDate113, maxDate113]).range([95, @width - 125])
     (d) =>
       @time_centers = {
-        111 : {x: timeScale(d.exited), y: 160},
+        111 : {x: timeScale(d.exited), y: 180},
         112 : {x: timeScale2(d.exited), y: @height / 2},
-        113 : {x: timeScale3(d.exited), y: @height - 160}
+        113 : {x: timeScale3(d.exited), y: @height - 180}
       }
       target = @time_centers[d.congress]
-      d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
-      d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
+      d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 2
+      d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 2
 
 
   # Method to hide year titles
