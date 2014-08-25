@@ -6,6 +6,7 @@
 # Views
 AboutView = require './views/about-view.coffee'
 AmendInfoView = require './views/meta-views/meta-amend-info-view.coffee'
+AmendPieView = require './views/meta-views/meta-amend-pie-view.coffee'
 AmendView = require './views/meta-views/meta-amend-view.coffee'
 BillHoverView = require './views/meta-views/meta-bill-hover-view.coffee'
 ChartView = require './views/content-views/chart-view.coffee'
@@ -143,11 +144,20 @@ class MainController extends Marionette.Controller
     chartView = @options.regions.content.currentView
     metaLayout = new MetaLayout
     chartView.meta.show metaLayout
+    metaLayout[ 'meta2' ].show @makeAmendHover()
+    metaLayout[ 'meta1' ].show @makeAmendHover()
+    # metaLayout[ 'meta1' ].show @makeAmendAggregate model, billId
 
     @listenTo chartView.chart.currentView, 'showAmendmentData', (data) ->
       metaLayout[ 'meta2' ].show @makeAmendHover data
-      metaLayout[ 'meta2' ].show @makeAmendHover()
-      metaLayout[ 'meta1' ].show @makeAmendAggregate model, billId
+      # metaLayout[ 'meta1' ].show @makeAmendAggregate model, billId
+      metaLayout[ 'meta1' ].show @makeAmendPie data
+
+  makeAmendPie: ( data ) ->
+    amendPieModel = new Model votes: data
+    amendPieView = new AmendPieView model: amendPieModel
+    amendPieView
+
 
   # Pass ammendment data in and create a model/view with it
   # Returns jQuery promise for consistency
