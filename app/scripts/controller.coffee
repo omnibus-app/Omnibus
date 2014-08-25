@@ -1,24 +1,31 @@
-# Require Views and Models
-SearchView = require './views/search-view.coffee'
-ContentLayout = require './views/content-views/content-layout.coffee'
-ChartView = require './views/content-views/chart-view.coffee'
-SearchResults = require './views/content-views/search-results-view.coffee'
-MetaLayout = require './views/meta-views/meta-layout.coffee'
-BillModel = require './models/bill-model.coffee'
-BillsCollection = require './collections/bills-collection.coffee'
-AmendInfoView = require './views/meta-views/meta-amend-info-view.coffee'
-AmendInfoModel = require './models/meta-amend-info-model.coffee'
-AmendView = require './views/meta-views/meta-amend-view.coffee'
-MetaInfoView = require './views/meta-views/meta-info-view.coffee'
-AmendModel = require './models/meta-amend-model.coffee'
-EnactedView = require './views/content-views/enacted-view.coffee'
-EnactedModel = require './models/enacted-model.coffee'
-BillHoverModel = require './models/meta-bill-hover-model.coffee'
-BillHoverView = require './views/meta-views/meta-bill-hover-view.coffee'
-EnactedAggView = require './views/meta-views/meta-enacted-agg-view.coffee'
-EnactedAggModel = require './models/meta-enacted-agg-model.coffee'
+# Assign bare Model, Collection, View to Backbone primitives.
+{ Model, Collection, View } = Backbone
+
+# Keep these in alphabetical order!
+#
+# Views
 AboutView = require './views/about-view.coffee'
+AmendInfoView = require './views/meta-views/meta-amend-info-view.coffee'
+AmendView = require './views/meta-views/meta-amend-view.coffee'
+BillHoverView = require './views/meta-views/meta-bill-hover-view.coffee'
+ChartView = require './views/content-views/chart-view.coffee'
+ContentLayout = require './views/content-views/content-layout.coffee'
 ControlView = require './views/control-view.coffee'
+EnactedView = require './views/content-views/enacted-view.coffee'
+EnactedAggView = require './views/meta-views/meta-enacted-agg-view.coffee'
+MetaInfoView = require './views/meta-views/meta-info-view.coffee'
+MetaLayout = require './views/meta-views/meta-layout.coffee'
+SearchResults = require './views/content-views/search-results-view.coffee'
+SearchView = require './views/search-view.coffee'
+
+# Models
+AmendInfoModel = require './models/meta-amend-info-model.coffee'
+BillModel = require './models/bill-model.coffee'
+EnactedModel = require './models/enacted-model.coffee'
+
+# Collections
+BillsCollection = require './collections/bills-collection.coffee'
+
 
 class MainController extends Marionette.Controller
   initialize: ( options ) ->
@@ -29,7 +36,7 @@ class MainController extends Marionette.Controller
     region.$el.append App.spinner.el
 
   setUpButtonView: ( buttons ) ->
-    buttons = new Backbone.Model buttons: buttons
+    buttons = new Model buttons: buttons
     controlView = new ControlView model: buttons
     @options.regions.content.currentView.controls.show controlView
     @listenTo controlView, "buttonClick", ( id ) =>
@@ -76,10 +83,10 @@ class MainController extends Marionette.Controller
 
   makeBillHover: ( hoverData ) ->
     if hoverData
-      billHoverModel = new BillHoverModel data: hoverData
+      billHoverModel = new Model data: hoverData
       billHoverView = new BillHoverView model: billHoverModel
     else
-      amendModel = new AmendModel
+      amendModel = new Model
       billHoverView = new MetaInfoView model: amendModel
     billHoverView
 
@@ -146,10 +153,10 @@ class MainController extends Marionette.Controller
   # Returns jQuery promise for consistency
   makeAmendHover: ( amendData ) ->
     if amendData
-      amendModel = new AmendModel data: amendData
+      amendModel = new Model data: amendData
       amendView = new AmendView model: amendModel
     else
-      amendModel = new AmendModel
+      amendModel = new Model
       amendView = new MetaInfoView model: amendModel
       amendView
 
