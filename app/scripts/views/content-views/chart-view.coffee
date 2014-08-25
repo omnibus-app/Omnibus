@@ -42,7 +42,7 @@ class ChartView extends Marionette.ItemView
 
     width = $("#chart").width() - margin.right - margin.left
 
-    height = data.length * 12
+    height = data.length * 15
 
     x = d3.scale
       .linear()
@@ -55,23 +55,6 @@ class ChartView extends Marionette.ItemView
       Math.abs x
 
     ticks = [-250, -200, -150, -100, -50 , 0, 50, 100, 150, 200, 250]
-
-
-    # buttons = [
-    #   ['oldest', 'oldest'],
-    #   ['newest', 'newest'],
-    #   ['dem-total', 'most dem votes'],
-    #   ['rep-total', 'most rep votes'],
-    #   ['dem-biased', 'most dem weighted'],
-    #   ['rep-biased', 'most rep weighted'],
-    #   ['least-supported', 'least supported'],
-    #   ['most-supported', 'most supported']
-    # ]
-
-    # buttonHolder = $ '<div class="bar-sort-buttons"></div>'
-    # for pair in buttons
-    #   buttonHolder.append "<button id=#{pair[0]}>#{pair[1]}</button>"
-    # @$el.prepend buttonHolder
 
     xAxis = d3.svg.axis()
       .scale x
