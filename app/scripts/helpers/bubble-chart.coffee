@@ -264,7 +264,7 @@ class BubbleChart
 
     partys.enter().append("text")
       .attr("class", "partys")
-      .attr("x", (d) => partys_x[d] )
+      .attr("x", partys_x[d] )
       .attr("y", 40)
       .attr("text-anchor", "middle")
       .text((d) -> d)
