@@ -11,6 +11,7 @@ class EnactedView extends Marionette.ItemView
 
   events:
     'click circle': "showBillData"
+    'mouseout circle': 'hideDetails'
     'mouseover [class~=bubble]': 'showDetails'
 
   initialize: ->
@@ -32,6 +33,8 @@ class EnactedView extends Marionette.ItemView
     billData = _.findWhere @model.get( 'bills' ), bill_id: billId
     @trigger "showMeta", billData
 
+  hideDetails: ->
+    @trigger "showMeta", null
 
   showBillData: (e) ->
     billId = @$(e.currentTarget).attr("data-bill")

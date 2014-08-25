@@ -10,17 +10,6 @@ class BubbleChart
         @parentNode.appendChild this
         return
 
-   # #create buttons and append
-   #  buttons = [
-   #    ['combined', 'All Bills'],
-   #    ['byYear', 'By Congress'],
-   #    ['byParty', 'By Party']
-   #  ]
-
-   #  buttonHolder = $("#bubbleChart")
-   #  for pair in buttons
-   #    buttonHolder.append("<button id=#{pair[0]}>#{pair[1]}</button>")
-
     # locations the nodes will move towards
     # depending on which view is currently being
     # used
