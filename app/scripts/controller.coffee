@@ -68,38 +68,24 @@ class MainController extends Marionette.Controller
 
     @listenTo chartView.chart.currentView, 'showMeta', ( data ) ->
       return metaLayout['meta2'].show new MetaInfoView() unless data
-      @makeBillHover data
-        .then ( billView ) ->
-          metaLayout[ 'meta2' ].show billView
+      metaLayout[ 'meta2' ].show @makeBillHover data
 
-    @makeBillHover()
-      .then ( billView ) ->
-        metaLayout[ 'meta2' ].show billView
-
-    @makeEnactedAggregate model
-      .then ( metaView ) ->
-        metaLayout[ 'meta1' ].show metaView
-
+    metaLayout[ 'meta2' ].show @makeBillHover()
+    metaLayout[ 'meta1' ].show @makeEnactedAggregate model
 
 
   makeBillHover: ( hoverData ) ->
-    deferred = new $.Deferred()
     if hoverData
       billHoverModel = new BillHoverModel data: hoverData
       billHoverView = new BillHoverView model: billHoverModel
     else
       amendModel = new AmendModel
       billHoverView = new MetaInfoView model: amendModel
-
-    deferred.resolve billHoverView
-    deferred.promise()
+    billHoverView
 
   makeEnactedAggregate: ( model ) ->
-    deferred = new $.Deferred()
     enactedAggView = new EnactedAggView model: model
-    deferred.resolve enactedAggView
 
-    deferred.promise()
 
   # Used to show a bills data when the billId is known
   showBill: ( billId ) ->
@@ -152,41 +138,24 @@ class MainController extends Marionette.Controller
     chartView.meta.show metaLayout
 
     @listenTo chartView.chart.currentView, 'showAmendmentData', (data) ->
-      @makeAmendHover data
-        .then ( amendView ) ->
-          metaLayout[ 'meta2' ].show amendView
-
-    @makeAmendHover()
-      .then ( amendView ) ->
-        metaLayout[ 'meta2' ].show amendView
-
-    @makeAmendAggregate model, billId
-      .then ( metaView ) ->
-        metaLayout[ 'meta1' ].show metaView
-        # metaView.render()
+      metaLayout[ 'meta2' ].show @makeAmendHover data
+      metaLayout[ 'meta2' ].show @makeAmendHover()
+      metaLayout[ 'meta1' ].show @makeAmendAggregate model, billId
 
   # Pass ammendment data in and create a model/view with it
   # Returns jQuery promise for consistency
   makeAmendHover: ( amendData ) ->
-    deferred = new $.Deferred()
     if amendData
       amendModel = new AmendModel data: amendData
       amendView = new AmendView model: amendModel
     else
       amendModel = new AmendModel
       amendView = new MetaInfoView model: amendModel
-
-    deferred.resolve amendView
-    deferred.promise()
+      amendView
 
   makeAmendAggregate: ( model, billId ) ->
-    deferred = new $.Deferred()
     amendInfoView = new AmendInfoView model: model
-    # amendInfoView.render()
-    deferred.resolve amendInfoView
-
-    deferred.promise()
-
+    amendInfoView
 
   # Displays the welcome view to new users
   # welcomeView: ( billModel ) ->
