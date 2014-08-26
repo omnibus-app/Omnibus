@@ -165,7 +165,7 @@ class BubbleChart
     d3.selectAll(".x").remove() if d3.select(".x")
     @force.gravity(@layout_gravity)
       .charge(this.charge)
-      .friction(.9)
+      .friction(.85)
       .on "tick", (e) =>
         @circles.each(this.move_towards_center(e.alpha))
           .attr("cx", (d) -> d.x)
