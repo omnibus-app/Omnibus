@@ -2,7 +2,6 @@ class AmendPieView extends Marionette.ItemView
   template: require './meta-amend-info-view.jade'
 
   initialize: ( options ) ->
-    console.log @model.get 'votes'
 
   renderChart: =>
     votes = @model.get 'votes'
@@ -36,7 +35,7 @@ class AmendPieView extends Marionette.ItemView
         .value (d) ->
           d.votes
 
-      svg = d3.select @el
+      svg = d3.select @el.getElementsByClassName( 'chart' )[ 0 ]
        .append "svg"
         .attr "width", width
         .attr "height", height
@@ -69,6 +68,36 @@ class AmendPieView extends Marionette.ItemView
           .style "text-anchor", "middle"
           .text (d) ->
             d.data.percent
+
+
+
+      classNames = [ 'democrat', 'republican', 'democrat-no', 'republican-no' ]
+      classTitles = [ 'Democratic Aye', 'Republican Aye', 'Democratic No', 'Republican No' ]
+
+      legend = d3.select @el.getElementsByClassName( 'legend' )[ 0 ]
+        .append 'svg'
+          .attr 'width', width
+          .attr 'height', height / 2.8
+        .append 'g'
+          .attr "transform", "translate(" + 5 + "," + 0 + ")"
+      
+      rectHeight = 0
+      classNames.forEach ( className ) ->
+        legend.append 'rect'
+          .attr "transform", "translate(" + 35 + "," + rectHeight + ")"
+          .attr 'class', className
+          .attr 'height', 20
+          .attr 'width', 20
+        rectHeight += 25
+
+      textHeight = 17
+      classTitles.forEach ( classTitle ) ->
+        legend.append "text"
+          .attr "class", "legend-text"
+          .attr "transform", "translate(" + 60 + "," + textHeight + ")"
+          .text classTitle
+        textHeight += 25
+
 
   render: =>
     super()
