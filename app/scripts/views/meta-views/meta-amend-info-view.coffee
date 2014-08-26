@@ -40,8 +40,6 @@ class AmendInfoView extends Marionette.ItemView
         .value (d) ->
           d.votes
 
-      # console.log @el.parentNode
-      #
       svg = d3.select @el
        .append "svg"
         .attr "width", width

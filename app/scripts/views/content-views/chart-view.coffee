@@ -12,7 +12,6 @@ class ChartView extends Marionette.ItemView
 
   initialize: ->
     @on "buttonClick", ( method ) =>
-      console.log 'in handler', method
       @[method]()
 
   @defaults: ->
