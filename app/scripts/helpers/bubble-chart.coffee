@@ -338,7 +338,6 @@ class BubbleChart
   #highlight moused bill
   show_details: (data, i, element) =>
     sel = d3.select(element)
-    console.log sel
     sel.attr("stroke", "black")
     sel.moveToFront()
 
