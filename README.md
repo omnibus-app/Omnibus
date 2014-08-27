@@ -8,8 +8,7 @@
 
 Omnibus is an interactive data visualization app that will make understanding large and complex bills easy.
 
-It's increasingly common for legislation to be bundled into large omnibus bills which makes untangling the content of these bills more difficult. Visualization is a powerful tool for distilling this data into a more digestible format.
-
+It's increasingly common for legislation to be bundled into large omnibus bills which makes untangling the content of these bills more difficult. We've used our backend to calculate concrete figures and generate dynamic visualizations to make these perceived trends more apparent.
 ## Team
 
   - __Product Owner__: Nick Bottomley
