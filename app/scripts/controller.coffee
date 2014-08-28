@@ -1,8 +1,6 @@
 # Assign bare Model, Collection, View to Backbone primitives.
 { Model, Collection, View } = Backbone
 
-# Keep these in alphabetical order!
-#
 # Views
 AboutView = require './views/about-view.coffee'
 AmendInfoView = require './views/meta-views/meta-amend-info-view.coffee'
@@ -125,12 +123,6 @@ class MainController extends Marionette.Controller
 
   # Recreates content and search regions with new bill model
   makeBill: ( billModel, billId ) ->
-    # Check local storage to see if the user has visited the site before
-      # If not, show the welcome view and set the state to 'visited'
-    # if not window.localStorage.getItem 'omnibus-visited'
-    #   @welcomeView billModel
-    #   window.localStorage.setItem 'omnibus-visited', true
-
     chartView = new ChartView model: billModel
     if not @options.regions.content.currentView
       contentLayout = new ContentLayout
@@ -174,22 +166,6 @@ class MainController extends Marionette.Controller
     amendInfoView = new AmendInfoView model: model
     amendInfoView
 
-  # Displays the welcome view to new users
-  # welcomeView: ( billModel ) ->
-  #   # Create the welcome view with the billModel (billModel not currently used)
-  #   welcomeView = new WelcomeView model: billModel
-  #   # Hide the information button on search view
-  #   $('#information').hide()
-
-  #   # Empty the region when the user closes it
-  #   @listenTo welcomeView, 'welcome:close', ->
-  #     @options.regions.welcome.empty()
-  #     # Show the information button in the search view
-  #     $('#information').show()
-
-  #   # Show the welcome vew in the welcome region
-  #   @options.regions.welcome.show welcomeView
-
   # Initiates the Search view and
   searchView: ( ) ->
 
@@ -198,10 +174,6 @@ class MainController extends Marionette.Controller
     # Listen to submit event on known bill number
     @listenTo searchView, 'findBill:submit', ( billId ) ->
       @router.navigate 'bills/' + billId, trigger: true
-
-    # Listen to show Welcome view event on info button click
-    # @listenTo searchView, 'welcome:show', ->
-    #   @welcomeView searchView.model
 
     # Listen to search bills submit event
     @listenTo searchView, 'search:bills:submit', ( query ) ->
